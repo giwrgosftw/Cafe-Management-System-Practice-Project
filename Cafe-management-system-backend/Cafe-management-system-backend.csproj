@@ -231,6 +231,11 @@
       <DependentUpon>CafeEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ConnectionRepositoryDB.cs" />
+    <Compile Include="Repositories\UserRepositoryImpl.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Services\UserServiceImpl.cs" />
+    <Compile Include="Services\UserService.cs" />
     <Compile Include="TokenManager.cs" />
   </ItemGroup>
   <ItemGroup>
