@@ -1,9 +1,7 @@
 ﻿using Cafe_management_system_backend.Models;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Web;
 
 namespace Cafe_management_system_backend.Repositories
 {
