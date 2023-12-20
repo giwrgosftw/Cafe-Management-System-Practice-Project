@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cafe_management_system_backend.Models
+namespace Cafe_management_system_backend.MVC.Models
 {
     using System;
     using System.Collections.Generic;

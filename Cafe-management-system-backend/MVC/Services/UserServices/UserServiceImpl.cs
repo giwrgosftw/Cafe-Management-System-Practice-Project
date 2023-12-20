@@ -1,8 +1,11 @@
-﻿using Cafe_management_system_backend.Models;
-using Cafe_management_system_backend.Repositories;
+﻿using Cafe_management_system_backend.MVC.Models;
+using Cafe_management_system_backend.MVC.Repositories;
+using Cafe_management_system_backend.MVC.Security;
+using Microsoft.Ajax.Utilities;
 using System;
+using System.Collections.Generic;
 
-namespace Cafe_management_system_backend.Services
+namespace Cafe_management_system_backend.MVC.Services.UserServices
 {
     public class UserServiceImpl : UserService
     {
@@ -34,22 +37,29 @@ namespace Cafe_management_system_backend.Services
 
         public object Login(User user)
         {
+            // Retrieve user information from the database based on email and password
             User userObjDB = userRepository.FindByEmailAndPassword(user.email, user.password);
+            // Check if a user with the given email and password was found
             if (userObjDB != null)
             {
+                // Check if the user account is active ("true")
                 if (userObjDB.status == "true")
                 {
+                    // Generate a token for the authenticated user
                     return new {token = TokenManager.GenerateToken(userObjDB.email, userObjDB.password) };
                 }
                 else
                 {
+                    // User account is not active, throw an exception indicating that admin approval is required
                     throw new UnauthorizedAccessException("Wait for Admin Approval");
                 }
             }
             else
             {
+                // User with the provided email and password not found, throw an exception indicating incorrect credentials
                 throw new UnauthorizedAccessException("Incorrect Username or Password");
             }
         }
+
     }
 }

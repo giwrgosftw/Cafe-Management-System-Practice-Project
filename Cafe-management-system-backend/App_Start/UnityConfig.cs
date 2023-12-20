@@ -1,5 +1,5 @@
-using Cafe_management_system_backend.Repositories;
-using Cafe_management_system_backend.Services;
+using Cafe_management_system_backend.MVC.Repositories;
+using Cafe_management_system_backend.MVC.Services.UserServices;
 using System;
 
 using Unity;

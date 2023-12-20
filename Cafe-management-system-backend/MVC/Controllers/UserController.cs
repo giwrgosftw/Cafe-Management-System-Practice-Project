@@ -1,5 +1,5 @@
-﻿using Cafe_management_system_backend.Models;
-using Cafe_management_system_backend.Services;
+﻿using Cafe_management_system_backend.MVC.Models;
+using Cafe_management_system_backend.MVC.Services.UserServices;
 using System;
 using System.Net;
 using System.Net.Http;

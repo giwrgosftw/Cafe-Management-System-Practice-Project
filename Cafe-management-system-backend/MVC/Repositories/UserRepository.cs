@@ -1,7 +1,7 @@
-﻿using Cafe_management_system_backend.Models;
+﻿using Cafe_management_system_backend.MVC.Models;
 using System;
 
-namespace Cafe_management_system_backend.Repositories
+namespace Cafe_management_system_backend.MVC.Repositories
 {
     public interface UserRepository
     {

@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Cafe_management_system_backend
+namespace Cafe_management_system_backend.MVC.Security
 {
     public class TokenManager
     {
