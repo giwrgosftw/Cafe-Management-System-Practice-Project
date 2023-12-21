@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Linq;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Cafe_management_system_backend.Controllers
 {
@@ -31,12 +32,12 @@ namespace Cafe_management_system_backend.Controllers
                 // Successfully registered
                 return Request.CreateResponse(HttpStatusCode.OK, new { message = "Successfully Registered!" });
             }
-            catch (ApplicationException ex)
+            catch (DuplicateNameException ex)
             {
-                // Catch the ApplicationException (from SignUp) exception and return a BadRequest response
+                // Catch the DuplicateNameException (from SignUp) exception and return a BadRequest response
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { message = ex.Message });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Handle other exceptions as needed
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
@@ -60,14 +61,6 @@ namespace Cafe_management_system_backend.Controllers
             }
         }
 
-        // TODO: The following method created for testing purposes, it can be deleted
-        [HttpGet, Route("checkToken")]
-        [CustomAuthenticationFilter]
-        public HttpResponseMessage CheckToken()
-        {
-            return Request.CreateResponse(HttpStatusCode.OK, new { message = "true" });
-        }
-
         [HttpGet, Route("getAllUsers")]
         [CustomAuthenticationFilter]
         public HttpResponseMessage GetAllUsers()
@@ -85,7 +78,7 @@ namespace Cafe_management_system_backend.Controllers
                 List<User> users = userService.FindAllUsers();
                 return Request.CreateResponse(HttpStatusCode.OK, users);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Handle any unexpected exceptions and return InternalServerError response
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });

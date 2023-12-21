@@ -1,13 +1,16 @@
 ﻿using Cafe_management_system_backend.MVC.Models;
 using Cafe_management_system_backend.MVC.Repositories;
 using Cafe_management_system_backend.MVC.Security;
+using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Cafe_management_system_backend.MVC.Services.UserServices
 {
     public class UserServiceImpl : UserService
     {
+        private static Logger logger = LogManager.GetLogger("NLogger");
         private readonly UserRepository userRepository;
 
         // Add a constructor to initialize userRepository
@@ -24,13 +27,14 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
                 // If e-mail not exist (since new), setup the appropriate User values
                 user.role = "user"; // by default is a user
                 user.status = "false"; // never logged-in before
-                // Add to the database
-                userRepository.AddUser(user);
+                userRepository.AddUser(user); // Add to the database
+                logger.Info($"[Service-Method: SignUp() Success]: User (Email: " + user.email + ") was created successfully!");
             }
             else
             {
                 // Return an error message
-                throw new ApplicationException("Email already exists. Please use a different email address.");
+                logger.Error($"[Service-Method: SignUp()] Exception: " + "User already exists " + "(Email: " + user.email + ")");
+                throw new DuplicateNameException("Email already exists. Please use a different email address.");
             }
         }
 
@@ -45,17 +49,21 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
                 if (userObjDB.status == "true")
                 {
                     // Generate a token for the authenticated user
-                    return new {token = TokenManager.GenerateToken(userObjDB.email, userObjDB.role) };
+                    var token = TokenManager.GenerateToken(userObjDB.email, userObjDB.role);
+                    logger.Info($"[Service-Method: Login() Success]: User's (Email: " + userObjDB.email + ") token was generated successfully! \n" + token);
+                    return new {token};
                 }
                 else
                 {
                     // User account is not active, throw an exception indicating that admin approval is required
+                    logger.Error($"[Service-Method: Login()] Exception: " + "User has status '" + userObjDB.status + "' " + "(Email: " + userObjDB.email + ")");
                     throw new UnauthorizedAccessException("Wait for Admin Approval");
                 }
             }
             else
             {
                 // User with the provided email and password not found, throw an exception indicating incorrect credentials
+                logger.Error($"[Service-Method: Login()] Exception: Incorrect Username or Password " + "(Email: " + user.email + ")" );
                 throw new UnauthorizedAccessException("Incorrect Username or Password");
             }
         }
