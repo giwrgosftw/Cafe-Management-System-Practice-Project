@@ -1,7 +1,6 @@
 ﻿using Cafe_management_system_backend.MVC.Models;
 using Cafe_management_system_backend.MVC.Repositories;
 using Cafe_management_system_backend.MVC.Security;
-using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
 
@@ -46,7 +45,7 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
                 if (userObjDB.status == "true")
                 {
                     // Generate a token for the authenticated user
-                    return new {token = TokenManager.GenerateToken(userObjDB.email, userObjDB.password) };
+                    return new {token = TokenManager.GenerateToken(userObjDB.email, userObjDB.role) };
                 }
                 else
                 {
@@ -59,6 +58,11 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
                 // User with the provided email and password not found, throw an exception indicating incorrect credentials
                 throw new UnauthorizedAccessException("Incorrect Username or Password");
             }
+        }
+
+        public List<User> FindAllUsers()
+        {
+            return userRepository.FindAll();
         }
 
     }

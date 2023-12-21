@@ -7,5 +7,6 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
     {
         void SignUp(User user);
         object Login(User user);
+        List<User> FindAllUsers();
     }
 }

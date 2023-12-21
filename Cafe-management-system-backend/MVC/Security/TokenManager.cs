@@ -10,14 +10,14 @@ namespace Cafe_management_system_backend.MVC.Security
     {
         // 1. Define a hard-coded random JWT secret key to secure the APIs
         //    TODO: Hard-coding a secret key in the source code is not a recommended practice for production systems
-        public static string SecurityKeyBytes = "DAFHdS3PnA3mdHYJ-IslVN3pMQ3jHQY-200Sh1ThGwc";
+        public static string secretKey = "DAFHdS3PnA3mdHYJ-IslVN3pMQ3jHQY-200Sh1ThGwc";
 
         // 2. Method to generate a JWT token based on provided email and role
         public static string GenerateToken(string email, string role)
         {
             // 3. Create a SymmetricSecurityKey using the secret/security key
             //    SymmetricSecurityKey objects requires a UTF-8 encoded byte array as its input  
-            SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecurityKeyBytes));
+            SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             // 4. Define a SecurityTokenDescriptor to specify token details
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
             {
@@ -43,5 +43,74 @@ namespace Cafe_management_system_backend.MVC.Security
             // 10. Write the token as a string and return it
             return handler.WriteToken(token);
         }
+
+        // This method validates the Principal's token and returns him/her
+        public static ClaimsPrincipal ValidateTokenAndGetPrincipal(string token)
+        {
+            try
+            {   // Initialize a JwtSecurityTokenHandler to handle JWT-related operations (e.g., reading and validating tokens)
+                JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+                // Parse the input token (string) and convert it into a JwtSecurityToken object,
+                // which is a representation of the decoded JWT
+                JwtSecurityToken jwtToken = (JwtSecurityToken)tokenHandler.ReadJwtToken(token);
+
+                if (jwtToken == null)
+                {
+                    return null;
+                }
+
+                // Before validating the token we need to define some criteria (that will be checked during the validation)
+                TokenValidationParameters parameters = new TokenValidationParameters()
+                {
+                    RequireExpirationTime = true, // JWT must contain an expiration time
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)) // (sign the JWT) the server uses this key to validate the signature of the incoming JWT
+                };
+                // Use the token handler to validate the token based on the above criteria
+                SecurityToken securityToken;
+                // If validation is successful, get Principal (logged-in user identity and roles)
+                ClaimsPrincipal principal = tokenHandler.ValidateToken(token, parameters, out securityToken);
+                // securityToken = JWT token value after the validation (passed by reference)
+                return principal;
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        // Get Principal's Profile data (for now, email and role) from the particular (validated) token
+        public static PrincipalProfile GetPrincipalProfileInfo(string RawToken)
+        {
+            // E.g., in Bearer token format, the RawToken is a string that includes
+            // both a token type and the actual token value, separated by a space (' ')
+            string[] array = RawToken.Split(' '); // E.g., "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+            var token = array[1];   // We need to second part (token only)
+            // Get the Principal user aligns to that token
+            ClaimsPrincipal principal = ValidateTokenAndGetPrincipal(token);
+            if (principal == null)
+            {
+                return null;
+            }
+            // Get Principal Identity data
+            ClaimsIdentity identity = null;
+            try
+            {
+                identity = (ClaimsIdentity)principal.Identity;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            // Return the required identity data in the form of our PrincipalProfile Object
+            PrincipalProfile principalProfile = new PrincipalProfile();
+            principalProfile.Email = identity.FindFirst(ClaimTypes.Email).Value;
+            principalProfile.Role = identity.FindFirst(ClaimTypes.Role).Value;
+            return principalProfile;
+
+        }
+
     }
 }

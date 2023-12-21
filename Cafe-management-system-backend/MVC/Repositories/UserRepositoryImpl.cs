@@ -1,5 +1,6 @@
 ﻿using Cafe_management_system_backend.MVC.Models;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 
@@ -32,5 +33,43 @@ namespace Cafe_management_system_backend.MVC.Repositories
         {
             return db.Users.Where(u => (u.email == userEmail && u.password == userPassword)).FirstOrDefault(); 
         }
+
+        public List<User> FindAll()
+        {
+            // Step 1: Project to an anonymous type
+            // Directly projecting to the User entity type within LINQ to Entities can cause translation problems.
+            // Anonymous type helps in performing the initial projection without directly using the User Entity type,
+            // addressing the LINQ to Entities query translation issue.
+            var usersAnonymous = db.Users
+                .Where(u => u.role == UserRoleEnum.User.ToString())
+                .Select(u => new
+                {
+                    u.id,
+                    u.name,
+                    u.contactNumber,
+                    u.email,
+                    u.password,
+                    u.status,
+                    u.role
+                })
+                .ToList();
+
+            // Step 2: Map the anonymous type to the User type
+            // After materializing the query, map the results to the User entity type.
+            // This ensures that the final result is of the desired User type.
+            return usersAnonymous
+                .Select(u => new User
+                {
+                    id = u.id,
+                    name = u.name,
+                    contactNumber = u.contactNumber,
+                    email = u.email,
+                    password = u.password,
+                    status = u.status,
+                    role = u.role
+                })
+                .ToList();
+        }
+
     }
 }

@@ -46,6 +46,7 @@ namespace Cafe_management_system_backend
             // container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<UserRepository, UserRepositoryImpl>();
             container.RegisterType<UserService, UserServiceImpl>();
+            container.RegisterType<UserAuthorityService, UserAuthorityServiceImpl>();
         }
     }
 }

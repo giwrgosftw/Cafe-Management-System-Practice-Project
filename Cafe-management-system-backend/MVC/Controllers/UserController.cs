@@ -1,9 +1,12 @@
 ﻿using Cafe_management_system_backend.MVC.Models;
 using Cafe_management_system_backend.MVC.Services.UserServices;
+using Cafe_management_system_backend.MVC.Security;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Cafe_management_system_backend.Controllers
 {
@@ -11,10 +14,12 @@ namespace Cafe_management_system_backend.Controllers
     public class UserController : ApiController
     {
         private readonly UserService userService;
+        private readonly UserAuthorityService userAuthorityService;
 
-        public UserController(UserService userService)
+        public UserController(UserService userService, UserAuthorityService userAuthorityService)
         {
             this.userService = userService;
+            this.userAuthorityService = userAuthorityService;
         }
 
         [HttpPost, Route("signup")]
@@ -52,6 +57,38 @@ namespace Cafe_management_system_backend.Controllers
             {
                 // Failed to login
                 return Request.CreateResponse(HttpStatusCode.Unauthorized, new { message = ex.Message });
+            }
+        }
+
+        // TODO: The following method created for testing purposes, it can be deleted
+        [HttpGet, Route("checkToken")]
+        [CustomAuthenticationFilter]
+        public HttpResponseMessage CheckToken()
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, new { message = "true" });
+        }
+
+        [HttpGet, Route("getAllUsers")]
+        [CustomAuthenticationFilter]
+        public HttpResponseMessage GetAllUsers()
+        {
+            try
+            {
+                // Retrieve the authorization token from the request headers
+                var token = Request.Headers.GetValues("authorization").First();
+                // Check if the user has the "Admin" authority based on the token
+                if (!userAuthorityService.HasAuthorityAdmin(token))
+                {
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                }
+                // Retrieve a list of all Users with role = "User"
+                List<User> users = userService.FindAllUsers();
+                return Request.CreateResponse(HttpStatusCode.OK, users);
+            }
+            catch (Exception ex)
+            {
+                // Handle any unexpected exceptions and return InternalServerError response
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
             }
         }
     }
