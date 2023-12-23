@@ -3,13 +3,26 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 
 namespace Cafe_management_system_backend.MVC.Repositories
 {
     public class UserRepositoryImpl : ConnectionRepositoryDB, UserRepository
     {
-        private static Logger logger = LogManager.GetLogger("NLogger");
+        public User FindById(int userId)
+        {
+            try
+            {
+                return db.Users.Find(userId);
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"[UserRepository:FindById()] Exception: {ex.Message}");
+                GetInnerException(ex, "FindById");
+                throw;
+            }
+        }
 
         public User FindByEmail(String userEmail)
         {
@@ -19,7 +32,8 @@ namespace Cafe_management_system_backend.MVC.Repositories
             }
             catch (Exception ex)
             {
-                logger.Error($"[Repo-Method: FindByEmail()] Exception: {ex.Message}");
+                logger.Error($"[UserRepository:FindByEmail()] Exception: {ex.Message}");
+                GetInnerException(ex, "FindByEmail()");
                 throw;
             }
         }
@@ -33,21 +47,8 @@ namespace Cafe_management_system_backend.MVC.Repositories
             }
             catch (Exception ex)
             {
-                logger.Error($"[Repo-Method: FindByEmailAndPassword()] Exception: {ex.Message}");
-                throw;
-            }
-        }
-
-        public void AddUser(User user)
-        {
-            try
-            {
-                db.Users.Add(user);
-                db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                logger.Error($"[Repo-Method: AddUser()] Exception: {ex.Message}");
+                logger.Error($"[UserRepository:FindByEmailAndPassword()] Exception: {ex.Message}");
+                GetInnerException(ex, "FindByEmailAndPassword()");
                 throw;
             }
         }
@@ -90,7 +91,40 @@ namespace Cafe_management_system_backend.MVC.Repositories
                     .ToList();
             } catch(Exception ex)
             {
-                logger.Error($"[Repo-Method: FindAll()] Exception: {ex.Message}");
+                logger.Error($"[UserRepository:FindAll()] Exception: {ex.Message}");
+                GetInnerException(ex, "FindAll()");
+                throw;
+            }
+        }
+
+        public void AddUser(User user)
+        {
+            try
+            {
+                db.Users.Add(user);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"[UserRepository:AddUser()] Exception: {ex.Message}");
+                GetInnerException(ex, "AddUser()");
+                throw;
+            }
+        }
+
+        public void UpdateUser(User user)
+        {
+            try
+            {
+                // User Entity is considered as Modified form
+                db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                // Save Updated user
+                db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                logger.Error($"[UserRepository:UpdateUser()] Exception: {ex.Message}");
+                GetInnerException(ex, "UpdateUser()");
                 throw;
             }
         }

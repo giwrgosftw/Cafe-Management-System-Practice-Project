@@ -70,10 +70,7 @@ namespace Cafe_management_system_backend.Controllers
                 // Retrieve the authorization token from the request headers
                 var token = Request.Headers.GetValues("authorization").First();
                 // Check if the user has the "Admin" authority based on the token
-                if (!userAuthorityService.HasAuthorityAdmin(token))
-                {
-                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
-                }
+                if (!userAuthorityService.HasAuthorityAdmin(token)) { return Request.CreateResponse(HttpStatusCode.Unauthorized); }
                 // Retrieve a list of all Users with role = "User"
                 List<User> users = userService.FindAllUsers();
                 return Request.CreateResponse(HttpStatusCode.OK, users);
@@ -81,6 +78,51 @@ namespace Cafe_management_system_backend.Controllers
             catch (Exception)
             {
                 // Handle any unexpected exceptions and return InternalServerError response
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+            }
+        }
+
+        [HttpPost, Route("update")]
+        [CustomAuthenticationFilter]
+        public HttpResponseMessage Update([FromBody] User user)
+        {
+            try
+            {
+                // Retrieve the authorization token from the request headers
+                var token = Request.Headers.GetValues("authorization").First();
+                // Check if the user has the "Admin" authority based on the token
+                if (!userAuthorityService.HasAuthorityAdmin(token)) { return Request.CreateResponse(HttpStatusCode.Unauthorized); }
+                // Update
+                userService.UpdateUser(user);
+                return Request.CreateResponse(HttpStatusCode.OK, new { message = "User Updated Successfully!" });
+            }
+            catch (Exception)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+            }
+        }
+
+        [HttpPost, Route("changePassword")]
+        [CustomAuthenticationFilter]
+        public HttpResponseMessage ChangeUserPassword(ChangePassword changePassword)
+        {
+            try
+            {
+                // Retrieve the authorization token from the request headers
+                var token = Request.Headers.GetValues("authorization").First();
+                // Get Principal info
+                PrincipalProfile principalProfile = TokenManager.GetPrincipalProfileInfo(token);
+                // Change password
+                userService.ChangeUserPassword(principalProfile, changePassword);
+                return Request.CreateResponse(HttpStatusCode.OK, new { message = "Password Updated Successfully!" });
+            }
+            catch (InvalidOperationException)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new { message = "Incorrect Old Password" });
+
+            }
+            catch (Exception)
+            {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
             }
         }

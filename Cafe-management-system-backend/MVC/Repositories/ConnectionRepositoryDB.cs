@@ -1,4 +1,6 @@
 ﻿using Cafe_management_system_backend.MVC.Models;
+using NLog;
+using System;
 
 /* 
  * The RepositoryConnectionDB class serves as a base (Parent) class designed for inheritance.
@@ -12,10 +14,19 @@ namespace Cafe_management_system_backend.MVC.Repositories
     public class ConnectionRepositoryDB
     {
         protected readonly CafeEntities db;
+        protected static Logger logger = LogManager.GetLogger("NLogger");
 
         protected ConnectionRepositoryDB()
         {
             db = new CafeEntities();
+        }
+
+        protected void GetInnerException(Exception ex, string methodName)
+        {
+            if (ex.InnerException != null)
+            {
+                logger.Error($"[UserRepository:{methodName}] InnerException: {ex.InnerException?.InnerException?.Message}");
+            }
         }
     }
 }

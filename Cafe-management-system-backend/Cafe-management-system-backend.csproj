@@ -246,6 +246,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CafeEntities.edmx</DependentUpon>
     </Compile>
+    <Compile Include="MVC\Security\ChangePassword.cs" />
     <Compile Include="MVC\Models\User.cs">
       <DependentUpon>CafeEntities.tt</DependentUpon>
     </Compile>

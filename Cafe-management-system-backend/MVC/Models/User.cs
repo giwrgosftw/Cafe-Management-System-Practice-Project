@@ -21,5 +21,6 @@ namespace Cafe_management_system_backend.MVC.Models
         public string password { get; set; }
         public string status { get; set; }
         public string role { get; set; }
+        // TODO: Add UUID guid
     }
 }
