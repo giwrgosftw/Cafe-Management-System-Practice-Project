@@ -12,18 +12,20 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
     {
         private static Logger logger = LogManager.GetLogger("NLogger");
         private readonly UserRepository userRepository;
+        private readonly CommonUserService commonUserService;
 
         // Add a constructor to initialize userRepository
-        public UserServiceImpl(UserRepository userRepository)
+        public UserServiceImpl(UserRepository userRepository, CommonUserService commonUserService)
         {
             this.userRepository = userRepository;
+            this.commonUserService = commonUserService;
         }
 
         public void SignUp(User user)
         {
             if(user.email == null)
             {
-                logger.Error($"[UserService:SignUp()] Exception: " + "User email NOT given.");
+                logger.Error("[UserService:SignUp()] Exception: User email NOT given.");
                 throw new Exception();
             }
             User userDB = userRepository.FindByEmail(user.email);
@@ -33,12 +35,12 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
                 user.role = "user"; // by default is a user
                 user.status = "false"; // never logged-in before
                 userRepository.AddUser(user); // Add to the database
-                logger.Info($"[UserService:SignUp() Success]: User (Email: " + user.email + ") was created successfully!");
+                logger.Info("[UserService:SignUp() Success]: User (Email: {UserEmail}) was created successfully!", user.email);
             }
             else
             {
                 // Return an error message
-                logger.Error($"[UserService:SignUp()] Exception: " + "User already exists " + "(Email: " + user.email + ")");
+                logger.Error("[UserService:SignUp()] Exception: User already exists (Email: {UserEmail})", user.email);
                 throw new DuplicateNameException("Email already exists. Please use a different email address.");
             }
         }
@@ -55,40 +57,29 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
                 {
                     // Generate a token for the authenticated user
                     var token = TokenManager.GenerateToken(userDB.email, userDB.role);
-                    logger.Info($"[UserService:Login() Success]: User's (Email: " + userDB.email + ") token was generated successfully! \n" + token);
+                    logger.Info("[UserService:Login() Success]: User's (Email: {UserEmail}) token was generated successfully! \n{Token}", userDB.email, token);
                     return new {token};
                 }
                 else
                 {
                     // User account is not active, throw an exception indicating that admin approval is required
-                    logger.Error($"[UserService:Login()] Exception: " + "User has status '" + userDB.status + "' " + "(Email: " + userDB.email + ")");
+                    logger.Error("[UserService:Login()] Exception: User has status '{UserStatus}' (Email: {UserEmail})", userDB.status, userDB.email);
                     throw new UnauthorizedAccessException("Wait for Admin Approval");
                 }
             }
             else
             {
                 // User with the provided email and password not found, throw an exception indicating incorrect credentials
-                logger.Error($"[UserService:Login()] Exception: Incorrect Username or Password " + "(Email: " + user.email + ")" );
+                logger.Error("[UserService:Login()] Exception: Incorrect Username or Password (Email: {UserEmail})", user.email);
                 throw new UnauthorizedAccessException("Incorrect Username or Password");
             }
-        }
-
-        public List<User> FindAllUsers()
-        {
-            return userRepository.FindAll();
-        }
-
-        public User FindUserById(User user)
-        {
-            User userDB = userRepository.FindById(user.id);
-            return FindUser(userDB);
         }
 
         public User UpdateUser(User user)
         {
             User userDB = UpdateUserEntity(user); // update hard-coded
             userRepository.UpdateUser(userDB);  // update/save into DB
-            logger.Info($"[UserService:Update()] Success: " + "User updated successfully" + " (Id: " + userDB.id + " & Email: " + userDB.email + ")");
+            logger.Info("[UserService:Update()] Success: User updated successfully (Id: {UserId} & Email: {UserEmail})", userDB.id, userDB.email);
             return userDB;
         }
 
@@ -97,11 +88,11 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             // Check first if a New Password was given indeed
             if(changePassword.newPassword == null)
             {
-                logger.Error($"[UserService:ChangeUserPassword()] Exception: New Password NOT given " + "(Email: " + principal.Email + ")");
+                logger.Error("[UserService:ChangeUserPassword()] Exception: New Password NOT given (Email: {UserEmail})", principal.Email);
                 throw new Exception();
             }
             // Find user by Email and Password while finding/checking if null
-            User userDB = FindUser(userRepository.FindByEmailAndPassword(principal.Email, changePassword.oldPassword));
+            User userDB = commonUserService.FindUserByEmailAndPassword(principal.Email, changePassword.oldPassword);
             // Update password
             if(userDB != null) { 
                 userDB.password = changePassword.newPassword ?? userDB.password;
@@ -109,7 +100,7 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             } 
             else
             {
-                logger.Error($"[UserService:ChangeUserPassword()] Exception: Incorrect Old Password " + "(Email: " + principal.Email + ")");
+                logger.Error("[UserService:ChangeUserPassword()] Exception: Incorrect Old Password (Email: {UserEmail})", principal.Email);
                 throw new InvalidOperationException();
             }
             return userDB;
@@ -117,7 +108,7 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
 
         private User UpdateUserEntity(User user)
         {
-            User userDB = FindUserById(user);
+            User userDB = commonUserService.FindUserById(user.id);
             if (userDB != null)
             {
                 userDB.name = user.name ?? userDB.name; // if userDB.name = NULL do not change it
@@ -130,23 +121,10 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             }
             else
             {
-                logger.Error($"[UserService:Update()] Failed: " + "User update failed" + " (Id: " + user.id + " & Email: " + user.email + ")");
+                logger.Error("[UserService:Update()] Failed: User with given Id NOT found (Id: {UserId})", user.id);
                 throw new KeyNotFoundException();
             }
         }
 
-        private User FindUser(User userDB)
-        {
-            if (userDB != null)
-            {
-                logger.Info($"[UserService:FindUser()] Success: " + "User was successfully found " + "(Id: " + userDB.id + " & Email: " + userDB.email + ")");
-                return userDB;
-            }
-            else
-            {
-                logger.Info($"[UserService:FindUser()] EmptyOrNull: " + "User NOT found...");
-                return null;
-            }
-        }
     }
 }

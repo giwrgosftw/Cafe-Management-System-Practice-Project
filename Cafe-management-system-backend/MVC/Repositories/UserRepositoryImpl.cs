@@ -1,5 +1,4 @@
 ﻿using Cafe_management_system_backend.MVC.Models;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;

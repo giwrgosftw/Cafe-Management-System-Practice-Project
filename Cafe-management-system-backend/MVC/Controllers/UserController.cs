@@ -8,19 +8,26 @@ using System.Web.Http;
 using System.Linq;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
+using System.Net.Mail;
 
 namespace Cafe_management_system_backend.Controllers
 {
     [RoutePrefix("api/user")]
     public class UserController : ApiController
     {
+        private readonly CommonUserService commonUserService;
         private readonly UserService userService;
         private readonly UserAuthorityService userAuthorityService;
+        private readonly UserEmailService userEmailService;
 
-        public UserController(UserService userService, UserAuthorityService userAuthorityService)
+        public UserController(CommonUserService commonUserService, UserService userService, 
+            UserAuthorityService userAuthorityService, UserEmailService userEmailService)
         {
+            this.commonUserService = commonUserService;
             this.userService = userService;
             this.userAuthorityService = userAuthorityService;
+            this.userEmailService = userEmailService;
         }
 
         [HttpPost, Route("signup")]
@@ -72,7 +79,7 @@ namespace Cafe_management_system_backend.Controllers
                 // Check if the user has the "Admin" authority based on the token
                 if (!userAuthorityService.HasAuthorityAdmin(token)) { return Request.CreateResponse(HttpStatusCode.Unauthorized); }
                 // Retrieve a list of all Users with role = "User"
-                List<User> users = userService.FindAllUsers();
+                List<User> users = commonUserService.FindAllUsers();
                 return Request.CreateResponse(HttpStatusCode.OK, users);
             }
             catch (Exception)
@@ -126,5 +133,35 @@ namespace Cafe_management_system_backend.Controllers
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
             }
         }
+
+        [HttpPost, Route("forgotPassword")]
+        [CustomAuthenticationFilter]
+        public async Task<HttpResponseMessage> ForgotPassword([FromBody] User user)
+        {
+            string messageResponse = "A Password was sent to your email successfully";
+
+            try
+            {
+                await userEmailService.SendForgotPasswordEmail(user);
+                return Request.CreateResponse(HttpStatusCode.OK, new { messageResponse });
+            }
+            catch (KeyNotFoundException)
+            {
+                // Because we do not want let the hackers know that the process has failed,
+                // will give a fake message on the front, but through our Service's Logger
+                // we will distinguish the actual error
+                return Request.CreateResponse(HttpStatusCode.OK, new { messageResponse });
+            }
+            catch (SmtpException)
+            {
+                // Handle SmtpException separately and return InternalServerError
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+            }
+            catch (Exception)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+            }
+        }
+
     }
 }

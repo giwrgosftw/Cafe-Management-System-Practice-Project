@@ -44,9 +44,14 @@ namespace Cafe_management_system_backend
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
+            
+            // Repositories
             container.RegisterType<UserRepository, UserRepositoryImpl>();
+            // Services
+            container.RegisterType<CommonUserService, CommonUserServiceImpl>();
             container.RegisterType<UserService, UserServiceImpl>();
             container.RegisterType<UserAuthorityService, UserAuthorityServiceImpl>();
+            container.RegisterType<UserEmailService, UserEmailServiceImpl>();
         }
     }
 }
