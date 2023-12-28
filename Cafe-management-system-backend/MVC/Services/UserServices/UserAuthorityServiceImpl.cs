@@ -14,6 +14,9 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
          * would involve setting up three database tables: Role -> PermissionRole <- Permission. 
          * Then, leverage authorization attributes like [Authorize(Roles = "ADMIN_VIEW")] in our controllers.
          */
+        /// <summary> Verifies if the user who makes the API call possesses the "Admin" role rights. </summary>
+        /// <param name="token">The JWT token for user authentication.</param>
+        /// <returns>True if the user has "Admin" role rights; otherwise, false.</returns>
         public bool HasAuthorityAdmin(string token)
         {
             try

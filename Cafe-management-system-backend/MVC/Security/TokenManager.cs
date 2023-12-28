@@ -12,7 +12,10 @@ namespace Cafe_management_system_backend.MVC.Security
         //    TODO: Hard-coding a secret key in the source code is not a recommended practice for production systems
         public static string secretKey = "DAFHdS3PnA3mdHYJ-IslVN3pMQ3jHQY-200Sh1ThGwc";
 
-        // 2. Method to generate a JWT token based on provided email and role
+        /// <summary> 2. This method Generates a JWT token based on the provided email and role. </summary>
+        /// <param name="email">The email address of the user.</param>
+        /// <param name="role">The role of the user.</param>
+        /// <returns>The generated JWT token as a string.</returns>
         public static string GenerateToken(string email, string role)
         {
             // 3. Create a SymmetricSecurityKey using the secret/security key
@@ -44,7 +47,9 @@ namespace Cafe_management_system_backend.MVC.Security
             return handler.WriteToken(token);
         }
 
-        // This method validates the Principal's token and returns him/her
+        /// <summary> This method validates the provided (Principal's) token and returns the corresponding ClaimsPrincipal. </summary>
+        /// <param name="token">The JWT token to be validated.</param>
+        /// <returns>The ClaimsPrincipal if validation is successful, otherwise null.</returns>
         public static ClaimsPrincipal ValidateTokenAndGetPrincipal(string token)
         {
             try
@@ -81,7 +86,9 @@ namespace Cafe_management_system_backend.MVC.Security
             }
         }
 
-        // Get Principal's Profile data (for now, email and role) from the particular (validated) token
+        /// <summary> Gets the Principal's profile data (email and role) from the particular (validated) token. </summary>
+        /// <param name="rawToken">The raw token containing the token type and actual token value.</param>
+        /// <returns>The PrincipalProfile object containing email and role information.</returns>
         public static PrincipalProfile GetPrincipalProfileInfo(string RawToken)
         {
             // E.g., in Bearer token format, the RawToken is a string that includes

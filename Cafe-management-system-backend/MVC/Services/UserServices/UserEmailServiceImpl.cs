@@ -22,6 +22,9 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             this.commonUserService = commonUserService;
         }
 
+        /// <summary>This method sends a 'forgot-password' email to the specified user asynchronously.</summary>
+        /// <param name="user">The User object containing user information, including email.</param>
+        /// <returns>A Task representing that asynchronous operation.</returns>
         public async Task SendForgotPasswordEmail(User user)
         {
             try
@@ -58,7 +61,10 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             }
         }
 
-
+        /// <summary>This method creates the body content for the forgot password email.</summary>
+        /// <param name="email">The email address of the user.</param>
+        /// <param name="password">The password to be included in the email body.</param>
+        /// <returns>The formatted email body content.</returns>
         private string createEmailBody(string email, string password) 
         {
             // Initialize an empty string to store the email body
@@ -76,6 +82,10 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             return body;
         }
 
+        /// <summary>This method creates the MailMessage object for the forgot password email.</summary>
+        /// <param name="user">The User object containing user information, including email.</param>
+        /// <param name="userDB">The User object obtained from the database.</param>
+        /// <returns>The configured MailMessage object.</returns>
         private MailMessage createMailMessage(User user, User userDB)
         {
             // Create a new MailMessage instance

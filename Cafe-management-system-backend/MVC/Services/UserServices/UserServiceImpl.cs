@@ -14,13 +14,15 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
         private readonly UserRepository userRepository;
         private readonly CommonUserService commonUserService;
 
-        // Add a constructor to initialize userRepository
+        // A constructor to initialize userRepository
         public UserServiceImpl(UserRepository userRepository, CommonUserService commonUserService)
         {
             this.userRepository = userRepository;
             this.commonUserService = commonUserService;
         }
 
+        /// <summary>This method registers a new user to the system.</summary>
+        /// <param name="user">The User object containing user information.</param>
         public void SignUp(User user)
         {
             if(user.email == null)
@@ -45,6 +47,9 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             }
         }
 
+        /// <summary>This method login a user and generates an authentication token.</summary>
+        /// <param name="user">The User object containing login credentials.</param>
+        /// <returns>An object containing the generated token.</returns>
         public object Login(User user)
         {
             // Retrieve user information from the database based on email and password
@@ -75,6 +80,9 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             }
         }
 
+        /// <summary>This method updates user information.</summary>
+        /// <param name="user">The User object containing updated information.</param>
+        /// <returns>The updated User object.</returns>
         public User UpdateUser(User user)
         {
             User userDB = UpdateUserEntity(user); // update hard-coded
@@ -83,6 +91,10 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             return userDB;
         }
 
+        /// <summary>This method changes the user's password.</summary>
+        /// <param name="principal">The PrincipalProfile object containing user information.</param>
+        /// <param name="changePassword">The ChangePassword object containing old and new passwords.</param>
+        /// <returns>The updated User object.</returns>
         public User ChangeUserPassword(PrincipalProfile principal, ChangePassword changePassword)
         {
             // Check first if a New Password was given indeed
@@ -106,6 +118,9 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             return userDB;
         }
 
+        /// <summary>Updates the User entity with the provided user information.</summary>
+        /// <param name="user">The User object containing updated information.</param>
+        /// <returns>The updated User object.</returns>
         private User UpdateUserEntity(User user)
         {
             User userDB = commonUserService.FindUserById(user.id);

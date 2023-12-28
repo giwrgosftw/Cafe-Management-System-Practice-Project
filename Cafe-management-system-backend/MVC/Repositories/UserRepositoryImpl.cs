@@ -9,6 +9,9 @@ namespace Cafe_management_system_backend.MVC.Repositories
 {
     public class UserRepositoryImpl : ConnectionRepositoryDB, UserRepository
     {
+        /// <summary> Finds a user by their unique identifier (id). </summary>
+        /// <param name="userId">The unique identifier of the user.</param>
+        /// <returns>The user with the specified id, or null if not found.</returns>
         public User FindById(int userId)
         {
             try
@@ -23,6 +26,9 @@ namespace Cafe_management_system_backend.MVC.Repositories
             }
         }
 
+        /// <summary> Finds a user by their email address. </summary>
+        /// <param name="userEmail">The email address of the user.</param>
+        /// <returns>The user with the specified email address, or null if not found.</returns>
         public User FindByEmail(String userEmail)
         {
             try
@@ -37,6 +43,10 @@ namespace Cafe_management_system_backend.MVC.Repositories
             }
         }
 
+        /// <summary>Finds a user by their email address and password.</summary>
+        /// <param name="userEmail">The email address of the user.</param>
+        /// <param name="userPassword">The password of the user.</param>
+        /// <returns>The user with the specified email address and password, or null if not found.</returns>
         public User FindByEmailAndPassword(String userEmail, String userPassword)
         {
             try
@@ -52,6 +62,8 @@ namespace Cafe_management_system_backend.MVC.Repositories
             }
         }
 
+        /// <summary>Retrieves all users with a role of "User"</summary>
+        /// <returns>A list of users with the specified role.</returns>
         public List<User> FindAll()
         {
             try
@@ -96,6 +108,8 @@ namespace Cafe_management_system_backend.MVC.Repositories
             }
         }
 
+        /// <summary>Adds a new user to the system.</summary>
+        /// <param name="user">The user to be added.</param>
         public void AddUser(User user)
         {
             try
@@ -111,6 +125,8 @@ namespace Cafe_management_system_backend.MVC.Repositories
             }
         }
 
+        /// <summary>Updates an existing user in the system.</summary>
+        /// <param name="user">The user to be updated.</param>
         public void UpdateUser(User user)
         {
             try

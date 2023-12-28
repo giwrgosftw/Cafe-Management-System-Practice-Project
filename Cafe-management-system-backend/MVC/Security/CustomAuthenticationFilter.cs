@@ -9,14 +9,21 @@ using System.Web.Http.Results;
 
 namespace Cafe_management_system_backend.MVC.Security
 {
-    // This class implements the IHttpActionResult interface,
-    // indicating that instances of this class can be used to create HTTP responses
+    /// <summary>
+    /// The Class Implements the IHttpActionResult interface, indicating that
+    /// instances of this class can be used to create HTTP responses.
+    /// Represents an HTTP response indicating authentication failure (invalid token).
+    /// </summary>
     public class AuthenticationFailureResult : IHttpActionResult
     {
         public AuthenticationFailureResult() { }
 
-        // The following method is part of 'IHttpActionResult' and it has to be implemented.
-        // The method represents/creates/returns an HTTP response indicating authentication failure (invalid token).
+        /// <summary>
+        /// The following method is part of 'IHttpActionResult' and it has to be implemented.
+        /// The method returns an HTTP response indicating authentication failure (Unauthorized - 401/Invalid token).
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An asynchronous task representing the HTTP response.</returns>
         public Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
         {
             // Specifically with a status code of Unauthorized (401)
@@ -26,10 +33,19 @@ namespace Cafe_management_system_backend.MVC.Security
         }
     }
 
+    /// <summary>
+    /// Custom authentication filter implementing IAuthenticationFilter.
+    /// Responsible for determining client authentication and handling authentication challenges.
+    /// </summary>
     public class CustomAuthenticationFilter : AuthorizeAttribute, IAuthenticationFilter
     {
-        // This method is responsible for determining whether the client
-        // should be authenticated based on the provided HTTP request. (overrides IAuthenticationFilter)
+        /// <summary>
+        /// This method is responsible for determining whether the client
+        /// should be authenticated based on the provided HTTP request (overrides IAuthenticationFilter)
+        /// </summary>
+        /// <param name="context">The HTTP authentication context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An asynchronous task representing the authentication process.</returns>
         public async Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
         {
             // Extracting the Authorization header from the HTTP request
@@ -44,8 +60,13 @@ namespace Cafe_management_system_backend.MVC.Security
             context.Principal = TokenManager.ValidateTokenAndGetPrincipal(authorization.Parameter);
         }
 
-        // This method is called when the authentication challenge is invoked (e.g., prevent access without loggin). - (overrides IAuthenticationFilter)
-        // Responsible for responding to validations, using the Authorization header to modify the HTTP response and inform the browser about grant access
+        /// <summary>
+        /// This method is invoked when the authentication challenge is triggered (e.g., prevent access without loggin) - (overrides IAuthenticationFilter).
+        /// Responsible for responding to validations, using the Authorization header to modify the HTTP response and inform the browser about grant access
+        /// </summary>
+        /// <param name="context">The HTTP authentication challenge context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An asynchronous task representing the challenge process.</returns>
         public async Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)
         {   // Authenticate the user and get the http response
             var result = await context.Result.ExecuteAsync(cancellationToken);

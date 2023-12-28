@@ -30,6 +30,8 @@ namespace Cafe_management_system_backend.Controllers
             this.userEmailService = userEmailService;
         }
 
+        /// <summary>API-Call for registering a new user.</summary>
+        /// <param name="user">The User object containing user information.</param>
         [HttpPost, Route("signup")]
         public HttpResponseMessage Signup([FromBody] User user) // FromBody = expecting data which are the according Model values
         {
@@ -51,6 +53,8 @@ namespace Cafe_management_system_backend.Controllers
             }
         }
 
+        /// <summary>API-Call that logs-in a user and generates an authentication token.</summary>
+        /// <param name="user">The User object containing login credentials.</param>
         [HttpPost, Route("login")]
         public HttpResponseMessage Login([FromBody] User user)
         {
@@ -68,6 +72,7 @@ namespace Cafe_management_system_backend.Controllers
             }
         }
 
+        /// <summary>API-Call that gets a list of all users (with Role='User').</summary>
         [HttpGet, Route("getAllUsers")]
         [CustomAuthenticationFilter]
         public HttpResponseMessage GetAllUsers()
@@ -89,6 +94,8 @@ namespace Cafe_management_system_backend.Controllers
             }
         }
 
+        /// <summary>API-Call that updates user information.</summary>
+        /// <param name="user">The User object containing updated information.</param>
         [HttpPost, Route("update")]
         [CustomAuthenticationFilter]
         public HttpResponseMessage Update([FromBody] User user)
@@ -109,6 +116,8 @@ namespace Cafe_management_system_backend.Controllers
             }
         }
 
+        /// <summary>API-Call that changes the user's password.</summary>
+        /// <param name="changePassword">The ChangePassword object containing old and new password.</param>
         [HttpPost, Route("changePassword")]
         [CustomAuthenticationFilter]
         public HttpResponseMessage ChangeUserPassword(ChangePassword changePassword)
@@ -134,6 +143,8 @@ namespace Cafe_management_system_backend.Controllers
             }
         }
 
+        /// <summary>API-Call that sends a password reset email to the user.</summary>
+        /// <param name="user">The User object containing the user's email.</param>
         [HttpPost, Route("forgotPassword")]
         [CustomAuthenticationFilter]
         public async Task<HttpResponseMessage> ForgotPassword([FromBody] User user)
