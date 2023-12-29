@@ -6,6 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="0f8d0f4c87bb4547bfc19c0e0f732833" Name="Diagram1">
         <EntityTypeShape EntityType="CafeModel.User" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CafeModel.Category" Width="1.5" PointX="3.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

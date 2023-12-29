@@ -21,7 +21,7 @@ namespace Cafe_management_system_backend.MVC.Repositories
             catch (Exception ex)
             {
                 logger.Error($"[UserRepository:FindById()] Exception: {ex.Message}");
-                GetInnerException(ex, "FindById");
+                GetInnerException(ex);
                 throw;
             }
         }
@@ -38,7 +38,7 @@ namespace Cafe_management_system_backend.MVC.Repositories
             catch (Exception ex)
             {
                 logger.Error($"[UserRepository:FindByEmail()] Exception: {ex.Message}");
-                GetInnerException(ex, "FindByEmail()");
+                GetInnerException(ex);
                 throw;
             }
         }
@@ -57,7 +57,7 @@ namespace Cafe_management_system_backend.MVC.Repositories
             catch (Exception ex)
             {
                 logger.Error($"[UserRepository:FindByEmailAndPassword()] Exception: {ex.Message}");
-                GetInnerException(ex, "FindByEmailAndPassword()");
+                GetInnerException(ex);
                 throw;
             }
         }
@@ -103,7 +103,7 @@ namespace Cafe_management_system_backend.MVC.Repositories
             } catch(Exception ex)
             {
                 logger.Error($"[UserRepository:FindAll()] Exception: {ex.Message}");
-                GetInnerException(ex, "FindAll()");
+                GetInnerException(ex);
                 throw;
             }
         }
@@ -120,7 +120,7 @@ namespace Cafe_management_system_backend.MVC.Repositories
             catch (Exception ex)
             {
                 logger.Error($"[UserRepository:AddUser()] Exception: {ex.Message}");
-                GetInnerException(ex, "AddUser()");
+                GetInnerException(ex);
                 throw;
             }
         }
@@ -139,7 +139,7 @@ namespace Cafe_management_system_backend.MVC.Repositories
             catch (DbUpdateException ex)
             {
                 logger.Error($"[UserRepository:UpdateUser()] Exception: {ex.Message}");
-                GetInnerException(ex, "UpdateUser()");
+                GetInnerException(ex);
                 throw;
             }
         }

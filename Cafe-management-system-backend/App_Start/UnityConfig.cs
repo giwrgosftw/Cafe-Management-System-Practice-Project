@@ -1,4 +1,5 @@
 using Cafe_management_system_backend.MVC.Repositories;
+using Cafe_management_system_backend.MVC.Services;
 using Cafe_management_system_backend.MVC.Services.UserServices;
 using System;
 
@@ -47,11 +48,13 @@ namespace Cafe_management_system_backend
             
             // Repositories
             container.RegisterType<UserRepository, UserRepositoryImpl>();
+            container.RegisterType<CategoryRepository, CategoryRepositoryImpl>();
             // Services
             container.RegisterType<CommonUserService, CommonUserServiceImpl>();
             container.RegisterType<UserService, UserServiceImpl>();
             container.RegisterType<UserAuthorityService, UserAuthorityServiceImpl>();
             container.RegisterType<UserEmailService, UserEmailServiceImpl>();
+            container.RegisterType<CategoryService, CategoryServiceImpl>();
         }
     }
 }

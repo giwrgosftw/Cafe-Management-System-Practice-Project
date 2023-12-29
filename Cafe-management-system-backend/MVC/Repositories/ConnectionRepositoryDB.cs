@@ -21,12 +21,13 @@ namespace Cafe_management_system_backend.MVC.Repositories
             db = new CafeEntities();
         }
 
-        protected void GetInnerException(Exception ex, string methodName)
+        protected void GetInnerException(Exception ex)
         {
-            if (ex.InnerException != null)
+            if (ex.InnerException.InnerException != null)
             {
-                logger.Error($"[UserRepository:{methodName}] InnerException: {ex.InnerException?.InnerException?.Message}");
+                logger.Error($"InnerException: {ex.InnerException.InnerException.Message}");
             }
+            logger.Error($"InnerException: {ex.InnerException?.Message}");
         }
     }
 }
