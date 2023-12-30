@@ -6,9 +6,10 @@ namespace Cafe_management_system_backend.MVC.Repositories
     public interface CategoryRepository
     {
         Category FindByName(string categoryName);
-        void AddCategory(Category category);
         List<Category> FindAll();
-        Category FindById(int categoryId);
+        Category FindById(int? categoryId);
+        void Add(Category category);
         void Update(Category category);
+        void Delete(Category category);
     }
 }

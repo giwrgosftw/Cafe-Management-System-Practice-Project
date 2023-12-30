@@ -23,11 +23,17 @@ namespace Cafe_management_system_backend.MVC.Repositories
 
         protected void GetInnerException(Exception ex)
         {
-            if (ex.InnerException.InnerException != null)
+            if (ex.InnerException != null)
             {
-                logger.Error($"InnerException: {ex.InnerException.InnerException.Message}");
+                logger.Error($"InnerException: {ex.InnerException?.Message}");
+
+                // Check for InnerException's InnerException
+                if (ex.InnerException.InnerException != null)
+                {
+                    logger.Error($"InnerException.InnerException: {ex.InnerException.InnerException?.Message}");
+                }
             }
-            logger.Error($"InnerException: {ex.InnerException?.Message}");
         }
+
     }
 }

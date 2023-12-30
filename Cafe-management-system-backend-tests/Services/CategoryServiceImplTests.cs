@@ -35,7 +35,7 @@ namespace Cafe_management_system_backend_tests.Services
             categoryService.AddCategory(category);
 
             // Assert
-            mockCategoryRepository.Verify(repo => repo.AddCategory(category), Times.Once);
+            mockCategoryRepository.Verify(repo => repo.Add(category), Times.Once);
         }
 
         [TestMethod]
@@ -103,5 +103,51 @@ namespace Cafe_management_system_backend_tests.Services
             // Act
             categoryService.UpdateCategory(category);
         }
+
+        [TestMethod]
+        public void DeleteCategory_ShouldDeleteCategory_WhenCategoryExistsAndNoAssociatedProducts()
+        {
+            // Arrange
+            var categoryId = 123;
+            var categoryDB = fixture.Create<Category>();
+            categoryDB.Products = new List<Product>(); // No associated products
+
+            mockCategoryRepository.Setup(repo => repo.FindById(categoryId)).Returns(categoryDB);
+
+            // Act
+            categoryService.DeleteCategory(categoryId);
+
+            // Assert
+            mockCategoryRepository.Verify(repo => repo.Delete(categoryDB), Times.Once);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(KeyNotFoundException))]
+        public void DeleteCategory_ShouldThrowException_WhenCategoryDoesNotExist()
+        {
+            // Arrange
+            var categoryId = 123;
+
+            mockCategoryRepository.Setup(repo => repo.FindById(categoryId)).Returns((Category)null);
+
+            // Act
+            categoryService.DeleteCategory(categoryId);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void DeleteCategory_ShouldThrowException_WhenCategoryHasAssociatedProducts()
+        {
+            // Arrange
+            var categoryId = 123;
+            var categoryDB = fixture.Create<Category>();
+            categoryDB.Products = new List<Product> { fixture.Create<Product>() }; // Associated products
+
+            mockCategoryRepository.Setup(repo => repo.FindById(categoryId)).Returns(categoryDB);
+
+            // Act
+            categoryService.DeleteCategory(categoryId);
+        }
+
     }
 }

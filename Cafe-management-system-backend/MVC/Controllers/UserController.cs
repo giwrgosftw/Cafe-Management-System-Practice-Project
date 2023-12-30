@@ -174,5 +174,53 @@ namespace Cafe_management_system_backend.Controllers
             }
         }
 
+        /// <summary> Deletes a user from the system based on user authorization and returns an HTTP response. </summary>
+        /// <param name="userId"> The ID of the user to be deleted. </param>
+        /// <returns> HttpResponseMessage indicating success or appropriate error messages. </returns>
+        [HttpPost, Route("deleteUser")]
+        [CustomAuthenticationFilter]
+        public HttpResponseMessage DeleteUser([FromUri] int userId)
+        {
+            try
+            {
+                // Retrieve the authorization token from the request headers
+                var token = Request.Headers.GetValues("authorization").First();
+                // Check if the user has the "Admin" authority based on the token
+                if (!userAuthorityService.HasAuthorityAdmin(token)) { return Request.CreateResponse(HttpStatusCode.Unauthorized); }
+                // Since authorized, delete the User
+                userService.DeleteUser(userId);
+                // Return Success Response
+                return Request.CreateResponse(HttpStatusCode.OK, new { message = "User Deleted Successfully!" });
+            }
+            catch (Exception)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+            }
+        }
+
+        /// <summary> Deletes the logged-in/Principal account, ensuring authorization, and returns an HTTP response. </summary>
+        /// <returns> HttpResponseMessage indicating success or appropriate error messages. </returns>
+        [HttpPost, Route("deleteMyAccount")]
+        [CustomAuthenticationFilter]
+        public HttpResponseMessage DeleteMyAccount()
+        {
+            try
+            {
+                // Retrieve the authorization token from the request headers
+                var token = Request.Headers.GetValues("authorization").First();
+                // Check if the user has the "Admin" authority based on the token
+                if (!userAuthorityService.HasAuthorityAdmin(token)) { return Request.CreateResponse(HttpStatusCode.Unauthorized); }
+                // Get Principal info
+                PrincipalProfile principalProfile = TokenManager.GetPrincipalProfileInfo(token);
+                // Since authorized, delete the User
+                userService.DeleteMyAccount(principalProfile.Email);
+                // Return Success Response
+                return Request.CreateResponse(HttpStatusCode.OK, new { message = "Your Account Deleted Successfully!" });
+            }
+            catch (Exception)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+            }
+        }
     }
 }

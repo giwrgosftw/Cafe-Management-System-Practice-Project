@@ -9,5 +9,7 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
         object Login(User user);
         User UpdateUser(User user);
         User ChangeUserPassword(PrincipalProfile principal, ChangePassword changePassword);
+        void DeleteUser(int userId);
+        void DeleteMyAccount(string principalEmail);
     }
 }

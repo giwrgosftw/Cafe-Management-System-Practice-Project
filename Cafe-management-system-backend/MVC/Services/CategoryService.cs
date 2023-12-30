@@ -5,8 +5,10 @@ namespace Cafe_management_system_backend.MVC.Services
 {
     public interface CategoryService
     {
-        void AddCategory(Category category);
         List<Category> FindAllCategories();
+        Category FindCategoryById(int? categoryId);
+        void AddCategory(Category category);
         Category UpdateCategory(Category category);
+        void DeleteCategory(int categoryId);
     }
 }

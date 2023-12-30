@@ -12,18 +12,13 @@ namespace Cafe_management_system_backend.MVC.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Category
+    public partial class Product
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Category()
-        {
-            this.Products = new HashSet<Product>();
-        }
-    
         public int id { get; set; }
         public string name { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Product> Products { get; set; }
+        public Nullable<int> categoryId { get; set; }
+        public string description { get; set; }
+        public Nullable<int> price { get; set; }
+        public string status { get; set; }
     }
 }

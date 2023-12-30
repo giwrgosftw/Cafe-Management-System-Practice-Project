@@ -17,6 +17,21 @@ namespace Cafe_management_system_backend.MVC.Services
             this.categoryRepository = categoryRepository;
         }
 
+        /// <summary>Retrieves a list of all categories in the system.</summary>
+        /// <returns>A List of Category objects representing all categories.</returns>
+        public List<Category> FindAllCategories()
+        {
+            return categoryRepository.FindAll();
+        }
+
+        /// <summary> Retrives a Category object in the system by its unique ID. </summary>
+        /// <param name="categoryId"> The ID of the Category to be found. </param>
+        /// <returns> The Category object if found, otherwise null. </returns>
+        public Category FindCategoryById(int? categoryId)
+        {
+            return categoryRepository.FindById(categoryId);
+        }
+
         /// <summary>Adds a new category to the system if it doesn't already exist.</summary>
         /// <param name="category">The Category object to be added.</param>
         /// <exception cref="DuplicateNameException">Thrown if the category name already exists.</exception>
@@ -24,29 +39,22 @@ namespace Cafe_management_system_backend.MVC.Services
         {
             if (category.name == null)
             {
-                logger.Error("[CategoryService:AddCategory()] Exception: Category name NOT given.");
+                logger.Error("[CategoryService:Add()] Exception: Category name NOT given.");
                 throw new Exception();
             }
             Category categoryDB = categoryRepository.FindByName(category.name);
             if (categoryDB == null)
             {
                 // If category name not exist (since new), add new Category
-                categoryRepository.AddCategory(category);
-                logger.Info("[CategoryService:AddCategory() Success]: Category (Name: {CategoryName}) was created successfully!", category.name);
+                categoryRepository.Add(category);
+                logger.Info("[CategoryService:Add() Success]: Category (Name: {CategoryName}) was created successfully!", category.name);
             }
             else
             {
                 // Return an error message
-                logger.Error("[CategoryService:AddCategory()] Exception: Category already exists (Category: {CategoryName})", category.name);
+                logger.Error("[CategoryService:Add()] Exception: Category already exists (Category: {CategoryName})", category.name);
                 throw new DuplicateNameException("Category already exists. Please use a different category name.");
             }
-        }
-
-        /// <summary>Retrieves a list of all categories in the system.</summary>
-        /// <returns>A List of Category objects representing all categories.</returns>
-        public List<Category> FindAllCategories()
-        {
-            return categoryRepository.FindAll();
         }
 
         /// <summary>Updates an existing category in the system and returns the updated Category object.</summary>
@@ -58,6 +66,26 @@ namespace Cafe_management_system_backend.MVC.Services
             categoryRepository.Update(categoryDB);  // update/save into DB
             logger.Info("[CategoryService:UpdateCategory()] Success: Category updated successfully (Id: {CategoryId} & Name: {CategoryName})", categoryDB.id, categoryDB.name);
             return categoryDB;
+        }
+
+        /// <summary> Deletes a category from the system by its ID, ensuring it is not associated with any products. </summary>
+        /// <param name="categoryId"> The ID of the category to be deleted. </param>
+        /// <exception cref="KeyNotFoundException"> Thrown when the specified category ID is not found. </exception>
+        /// <exception cref="Exception"> Thrown when the category is connected to at least one product. </exception>
+        public void DeleteCategory(int categoryId)
+        {
+            Category categoryDB = FindCategoryById(categoryId);
+            if (categoryDB == null)
+            {
+                logger.Error("[CategoryService:DeleteCategory()] Failed: Category with given Id NOT found (Id: {CategoryId})", categoryId);
+                throw new KeyNotFoundException();
+            }
+            if (categoryDB.Products.Count > 0)
+            {
+                logger.Error("[CategoryService:DeleteCategory()] Failed: Cannot delete a Category which is connected with at least one Product (ProductCount: {ProductCount})", categoryDB.Products.Count);
+                throw new Exception();
+            }
+            categoryRepository.Delete(categoryDB);
         }
 
         /// <summary>Updates the properties of an existing Category entity based on the provided Category object.</summary>

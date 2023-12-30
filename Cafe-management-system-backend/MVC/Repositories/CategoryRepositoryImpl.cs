@@ -26,23 +26,6 @@ namespace Cafe_management_system_backend.MVC.Repositories
             }
         }
 
-        /// <summary> Adds a new category to the system. </summary>
-        /// <param name="category">The Category object containing information about the new category.</param>
-        public void AddCategory(Category category)
-        {
-            try
-            {
-                db.Categories.Add(category);
-                db.SaveChanges();
-            }
-            catch(Exception ex)
-            {
-                logger.Error($"[CategoryRepository:AddCategory()] Exception: {ex.Message}");
-                GetInnerException(ex);
-                throw;
-            }
-        }
-
         /// <summary>Retrieves a list of all categories in the system.</summary>
         /// <returns>A List of Category objects representing all categories.</returns>
         public List<Category> FindAll()
@@ -62,7 +45,7 @@ namespace Cafe_management_system_backend.MVC.Repositories
         /// <summary>Finds a category by its unique id in the system.</summary>
         /// <param name="categoryId">The unique id of the category to be found.</param>
         /// <returns>The Category object if found, otherwise null.</returns>
-        public Category FindById(int categoryId)
+        public Category FindById(int? categoryId)
         {
             try
             {
@@ -71,6 +54,23 @@ namespace Cafe_management_system_backend.MVC.Repositories
             catch (Exception ex)
             {
                 logger.Error($"[CategoryRepository:FindById()] Exception: {ex.Message}");
+                GetInnerException(ex);
+                throw;
+            }
+        }
+
+        /// <summary> Adds a new category to the system. </summary>
+        /// <param name="category">The Category object containing information about the new category.</param>
+        public void Add(Category category)
+        {
+            try
+            {
+                db.Categories.Add(category);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"[CategoryRepository:Add()] Exception: {ex.Message}");
                 GetInnerException(ex);
                 throw;
             }
@@ -90,6 +90,24 @@ namespace Cafe_management_system_backend.MVC.Repositories
             catch (DbUpdateException ex)
             {
                 logger.Error($"[CategoryRepository:Update()] Exception: {ex.Message}");
+                GetInnerException(ex);
+                throw;
+            }
+        }
+
+        /// <summary> Deletes a category from the system. </summary>
+        /// <param name="category"> The Category object to be deleted. </param>
+        /// <exception cref="Exception"> Thrown when an error occurs during the delete operation. </exception>
+        public void Delete(Category category)
+        {
+            try
+            {
+                db.Categories.Remove(category);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"[CategoryRepository:Delete()] Exception: {ex.Message}");
                 GetInnerException(ex);
                 throw;
             }

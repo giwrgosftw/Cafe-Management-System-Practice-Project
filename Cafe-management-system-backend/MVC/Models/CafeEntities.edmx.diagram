@@ -7,6 +7,8 @@
       <Diagram DiagramId="0f8d0f4c87bb4547bfc19c0e0f732833" Name="Diagram1">
         <EntityTypeShape EntityType="CafeModel.User" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CafeModel.Category" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="CafeModel.Product" Width="1.5" PointX="3.375" PointY="3.75" />
+        <AssociationConnector Association="CafeModel.FK_Product_Category" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

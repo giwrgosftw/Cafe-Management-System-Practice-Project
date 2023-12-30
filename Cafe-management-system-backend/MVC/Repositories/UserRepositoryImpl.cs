@@ -110,7 +110,7 @@ namespace Cafe_management_system_backend.MVC.Repositories
 
         /// <summary>Adds a new user to the system.</summary>
         /// <param name="user">The user to be added.</param>
-        public void AddUser(User user)
+        public void Add(User user)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace Cafe_management_system_backend.MVC.Repositories
             }
             catch (Exception ex)
             {
-                logger.Error($"[UserRepository:AddUser()] Exception: {ex.Message}");
+                logger.Error($"[UserRepository:Add()] Exception: {ex.Message}");
                 GetInnerException(ex);
                 throw;
             }
@@ -127,7 +127,7 @@ namespace Cafe_management_system_backend.MVC.Repositories
 
         /// <summary>Updates an existing user in the system.</summary>
         /// <param name="user">The user to be updated.</param>
-        public void UpdateUser(User user)
+        public void Update(User user)
         {
             try
             {
@@ -138,7 +138,26 @@ namespace Cafe_management_system_backend.MVC.Repositories
             }
             catch (DbUpdateException ex)
             {
-                logger.Error($"[UserRepository:UpdateUser()] Exception: {ex.Message}");
+                logger.Error($"[UserRepository:Update()] Exception: {ex.Message}");
+                GetInnerException(ex);
+                throw;
+            }
+        }
+
+        /// <summary> Deletes a user from the system. </summary>
+        /// <param name="user"> The User object to be deleted. </param>
+        /// <exception cref="Exception"> Thrown when an error occurs during the delete operation. </exception>
+        public void Delete(User user)
+        {
+            try
+            {
+                db.Users.Attach(user); // Inform Entity Framework that User Entity is now being tracked/considered for operation
+                db.Users.Remove(user);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"[UserRepository:Delete()] Exception: {ex.Message}");
                 GetInnerException(ex);
                 throw;
             }

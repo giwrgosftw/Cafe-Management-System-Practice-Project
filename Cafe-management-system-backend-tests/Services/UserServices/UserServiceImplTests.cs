@@ -38,7 +38,7 @@ namespace Cafe_management_system_backend_tests.UserServices
             userServiceImpl.SignUp(newUser);
 
             // Assert
-            mockUserRepository.Verify(repo => repo.AddUser(newUser), Times.Once);
+            mockUserRepository.Verify(repo => repo.Add(newUser), Times.Once);
         }
 
         [TestMethod]
@@ -159,7 +159,7 @@ namespace Cafe_management_system_backend_tests.UserServices
 
             // Assert
             Assert.AreEqual(updatedUserDB, result);
-            mockUserRepository.Verify(repo => repo.UpdateUser(updatedUserDB), Times.Once);
+            mockUserRepository.Verify(repo => repo.Update(updatedUserDB), Times.Once);
         }
 
         [TestMethod]
@@ -190,7 +190,7 @@ namespace Cafe_management_system_backend_tests.UserServices
 
             // Assert
             Assert.AreEqual(userDB, result);
-            mockUserRepository.Verify(repo => repo.UpdateUser(userDB), Times.Once);
+            mockUserRepository.Verify(repo => repo.Update(userDB), Times.Once);
         }
 
         [TestMethod]
@@ -220,6 +220,80 @@ namespace Cafe_management_system_backend_tests.UserServices
 
             // Act
             userServiceImpl.ChangeUserPassword(principal, new ChangePassword { oldPassword = "old", newPassword = null });
+        }
+
+        [TestMethod]
+        public void DeleteUser_ShouldDeleteUser_WhenUserExistsAndNotAdmin()
+        {
+            // Arrange
+            var userId = 123;
+            var userDB = fixture.Create<User>();
+            userDB.role = UserRoleEnum.User.ToString();
+
+            mockCommonUserService.Setup(service => service.FindUserById(userId)).Returns(userDB);
+
+            // Act
+            userServiceImpl.DeleteUser(userId);
+
+            // Assert
+            mockUserRepository.Verify(repo => repo.Delete(userDB), Times.Once);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(KeyNotFoundException))]
+        public void DeleteUser_ShouldThrowException_WhenUserDoesNotExist()
+        {
+            // Arrange
+            var userId = 123;
+
+            mockCommonUserService.Setup(service => service.FindUserById(userId)).Returns((User)null);
+
+            // Act
+            userServiceImpl.DeleteUser(userId);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UnauthorizedAccessException))]
+        public void DeleteUser_ShouldThrowException_WhenDeletingAdminByAnotherAdmin()
+        {
+            // Arrange
+            var adminId = 123;
+            var adminDB = fixture.Create<User>();
+            adminDB.role = UserRoleEnum.Admin.ToString();
+
+            mockCommonUserService.Setup(service => service.FindUserById(adminId)).Returns(adminDB);
+
+            // Act
+            userServiceImpl.DeleteUser(adminId);
+        }
+
+        [TestMethod]
+        public void DeleteMyAccount_ShouldDeleteAccount_WhenUserExists()
+        {
+            // Arrange
+            var principalEmail = "user@example.com";
+            var userDB = fixture.Create<User>();
+
+            mockCommonUserService.Setup(service => service.FindUserByEmail(principalEmail)).Returns(userDB);
+
+            // Act
+            userServiceImpl.DeleteMyAccount(principalEmail);
+
+            // Assert
+            mockUserRepository.Verify(repo => repo.Delete(userDB), Times.Once);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(KeyNotFoundException))]
+        public void DeleteMyAccount_ShouldThrowException_WhenUserDoesNotExist()
+        {
+            // Arrange
+            var principalEmail = "nonexistent@example.com";
+
+            mockCommonUserService.Setup(service => service.FindUserByEmail(principalEmail)).Returns((User)null);
+
+            // Act
+            userServiceImpl.DeleteMyAccount(principalEmail);
         }
 
     }

@@ -34,9 +34,9 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             if (userDB == null)
             {
                 // If e-mail not exist (since new), setup the appropriate User values
-                user.role = "user"; // by default is a user
+                user.role = UserRoleEnum.User.ToString(); // by default is a user
                 user.status = "false"; // never logged-in before
-                userRepository.AddUser(user); // Add to the database
+                userRepository.Add(user); // Add to the database
                 logger.Info("[UserService:SignUp() Success]: User (Email: {UserEmail}) was created successfully!", user.email);
             }
             else
@@ -86,7 +86,7 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
         public User UpdateUser(User user)
         {
             User userDB = UpdateUserEntity(user); // update hard-coded
-            userRepository.UpdateUser(userDB);  // update/save into DB
+            userRepository.Update(userDB);  // update/save into DB
             logger.Info("[UserService:Update()] Success: User updated successfully (Id: {UserId} & Email: {UserEmail})", userDB.id, userDB.email);
             return userDB;
         }
@@ -108,7 +108,7 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             // Update password
             if(userDB != null) { 
                 userDB.password = changePassword.newPassword ?? userDB.password;
-                userRepository.UpdateUser(userDB);
+                userRepository.Update(userDB);
             } 
             else
             {
@@ -116,6 +116,42 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
                 throw new InvalidOperationException();
             }
             return userDB;
+        }
+
+        /// <summary> Deletes a user from the system, ensuring that an admin cannot delete another admin. </summary>
+        /// <param name="userId"> The ID of the user to be deleted. </param>
+        /// <exception cref="KeyNotFoundException"> Thrown when the specified user ID is not found. </exception>
+        /// <exception cref="UnauthorizedAccessException"> Thrown when an attempt is made to delete an admin by another admin. </exception>
+        public void DeleteUser(int userId)
+        {
+            User userDB = commonUserService.FindUserById(userId);
+            if (userDB == null)
+            {
+                logger.Error("[UserService:DeleteUser()] Failed: User with given Id NOT found (Id: {UserId})", userId);
+                throw new KeyNotFoundException();
+            }
+            // An Admin cannot delete other admins, only Users
+            if (userDB.role == UserRoleEnum.Admin.ToString())
+            {
+                logger.Error("[UserService:DeleteUser()] Failed: An Admin cannot delete another Admin");
+                throw new UnauthorizedAccessException();
+            }
+            userRepository.Delete(userDB);
+        }
+
+        /// <summary> Removes the account of the authenticated user based on the provided principal information. </summary>
+        /// <param name="principal"> The PrincipalProfile containing user authentication information. </param>
+        /// <param name="userId"> The ID of the logged-in user to be deleted. </param>
+        /// <exception cref="KeyNotFoundException"> Thrown when the specified user ID is not found. </exception>
+        public void DeleteMyAccount(string principalEmail)
+        {
+            User userDB = commonUserService.FindUserByEmail(principalEmail);
+            if (userDB == null)
+            {
+                logger.Error("[UserService:DeleteMyAccount()] Failed: Principal with given Email NOT found (Id: {PrincipalEmail})", principalEmail);
+                throw new KeyNotFoundException();
+            }
+            userRepository.Delete(userDB);
         }
 
         /// <summary>Updates the User entity with the provided user information.</summary>

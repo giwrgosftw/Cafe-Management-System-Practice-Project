@@ -226,6 +226,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="MVC\Controllers\CategoryController.cs" />
     <Compile Include="MVC\Controllers\HomeController.cs" />
+    <Compile Include="MVC\Controllers\ProductController.cs" />
     <Compile Include="MVC\Controllers\UserController.cs" />
     <Compile Include="MVC\Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -250,8 +251,13 @@
     <Compile Include="MVC\Models\Category.cs">
       <DependentUpon>CafeEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="MVC\Models\Product.cs">
+      <DependentUpon>CafeEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="MVC\Repositories\CategoryRepository.cs" />
     <Compile Include="MVC\Repositories\CategoryRepositoryImpl.cs" />
+    <Compile Include="MVC\Repositories\ProductRepository.cs" />
+    <Compile Include="MVC\Repositories\ProductRepositoryImpl.cs" />
     <Compile Include="MVC\Security\ChangePassword.cs" />
     <Compile Include="MVC\Models\User.cs">
       <DependentUpon>CafeEntities.tt</DependentUpon>
@@ -260,6 +266,10 @@
     <Compile Include="MVC\Security\PrincipalProfile.cs" />
     <Compile Include="MVC\Services\CategoryService.cs" />
     <Compile Include="MVC\Services\CategoryServiceImpl.cs" />
+    <Compile Include="MVC\Services\Facades\ProductCategoryFacadeService.cs" />
+    <Compile Include="MVC\Services\Facades\ProductCategoryFacadeServiceImpl.cs" />
+    <Compile Include="MVC\Services\ProductService.cs" />
+    <Compile Include="MVC\Services\ProductServiceImpl.cs" />
     <Compile Include="MVC\Services\UserServices\CommonUserService.cs" />
     <Compile Include="MVC\Services\UserServices\CommonUserServiceImpl.cs" />
     <Compile Include="MVC\Services\UserServices\UserAuthorityService.cs" />

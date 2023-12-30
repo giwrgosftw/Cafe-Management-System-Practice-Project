@@ -10,7 +10,8 @@ namespace Cafe_management_system_backend.MVC.Repositories
         User FindByEmail(String userEmail);
         User FindByEmailAndPassword(String userEmail, String userPassword);
         List<User> FindAll();
-        void AddUser(User user);
-        void UpdateUser(User user);
+        void Add(User user);
+        void Update(User user);
+        void Delete(User user);
     }
 }

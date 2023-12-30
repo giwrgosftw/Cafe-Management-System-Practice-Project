@@ -109,5 +109,29 @@ namespace Cafe_management_system_backend.MVC.Controllers
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
             }
         }
+
+        /// <summary> Deletes a category from the system based on user authorization and returns an HTTP response. </summary>
+        /// <param name="categoryId"> The ID of the category to be deleted. </param>
+        /// <returns> HttpResponseMessage indicating success or appropriate error messages. </returns>
+        [HttpPost, Route("deleteCategory")]
+        [CustomAuthenticationFilter]
+        public HttpResponseMessage DeleteCategory([FromUri] int categoryId)
+        {
+            try
+            {
+                // Retrieve the authorization token from the request headers
+                var token = Request.Headers.GetValues("authorization").First();
+                // Check if the user has the "Admin" authority based on the token
+                if (!userAuthorityService.HasAuthorityAdmin(token)) { return Request.CreateResponse(HttpStatusCode.Unauthorized); }
+                // Since authorized, delete the Category
+                categoryService.DeleteCategory(categoryId);
+                // Return Success Response
+                return Request.CreateResponse(HttpStatusCode.OK, new { message = "Category Deleted Successfully!" });
+            }
+            catch (Exception)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+            }
+        }
     }
 }

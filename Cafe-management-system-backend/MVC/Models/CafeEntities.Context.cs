@@ -27,5 +27,6 @@ namespace Cafe_management_system_backend.MVC.Models
     
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
     }
 }
