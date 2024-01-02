@@ -14,6 +14,12 @@ namespace Cafe_management_system_backend.MVC.Models
     
     public partial class Bill
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Bill()
+        {
+            this.BillProducts = new HashSet<BillProduct>();
+        }
+    
         public int id { get; set; }
         public string uuid { get; set; }
         public string name { get; set; }
@@ -21,7 +27,9 @@ namespace Cafe_management_system_backend.MVC.Models
         public string contactNumber { get; set; }
         public string paymentMethod { get; set; }
         public Nullable<int> totalAmount { get; set; }
-        public string productDetails { get; set; }
         public string createdBy { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BillProduct> BillProducts { get; set; }
     }
 }

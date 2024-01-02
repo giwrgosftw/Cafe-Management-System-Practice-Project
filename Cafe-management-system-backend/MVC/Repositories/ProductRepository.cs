@@ -9,6 +9,7 @@ namespace Cafe_management_system_backend.MVC.Repositories
         Product FindByName(string productName);
         List<Product> FindAll();
         List<Product> FindAllByCategoryIdAndStatus(int categoryId, string productStatus);
+        bool DoesExistById(int productId);
         void Add(Product product);
         void Update(Product product);
         void Delete(Product product);

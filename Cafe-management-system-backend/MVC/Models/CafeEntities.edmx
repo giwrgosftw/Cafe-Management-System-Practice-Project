@@ -16,8 +16,15 @@
           <Property Name="contactNumber" Type="varchar" MaxLength="20" />
           <Property Name="paymentMethod" Type="varchar" MaxLength="50" />
           <Property Name="totalAmount" Type="int" />
-          <Property Name="productDetails" Type="nvarchar(max)" />
           <Property Name="createdBy" Type="varchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="BillProduct">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="productId" Type="int" />
+          <Property Name="billId" Type="int" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -49,6 +56,30 @@
           <Property Name="status" Type="varchar" MaxLength="20" />
           <Property Name="role" Type="varchar" MaxLength="20" />
         </EntityType>
+        <Association Name="FK__BillProdu__billI__59C55456">
+          <End Role="Bill" Type="Self.Bill" Multiplicity="0..1" />
+          <End Role="BillProduct" Type="Self.BillProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bill">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="BillProduct">
+              <PropertyRef Name="billId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BillProdu__produ__58D1301D">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="BillProduct" Type="Self.BillProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="BillProduct">
+              <PropertyRef Name="productId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Product_Category">
           <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
@@ -63,9 +94,18 @@
         </Association>
         <EntityContainer Name="CafeModelStoreContainer">
           <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BillProduct" EntityType="Self.BillProduct" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__BillProdu__billI__59C55456" Association="Self.FK__BillProdu__billI__59C55456">
+            <End Role="Bill" EntitySet="Bill" />
+            <End Role="BillProduct" EntitySet="BillProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BillProdu__produ__58D1301D" Association="Self.FK__BillProdu__produ__58D1301D">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="BillProduct" EntitySet="BillProduct" />
+          </AssociationSet>
           <AssociationSet Name="FK_Product_Category" Association="Self.FK_Product_Category">
             <End Role="Category" EntitySet="Category" />
             <End Role="Product" EntitySet="Product" />
@@ -75,28 +115,49 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CafeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="contactNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="password" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="role" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityContainer Name="CafeEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Bills" EntityType="CafeModel.Bill" />
+          <EntitySet Name="BillProducts" EntityType="CafeModel.BillProduct" />
           <EntitySet Name="Categories" EntityType="CafeModel.Category" />
           <EntitySet Name="Products" EntityType="CafeModel.Product" />
+          <EntitySet Name="Users" EntityType="CafeModel.User" />
+          <AssociationSet Name="FK__BillProdu__billI__59C55456" Association="CafeModel.FK__BillProdu__billI__59C55456">
+            <End Role="Bill" EntitySet="Bills" />
+            <End Role="BillProduct" EntitySet="BillProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BillProdu__produ__58D1301D" Association="CafeModel.FK__BillProdu__produ__58D1301D">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="BillProduct" EntitySet="BillProducts" />
+          </AssociationSet>
           <AssociationSet Name="FK_Product_Category" Association="CafeModel.FK_Product_Category">
             <End Role="Category" EntitySet="Categories" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
-          <EntitySet Name="Bills" EntityType="CafeModel.Bill" />
         </EntityContainer>
+        <EntityType Name="Bill">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="uuid" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="contactNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="paymentMethod" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="totalAmount" Type="Int32" />
+          <Property Name="createdBy" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BillProducts" Relationship="CafeModel.FK__BillProdu__billI__59C55456" FromRole="Bill" ToRole="BillProduct" />
+        </EntityType>
+        <EntityType Name="BillProduct">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="productId" Type="Int32" />
+          <Property Name="billId" Type="Int32" />
+          <NavigationProperty Name="Bill" Relationship="CafeModel.FK__BillProdu__billI__59C55456" FromRole="BillProduct" ToRole="Bill" />
+          <NavigationProperty Name="Product" Relationship="CafeModel.FK__BillProdu__produ__58D1301D" FromRole="BillProduct" ToRole="Product" />
+        </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="id" />
@@ -116,6 +177,42 @@
           <Property Name="price" Type="Int32" />
           <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="contactNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="role" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK__BillProdu__billI__59C55456">
+          <End Type="CafeModel.Bill" Role="Bill" Multiplicity="0..1" />
+          <End Type="CafeModel.BillProduct" Role="BillProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bill">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="BillProduct">
+              <PropertyRef Name="billId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BillProdu__produ__58D1301D">
+          <End Type="CafeModel.Product" Role="Product" Multiplicity="0..1" />
+          <End Type="CafeModel.BillProduct" Role="BillProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="BillProduct">
+              <PropertyRef Name="productId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Product_Category">
           <End Type="CafeModel.Category" Role="Category" Multiplicity="0..1" />
           <End Type="CafeModel.Product" Role="Product" Multiplicity="*" />
@@ -128,36 +225,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Bill">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="uuid" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="contactNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="paymentMethod" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="totalAmount" Type="Int32" />
-          <Property Name="productDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="createdBy" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-        </EntityType>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="CafeModelStoreContainer" CdmEntityContainer="CafeEntities">
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="CafeModel.User">
-              <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
+          <EntitySetMapping Name="Bills">
+            <EntityTypeMapping TypeName="CafeModel.Bill">
+              <MappingFragment StoreEntitySet="Bill">
+                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+                <ScalarProperty Name="totalAmount" ColumnName="totalAmount" />
+                <ScalarProperty Name="paymentMethod" ColumnName="paymentMethod" />
                 <ScalarProperty Name="contactNumber" ColumnName="contactNumber" />
                 <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="password" ColumnName="password" />
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="role" ColumnName="role" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="uuid" ColumnName="uuid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BillProducts">
+            <EntityTypeMapping TypeName="CafeModel.BillProduct">
+              <MappingFragment StoreEntitySet="BillProduct">
+                <ScalarProperty Name="billId" ColumnName="billId" />
+                <ScalarProperty Name="productId" ColumnName="productId" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -181,17 +274,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Bills">
-            <EntityTypeMapping TypeName="CafeModel.Bill">
-              <MappingFragment StoreEntitySet="Bill">
-                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
-                <ScalarProperty Name="productDetails" ColumnName="productDetails" />
-                <ScalarProperty Name="totalAmount" ColumnName="totalAmount" />
-                <ScalarProperty Name="paymentMethod" ColumnName="paymentMethod" />
-                <ScalarProperty Name="contactNumber" ColumnName="contactNumber" />
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="CafeModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="role" ColumnName="role" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="contactNumber" ColumnName="contactNumber" />
                 <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="uuid" ColumnName="uuid" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

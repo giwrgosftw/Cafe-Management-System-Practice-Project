@@ -11,5 +11,6 @@ namespace Cafe_management_system_backend.MVC.Services
         Product FindProductById(int productId);
         List<Product> FindAllProducts();
         List<Product> FindProductsByCategoryIdAndStatus(int categoryId, string productStatus);
+        bool DoesProductExistById(int productId);
     }
 }

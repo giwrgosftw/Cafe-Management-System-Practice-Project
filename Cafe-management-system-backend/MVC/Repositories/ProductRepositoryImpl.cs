@@ -148,6 +148,23 @@ namespace Cafe_management_system_backend.MVC.Repositories
             }
         }
 
+        /// <summary> Checks if a product with the specified ID exists in the system. </summary>
+        /// <param name="productId"> The ID of the product to be checked. </param>
+        /// <returns> True if the product exists, otherwise false. </returns>
+        public bool DoesExistById(int productId)
+        {
+            try
+            {
+                return db.Products.Any(p => p.id == productId);
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"[ProductRepository:DoesExistById()] Exception: {ex.Message}");
+                GetInnerException(ex);
+                throw;
+            }
+        }
+
         /// <summary> Adds a new product to the system. </summary>
         /// <param product="product">The Product object containing information about the new product.</param>
         public void Add(Product product)

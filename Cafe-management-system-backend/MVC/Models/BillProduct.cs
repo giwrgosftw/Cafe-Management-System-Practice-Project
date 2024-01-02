@@ -11,13 +11,13 @@ namespace Cafe_management_system_backend.MVC.Models
 {
     using System;
 
-    public partial class Product
+    public partial class BillProduct
     {
         public int id { get; set; }
-        public string name { get; set; }
-        public Nullable<int> categoryId { get; set; }
-        public string description { get; set; }
-        public Nullable<int> price { get; set; }
-        public string status { get; set; }
+        public Nullable<int> productId { get; set; }
+        public Nullable<int> billId { get; set; }
+    
+        public virtual Bill Bill { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

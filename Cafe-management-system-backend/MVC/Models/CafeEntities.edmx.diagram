@@ -5,11 +5,14 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="0f8d0f4c87bb4547bfc19c0e0f732833" Name="Diagram1">
-        <EntityTypeShape EntityType="CafeModel.User" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CafeModel.Category" Width="1.5" PointX="3.375" PointY="0.75" />
-        <EntityTypeShape EntityType="CafeModel.Product" Width="1.5" PointX="3.375" PointY="3.75" />
-        <AssociationConnector Association="CafeModel.FK_Product_Category" />
-        <EntityTypeShape EntityType="CafeModel.Bill" Width="1.5" PointX="0.75" PointY="4.75" />
+		  <EntityTypeShape EntityType="CafeModel.User" Width="1.5" PointX="0.75" PointY="4.625" />
+		  <EntityTypeShape EntityType="CafeModel.Category" Width="1.5" PointX="0.75" PointY="1.375" />
+		  <EntityTypeShape EntityType="CafeModel.Product" Width="1.5" PointX="3" PointY="1" />
+		  <EntityTypeShape EntityType="CafeModel.Bill" Width="1.5" PointX="3" PointY="4.875" />
+		  <EntityTypeShape EntityType="CafeModel.BillProduct" Width="1.5" PointX="5.25" PointY="1.25" />
+		  <AssociationConnector Association="CafeModel.FK_Product_Category" />
+		  <AssociationConnector Association="CafeModel.FK__BillProdu__billI__59C55456" />
+        <AssociationConnector Association="CafeModel.FK__BillProdu__produ__58D1301D" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

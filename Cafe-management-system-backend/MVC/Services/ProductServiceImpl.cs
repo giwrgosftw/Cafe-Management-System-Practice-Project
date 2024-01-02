@@ -59,7 +59,13 @@ namespace Cafe_management_system_backend.MVC.Services
         /// <returns> The Product object if found, otherwise null. </returns>
         public Product FindProductById(int productId)
         {
-            return productRepository.FindById(productId);
+            Product productDB = productRepository.FindById(productId);
+            if (productDB == null)
+            {
+                logger.Error("[ProductService:FindProductById()] Failed: Product with given Id NOT found (Id: {ProductId})", productId);
+                throw new KeyNotFoundException();
+            }
+            return productDB;
         }
 
         /// <summary> Retrieves a list of all products in the system. </summary>
@@ -84,11 +90,6 @@ namespace Cafe_management_system_backend.MVC.Services
         public void DeleteProduct(int productId)
         {
             Product productDB = FindProductById(productId);
-            if (productDB == null)
-            {
-                logger.Error("[ProductService:DeleteProduct()] Failed: Product with given Id NOT found (Id: {ProductId})", productId);
-                throw new KeyNotFoundException();
-            }
             productRepository.Delete(productDB);
         }
 
@@ -99,20 +100,26 @@ namespace Cafe_management_system_backend.MVC.Services
         private Product UpdateProductEntity(Product product)
         {
             Product productDB = FindProductById(product.id);
-            if (productDB != null)
-            {
-                productDB.name = product.name ?? productDB.name; // if productDB.name = NULL, do not change it
-                productDB.categoryId = product.categoryId ?? productDB.categoryId;
-                productDB.description = product.description ?? productDB.description;
-                productDB.price = product.price ?? productDB.price;
-                return productDB;
-            }
-            else
-            {
-                logger.Error("[ProductService:UpdateProductEntity()] Failed: Product with given Id NOT found (Id: {ProductId})", product.id);
-                throw new KeyNotFoundException();
-            }
+            // Update Product
+            productDB.name = product.name ?? productDB.name; // if productExistFlag.name = NULL, do not change it
+            productDB.categoryId = product.categoryId ?? productDB.categoryId;
+            productDB.description = product.description ?? productDB.description;
+            productDB.price = product.price ?? productDB.price;
+            return productDB;
         }
 
+        /// <summary> Checks if a product with the specified ID exists in the system. </summary>
+        /// <param name="productId"> The ID of the product to be checked. </param>
+        /// <returns> True if the product exists, otherwise throws KeyNotFoundException. </returns>
+        public bool DoesProductExistById(int productId)
+        {
+            bool productExistFlag = productRepository.DoesExistById(productId);
+            if (productExistFlag == false)
+            {
+                logger.Error("[ProductService:DoesProductExistById()] Failed: Product with given Id NOT found (Id: {ProductId})", productId);
+                throw new KeyNotFoundException();
+            }
+            return productExistFlag; // true
+        }
     }
 }

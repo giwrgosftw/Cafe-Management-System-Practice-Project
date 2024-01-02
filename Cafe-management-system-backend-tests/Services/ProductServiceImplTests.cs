@@ -89,17 +89,15 @@ namespace Cafe_management_system_backend_tests.Services
         }
 
         [TestMethod]
-        public void FindProductById_ShouldReturnNull_WhenProductDoesNotExist()
+        [ExpectedException(typeof(KeyNotFoundException))]
+        public void FindProductById_ShouldThrowException_WhenProductDoesNotExist()
         {
             // Arrange
             int productId = 1;
             mockProductRepository.Setup(repo => repo.FindById(productId)).Returns((Product)null);
 
             // Act
-            var result = productService.FindProductById(productId);
-
-            // Assert
-            Assert.IsNull(result);
+            productService.FindProductById(productId);
         }
 
         [TestMethod]
@@ -121,7 +119,7 @@ namespace Cafe_management_system_backend_tests.Services
         {
             // Arrange
             int categoryId = 1;
-            string productStatus = "active";
+            string productStatus = "true";
             var expectedProducts = fixture.CreateMany<Product>(3).ToList();
             mockProductRepository.Setup(repo => repo.FindAllByCategoryIdAndStatus(categoryId, productStatus)).Returns(expectedProducts);
 
@@ -168,6 +166,33 @@ namespace Cafe_management_system_backend_tests.Services
 
             // Act
             productService.AddProduct(product);
+        }
+
+        [TestMethod]
+        public void DoesProductExistById_ShouldReturnTrue_WhenProductExists()
+        {
+            // Arrange
+            int productId = 1;
+            mockProductRepository.Setup(repo => repo.DoesExistById(productId)).Returns(true);
+
+            // Act
+            var result = productService.DoesProductExistById(productId);
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+
+        [TestMethod]
+        [ExpectedException(typeof(KeyNotFoundException))]
+        public void DoesProductExistById_ShouldThrowException_WhenProductDoesNotExist()
+        {
+            // Arrange
+            int productId = 1;
+            mockProductRepository.Setup(repo => repo.DoesExistById(productId)).Returns(false);
+
+            // Act
+            productService.DoesProductExistById(productId);
         }
 
     }

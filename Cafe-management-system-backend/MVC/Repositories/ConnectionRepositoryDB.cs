@@ -21,6 +21,8 @@ namespace Cafe_management_system_backend.MVC.Repositories
             db = new CafeEntities();
         }
 
+        /// <summary> Logs the inner exception and its innermost exception, if available. </summary>
+        /// <param name="ex"> The exception message for which to log inner exceptions. </param>
         protected void GetInnerException(Exception ex)
         {
             if (ex.InnerException != null)
