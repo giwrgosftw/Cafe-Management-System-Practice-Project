@@ -77,7 +77,7 @@
       <HintPath>packages\Newtonsoft.Json.Bson.1.0.2\lib\net45\Newtonsoft.Json.Bson.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>packages\NLog.5.2.7\lib\net46\NLog.dll</HintPath>
+      <HintPath>packages\NLog.5.2.8\lib\net46\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -233,6 +233,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="MVC\Enums\UserRoleEnum.cs" />
+    <Compile Include="MVC\Models\Bill.cs">
+      <DependentUpon>CafeEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="MVC\Models\CafeEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

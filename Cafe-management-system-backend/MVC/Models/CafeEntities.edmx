@@ -5,6 +5,20 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="CafeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bill">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="uuid" Type="varchar" MaxLength="200" />
+          <Property Name="name" Type="varchar" MaxLength="255" />
+          <Property Name="email" Type="varchar" MaxLength="255" />
+          <Property Name="contactNumber" Type="varchar" MaxLength="20" />
+          <Property Name="paymentMethod" Type="varchar" MaxLength="50" />
+          <Property Name="totalAmount" Type="int" />
+          <Property Name="productDetails" Type="nvarchar(max)" />
+          <Property Name="createdBy" Type="varchar" MaxLength="25" />
+        </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="id" />
@@ -48,6 +62,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="CafeModelStoreContainer">
+          <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
@@ -80,6 +95,7 @@
             <End Role="Category" EntitySet="Categories" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
+          <EntitySet Name="Bills" EntityType="CafeModel.Bill" />
         </EntityContainer>
         <EntityType Name="Category">
           <Key>
@@ -112,6 +128,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Bill">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="uuid" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="contactNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="paymentMethod" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="totalAmount" Type="Int32" />
+          <Property Name="productDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="createdBy" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -147,6 +177,21 @@
                 <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="categoryId" ColumnName="categoryId" />
                 <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bills">
+            <EntityTypeMapping TypeName="CafeModel.Bill">
+              <MappingFragment StoreEntitySet="Bill">
+                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+                <ScalarProperty Name="productDetails" ColumnName="productDetails" />
+                <ScalarProperty Name="totalAmount" ColumnName="totalAmount" />
+                <ScalarProperty Name="paymentMethod" ColumnName="paymentMethod" />
+                <ScalarProperty Name="contactNumber" ColumnName="contactNumber" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="uuid" ColumnName="uuid" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

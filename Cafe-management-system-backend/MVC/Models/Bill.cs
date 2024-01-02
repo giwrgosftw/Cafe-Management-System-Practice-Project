@@ -12,14 +12,16 @@ namespace Cafe_management_system_backend.MVC.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Bill
     {
         public int id { get; set; }
+        public string uuid { get; set; }
         public string name { get; set; }
-        public string contactNumber { get; set; }
         public string email { get; set; }
-        public string password { get; set; }
-        public string status { get; set; }
-        public string role { get; set; }
+        public string contactNumber { get; set; }
+        public string paymentMethod { get; set; }
+        public Nullable<int> totalAmount { get; set; }
+        public string productDetails { get; set; }
+        public string createdBy { get; set; }
     }
 }

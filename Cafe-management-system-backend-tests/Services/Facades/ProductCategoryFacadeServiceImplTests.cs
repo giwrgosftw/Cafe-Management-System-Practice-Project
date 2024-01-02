@@ -4,6 +4,7 @@ using Cafe_management_system_backend.MVC.Models;
 using Cafe_management_system_backend.MVC.Services.Facades;
 using Cafe_management_system_backend.MVC.Services;
 
+#pragma warning disable
 namespace Cafe_management_system_backend_tests.Services.Facades
 {
     [TestClass]
