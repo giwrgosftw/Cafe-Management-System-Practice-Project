@@ -219,5 +219,21 @@ namespace Cafe_management_system_backend.MVC.Repositories
                 throw;
             }
         }
+
+        /// <summary>Counts the total number of products.</summary>
+        /// <returns>The total number of products in the database.</returns>
+        public int CountAll()
+        {
+            try
+            {
+                return db.Products.Count();
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"[ProductRepository:CountAll()] Exception: {ex.Message}");
+                GetInnerException(ex);
+                throw;
+            }
+        }
     }
 }

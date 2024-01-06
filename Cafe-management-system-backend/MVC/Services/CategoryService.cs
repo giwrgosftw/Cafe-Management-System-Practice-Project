@@ -10,5 +10,6 @@ namespace Cafe_management_system_backend.MVC.Services
         void AddCategory(Category category);
         Category UpdateCategory(Category category);
         void DeleteCategory(int categoryId);
+        int CountAllCategories();
     }
 }

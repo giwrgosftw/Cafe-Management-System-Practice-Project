@@ -53,6 +53,7 @@ namespace Cafe_management_system_backend
             container.RegisterType<ProductRepository, ProductRepositoryImpl>();
             container.RegisterType<BillRepository, BillRepositoryImpl>();
             container.RegisterType<BillProductRepository, BillProductRepositoryImpl>();
+            container.RegisterType<DashboardRepositoryCustom, DashboardRepositoryCustomImpl>();
             // Services
             container.RegisterType<CommonUserService, CommonUserServiceImpl>();
             container.RegisterType<UserService, UserServiceImpl>();
@@ -61,9 +62,11 @@ namespace Cafe_management_system_backend
             container.RegisterType<CategoryService, CategoryServiceImpl>();
             container.RegisterType<ProductService, ProductServiceImpl>();
             container.RegisterType<BillService, BillServiceImpl>();
+            container.RegisterType<DashboardServiceCustom, DashboardServiceCustomImpl>();
             //Facades
             container.RegisterType<ProductCategoryFacadeService, ProductCategoryFacadeServiceImpl>();
             container.RegisterType<BillProductFacadeService, BillProductFacadeServiceImpl>();
+            container.RegisterType<DashboardFacadeService, DashboardFacadeServiceImpl>();
         }
     }
 }

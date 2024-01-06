@@ -91,6 +91,13 @@ namespace Cafe_management_system_backend.MVC.Services
             Bill bill = FindBillByUUID(billUuid);
             billRepository.Delete(bill);
         }
+
+        /// <summary>Counts the total number of bills.</summary>
+        /// <returns>The total number of bills in the database.</returns>
+        public int CountAllBills()
+        {
+            return billRepository.CountAll();
+        }
     }
 
 }

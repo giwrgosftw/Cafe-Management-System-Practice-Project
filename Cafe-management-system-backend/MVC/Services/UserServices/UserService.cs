@@ -11,5 +11,6 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
         User ChangeUserPassword(PrincipalProfile principal, ChangePassword changePassword);
         void DeleteUser(int userId);
         void DeleteMyAccount(string principalEmail);
+        int CountAllUsers();
     }
 }

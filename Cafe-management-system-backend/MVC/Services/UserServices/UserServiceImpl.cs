@@ -177,5 +177,11 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             }
         }
 
+        /// <summary>Counts the total number of categories in the database.</summary>
+        /// <returns>The total number of categories.</returns>
+        public int CountAllUsers()
+        {
+            return userRepository.CountAll();
+        }
     }
 }

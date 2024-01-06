@@ -195,5 +195,21 @@ namespace Cafe_management_system_backend_tests.Services
             productService.DoesProductExistById(productId);
         }
 
+        [TestMethod]
+        public void CountAllProduct_ShouldReturnCorrectCount()
+        {
+            // Arrange
+            var expectedCount = 10; // Change this to the expected count based on your test data
+            mockProductRepository.Setup(repo => repo.CountAll()).Returns(expectedCount);
+
+            // Act
+            var result = productService.CountAllProducts();
+
+            // Assert
+            Assert.AreEqual(expectedCount, result);
+            mockProductRepository.Verify(repo => repo.CountAll(), Times.Once);
+        }
+
+
     }
 }

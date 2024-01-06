@@ -10,5 +10,6 @@ namespace Cafe_management_system_backend.MVC.Repositories
         Bill FindByUUID(string billUUID);
         void Add(Bill bill);
         void Delete(Bill bill);
+        int CountAll();
     }
 }

@@ -149,5 +149,21 @@ namespace Cafe_management_system_backend_tests.Services
             categoryService.DeleteCategory(categoryId);
         }
 
+        [TestMethod]
+        public void CountAllCategories_ShouldReturnCorrectCount()
+        {
+            // Arrange
+            var expectedCount = 5; // Change this to the expected count based on your test data
+            mockCategoryRepository.Setup(repo => repo.CountAll()).Returns(expectedCount);
+
+            // Act
+            var result = categoryService.CountAllCategories();
+
+            // Assert
+            Assert.AreEqual(expectedCount, result);
+            mockCategoryRepository.Verify(repo => repo.CountAll(), Times.Once);
+        }
+
+
     }
 }

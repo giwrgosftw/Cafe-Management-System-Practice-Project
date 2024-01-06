@@ -121,5 +121,12 @@ namespace Cafe_management_system_backend.MVC.Services
             }
             return productExistFlag; // true
         }
+
+        /// <summary>Counts the total number of products.</summary>
+        /// <returns>The total number of products in the database.</returns>
+        public int CountAllProducts()
+        {
+            return productRepository.CountAll();
+        }
     }
 }

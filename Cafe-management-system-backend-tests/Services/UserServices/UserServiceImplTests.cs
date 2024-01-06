@@ -296,5 +296,20 @@ namespace Cafe_management_system_backend_tests.UserServices
             userServiceImpl.DeleteMyAccount(principalEmail);
         }
 
+        [TestMethod]
+        public void CountAllUsers_ShouldReturnCorrectCount()
+        {
+            // Arrange
+            var expectedCount = 10; // Change this to the expected count based on your test data
+            mockUserRepository.Setup(repo => repo.CountAll()).Returns(expectedCount);
+
+            // Act
+            var result = userServiceImpl.CountAllUsers();
+
+            // Assert
+            Assert.AreEqual(expectedCount, result);
+            mockUserRepository.Verify(repo => repo.CountAll(), Times.Once);
+        }
+
     }
 }

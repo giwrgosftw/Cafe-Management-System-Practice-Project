@@ -152,5 +152,21 @@ namespace Cafe_management_system_backend_tests.Services
             // Act
             billService.DeleteBill(billUUID);
         }
+
+        [TestMethod]
+        public void CountAllBills_ShouldReturnCorrectCount()
+        {
+            // Arrange
+            var expectedCount = 5; // Change this to the expected count based on your test data
+            mockBillRepository.Setup(repo => repo.CountAll()).Returns(expectedCount);
+
+            // Act
+            var result = billService.CountAllBills();
+
+            // Assert
+            Assert.AreEqual(expectedCount, result);
+            mockBillRepository.Verify(repo => repo.CountAll(), Times.Once);
+        }
+
     }
 }

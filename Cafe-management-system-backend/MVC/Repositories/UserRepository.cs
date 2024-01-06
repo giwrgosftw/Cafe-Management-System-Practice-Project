@@ -13,5 +13,6 @@ namespace Cafe_management_system_backend.MVC.Repositories
         void Add(User user);
         void Update(User user);
         void Delete(User user);
+        int CountAll();
     }
 }

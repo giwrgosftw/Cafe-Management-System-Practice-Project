@@ -105,5 +105,12 @@ namespace Cafe_management_system_backend.MVC.Services
                 throw new KeyNotFoundException();
             }
         }
+
+        /// <summary>Counts the total number of categories.</summary>
+        /// <returns>The total number of categories in the database.</returns>
+        public int CountAllCategories()
+        {
+            return categoryRepository.CountAll();
+        }
     }
 }

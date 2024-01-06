@@ -163,5 +163,20 @@ namespace Cafe_management_system_backend.MVC.Repositories
             }
         }
 
+        /// <summary>Counts the total number of users.</summary>
+        /// <returns>The total number of users in the database.</returns>
+        public int CountAll()
+        {
+            try
+            {
+                return db.Users.Count();
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"[UserRepository:CountAll()] Exception: {ex.Message}");
+                GetInnerException(ex);
+                throw;
+            }
+        }
     }
 }

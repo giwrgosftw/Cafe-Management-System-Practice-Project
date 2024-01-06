@@ -11,5 +11,6 @@ namespace Cafe_management_system_backend.MVC.Repositories
         void Add(Category category);
         void Update(Category category);
         void Delete(Category category);
+        int CountAll();
     }
 }

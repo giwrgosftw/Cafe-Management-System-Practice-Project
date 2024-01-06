@@ -93,5 +93,21 @@ namespace Cafe_management_system_backend.MVC.Repositories
                 throw;
             }
         }
+
+        /// <summary>Counts the total number of bills.</summary>
+        /// <returns>The total number of bills in the database.</returns>
+        public int CountAll()
+        {
+            try
+            {
+                return db.Bills.Count();
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"BillRepository:CountAll()] Exception: {ex.Message}");
+                GetInnerException(ex);
+                throw;
+            }
+        }
     }
 }

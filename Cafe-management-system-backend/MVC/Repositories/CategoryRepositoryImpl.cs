@@ -112,5 +112,21 @@ namespace Cafe_management_system_backend.MVC.Repositories
                 throw;
             }
         }
+
+        /// <summary> Counts the total number of categories. </summary>
+        /// <returns>The total number of categories in the database.</returns>
+        public int CountAll()
+        {
+            try
+            {
+                return db.Categories.Count();
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"[CategoryRepository:CountAll()] Exception: {ex.Message}");
+                GetInnerException(ex);
+                throw;
+            }
+        }
     }
 }
