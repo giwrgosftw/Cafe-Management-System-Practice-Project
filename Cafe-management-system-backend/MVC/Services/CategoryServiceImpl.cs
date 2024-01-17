@@ -88,9 +88,19 @@ namespace Cafe_management_system_backend.MVC.Services
             categoryRepository.Delete(categoryDB);
         }
 
+        /// <summary>Counts the total number of categories.</summary>
+        /// <returns>The total number of categories in the database.</returns>
+        public int CountAllCategories()
+        {
+            return categoryRepository.CountAll();
+        }
+
         /// <summary>Updates the properties of an existing Category entity based on the provided Category object.</summary>
         /// <param name="category">The Category object containing updated information.</param>
         /// <returns>The updated Category entity.</returns>
+        /* TODO: this method was implemented for learning purposes, we do not need this extra method, instead,
+         * in the Repository class, update using 'db.Entry(objectEntity).CurrentValues.SetValues(updatedObjectEntity);'
+        */
         private Category UpdateCategoryEntity(Category category)
         {
             Category categoryDB = categoryRepository.FindById(category.id);
@@ -106,11 +116,5 @@ namespace Cafe_management_system_backend.MVC.Services
             }
         }
 
-        /// <summary>Counts the total number of categories.</summary>
-        /// <returns>The total number of categories in the database.</returns>
-        public int CountAllCategories()
-        {
-            return categoryRepository.CountAll();
-        }
     }
 }

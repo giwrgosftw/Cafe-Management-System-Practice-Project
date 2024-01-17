@@ -72,17 +72,6 @@ namespace Cafe_management_system_backend.MVC.Services
             }
         }
 
-
-        /// <summary> Generates a unique UUID by combining current ticks and a new Guid. </summary>
-        /// <returns>A string representation of the generated unique UUID.</returns>
-        private string GenerateUUID()
-        {
-            var ticks = DateTime.Now.Ticks; // the current date and time expressed as the number of 100-nanosecond (as Ticks - accuracy)
-            var guid = Guid.NewGuid().ToString();
-            var uniqueUUID = ticks.ToString() + '-' + guid;
-            return uniqueUUID;
-        }
-
         /// <summary> Deletes a bill from the system by its UUID. </summary>
         /// <param name="billUuid"> The UUID of the bill to be deleted. </param>
         /// <exception cref="KeyNotFoundException"> Thrown if the bill with the specified UUID is not found. </exception>
@@ -97,6 +86,16 @@ namespace Cafe_management_system_backend.MVC.Services
         public int CountAllBills()
         {
             return billRepository.CountAll();
+        }
+
+        /// <summary> Generates a unique UUID by combining current ticks and a new Guid. </summary>
+        /// <returns>A string representation of the generated unique UUID.</returns>
+        private string GenerateUUID()
+        {
+            var ticks = DateTime.Now.Ticks; // the current date and time expressed as the number of 100-nanosecond (as Ticks - accuracy)
+            var guid = Guid.NewGuid().ToString();
+            var uniqueUUID = ticks.ToString() + '-' + guid;
+            return uniqueUUID;
         }
     }
 

@@ -86,26 +86,11 @@ namespace Cafe_management_system_backend.MVC.Services
 
         /// <summary> Deletes a product from the system. </summary>
         /// <param name="product"> The Product object to be deleted. </param>
-        /// <exception cref="DbUpdateException"> Thrown error when the specified product ID is not found. </exception>
+        /// <exception cref="Exception"> Thrown error when the specified product ID is not found. </exception>
         public void DeleteProduct(int productId)
         {
             Product productDB = FindProductById(productId);
             productRepository.Delete(productDB);
-        }
-
-        /// <summary> Updates a Product entity before these changes be saved in the DB. </summary>
-        /// <param name="product"> The Product object with updated information. </param>
-        /// <returns> The updated Product entity. </returns>
-        /// <exception cref="KeyNotFoundException"> Thrown when the specified product ID is not found. </exception>
-        private Product UpdateProductEntity(Product product)
-        {
-            Product productDB = FindProductById(product.id);
-            // Update Product
-            productDB.name = product.name ?? productDB.name; // if productExistFlag.name = NULL, do not change it
-            productDB.categoryId = product.categoryId ?? productDB.categoryId;
-            productDB.description = product.description ?? productDB.description;
-            productDB.price = product.price ?? productDB.price;
-            return productDB;
         }
 
         /// <summary> Checks if a product with the specified ID exists in the system. </summary>
@@ -127,6 +112,24 @@ namespace Cafe_management_system_backend.MVC.Services
         public int CountAllProducts()
         {
             return productRepository.CountAll();
+        }
+
+        /// <summary> Updates a Product entity before these changes be saved in the DB. </summary>
+        /// <param name="product"> The Product object with updated information. </param>
+        /// <returns> The updated Product entity. </returns>
+        /// <exception cref="KeyNotFoundException"> Thrown when the specified product ID is not found. </exception>
+        /* TODO: this method was implemented for learning purposes, we do not need this extra method, instead,
+         * in the Repository class, update using 'db.Entry(objectEntity).CurrentValues.SetValues(updatedObjectEntity);'
+        */
+        private Product UpdateProductEntity(Product product)
+        {
+            Product productDB = FindProductById(product.id);
+            // Update Product
+            productDB.name = product.name ?? productDB.name; // if productExistFlag.name = NULL, do not change it
+            productDB.categoryId = product.categoryId ?? productDB.categoryId;
+            productDB.description = product.description ?? productDB.description;
+            productDB.price = product.price ?? productDB.price;
+            return productDB;
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Cafe_management_system_backend.MVC.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 
 namespace Cafe_management_system_backend.MVC.Repositories
@@ -184,7 +183,7 @@ namespace Cafe_management_system_backend.MVC.Repositories
 
         /// <summary> Updates a product in the system. </summary>
         /// <param name="product"> The Product object to be updated. </param>
-        /// <exception cref="DbUpdateException"> Thrown when an error occurs during the update operation. </exception>
+        /// <exception cref="Exception"> Thrown when an error occurs during the update operation. </exception>
         public void Update(Product product)
         {
             try
@@ -194,7 +193,7 @@ namespace Cafe_management_system_backend.MVC.Repositories
                 // Save Updated user
                 db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 logger.Error($"[ProductRepository:Update()] Exception: {ex.Message}");
                 GetInnerException(ex);

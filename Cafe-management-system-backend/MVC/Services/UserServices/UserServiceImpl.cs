@@ -154,9 +154,19 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             userRepository.Delete(userDB);
         }
 
+        /// <summary>Counts the total number of categories in the database.</summary>
+        /// <returns>The total number of categories.</returns>
+        public int CountAllUsers()
+        {
+            return userRepository.CountAll();
+        }
+
         /// <summary>Updates the User entity with the provided user information.</summary>
         /// <param name="user">The User object containing updated information.</param>
         /// <returns>The updated User object.</returns>
+        /* TODO: this method was implemented for learning purposes, we do not need this extra method, instead,
+         * in the Repository class, update using 'db.Entry(objectEntity).CurrentValues.SetValues(updatedObjectEntity);'
+        */
         private User UpdateUserEntity(User user)
         {
             User userDB = commonUserService.FindUserById(user.id);
@@ -177,11 +187,5 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             }
         }
 
-        /// <summary>Counts the total number of categories in the database.</summary>
-        /// <returns>The total number of categories.</returns>
-        public int CountAllUsers()
-        {
-            return userRepository.CountAll();
-        }
     }
 }
