@@ -30,7 +30,7 @@ namespace Cafe_management_system_backend_tests.Services.Facades
             // Arrange
             var product = fixture.Create<Product>();
             var categoryDB = fixture.Create<Category>();
-            mockCategoryService.Setup(service => service.FindCategoryById(product.categoryId)).Returns(categoryDB);
+            mockCategoryService.Setup(service => service.FindCategoryByIdWithoutException(product.categoryId)).Returns(categoryDB);
 
             // Act
             productCategoryFacadeService.AddProductWithCategory(product);
@@ -45,8 +45,7 @@ namespace Cafe_management_system_backend_tests.Services.Facades
         {
             // Arrange
             var product = fixture.Create<Product>();
-            mockCategoryService.Setup(service => service.FindCategoryById(product.categoryId)).Returns((Category)null);
-
+            mockCategoryService.Setup(service => service.FindCategoryByIdWithException(product.categoryId)).Throws<KeyNotFoundException>();
             // Act
             productCategoryFacadeService.AddProductWithCategory(product);
         }
@@ -62,7 +61,7 @@ namespace Cafe_management_system_backend_tests.Services.Facades
             var categoryDB = fixture.Build<Category>().Create();
             var expectedProducts = fixture.CreateMany<Product>(3).ToList();
 
-            mockCategoryService.Setup(service => service.FindCategoryById(categoryId)).Returns(categoryDB);
+            mockCategoryService.Setup(service => service.FindCategoryByIdWithException(categoryId)).Returns(categoryDB);
             mockProductService.Setup(service => service.FindProductsByCategoryIdAndStatus(categoryId, productStatus)).Returns(expectedProducts);
 
             // Act
@@ -82,8 +81,7 @@ namespace Cafe_management_system_backend_tests.Services.Facades
             // Arrange
             var categoryId = 123;
             var productStatus = "true";
-            mockCategoryService.Setup(service => service.FindCategoryById(categoryId)).Returns((Category)null);
-
+            mockCategoryService.Setup(service => service.FindCategoryByIdWithException(categoryId)).Throws<KeyNotFoundException>();
             // Act
             productCategoryFacadeService.GetProductsByCategoryIdAndStatus(categoryId, productStatus);
         }

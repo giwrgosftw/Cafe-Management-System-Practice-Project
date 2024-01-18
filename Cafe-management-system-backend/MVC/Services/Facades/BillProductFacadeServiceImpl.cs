@@ -193,7 +193,7 @@ namespace Cafe_management_system_backend.MVC.Services.Facades
             // For all the products in the bill
             foreach (Product product in products)
             {
-                Category categoryDB = categoryService.FindCategoryById(product?.categoryId);
+                Category categoryDB = categoryService.FindCategoryByIdWithoutException(product?.categoryId);
                 // The list of value parameters that will populate each cell
                 List<string> tableRowProductValues = new List<string> {
                     product?.name ?? "", product?.description ?? "", categoryDB?.name ?? "", product?.price?.ToString() ?? "" };

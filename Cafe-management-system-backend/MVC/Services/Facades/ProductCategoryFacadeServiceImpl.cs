@@ -1,12 +1,10 @@
 ﻿using Cafe_management_system_backend.MVC.Models;
-using NLog;
 using System.Collections.Generic;
 
 namespace Cafe_management_system_backend.MVC.Services.Facades
 {
     public class ProductCategoryFacadeServiceImpl: ProductCategoryFacadeService
     {
-        private static Logger logger = LogManager.GetLogger("NLogger");
         private readonly CategoryService categoryService;
         private readonly ProductService productService;
 
@@ -22,12 +20,7 @@ namespace Cafe_management_system_backend.MVC.Services.Facades
         public void AddProductWithCategory(Product product)
         {
             // Ensure that the Category exists
-            Category categoryDB = categoryService.FindCategoryById(product.categoryId);
-            if (categoryDB == null)
-            {
-                logger.Error("[ProductCategoryFacadeService:AddProductWithCategory()] Exception: Category with given Id NOT found (Id: {CategoryId}).", product.categoryId);
-                throw new KeyNotFoundException();
-            }
+            categoryService.FindCategoryByIdWithException(product.categoryId);
             // Add the new Product
             productService.AddProduct(product);
         }
@@ -40,12 +33,7 @@ namespace Cafe_management_system_backend.MVC.Services.Facades
         public List<Product> GetProductsByCategoryIdAndStatus(int categoryId, string productStatus)
         {
             // Ensure that the Category exists
-            Category categoryDB = categoryService.FindCategoryById(categoryId);
-            if (categoryDB == null)
-            {
-                logger.Error("[ProductCategoryFacadeService:GetProductsByCategoryIdAndStatus()] Exception: Category with given Id NOT found (Id: {CategoryId}).", categoryId);
-                throw new KeyNotFoundException();
-            }
+            categoryService.FindCategoryByIdWithException(categoryId);
             return productService.FindProductsByCategoryIdAndStatus(categoryId, productStatus);
         }
     }

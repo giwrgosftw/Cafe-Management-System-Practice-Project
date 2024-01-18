@@ -164,6 +164,55 @@ namespace Cafe_management_system_backend_tests.Services
             mockCategoryRepository.Verify(repo => repo.CountAll(), Times.Once);
         }
 
+        [TestMethod]
+        public void FindCategoryByIdWithException_ShouldReturnCategory_WhenCategoryExists()
+        {
+            // Arrange
+            int categoryId = 1;
+            var categoryDB = fixture.Create<Category>();
+            mockCategoryRepository.Setup(repo => repo.FindById(categoryId)).Returns(categoryDB);
+            // Act
+            var result = categoryService.FindCategoryByIdWithException(categoryId);
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(categoryDB, result);
+        }
 
+        [TestMethod]
+        [ExpectedException(typeof(KeyNotFoundException))]
+        public void FindCategoryByIdWithException_ShouldThrowKeyNotFoundException_WhenCategoryDoesNotExist()
+        {
+            // Arrange
+            int nonExistingCategoryId = 999;
+            mockCategoryRepository.Setup(repo => repo.FindById(nonExistingCategoryId)).Returns((Category)null);
+            // Act & Assert
+            categoryService.FindCategoryByIdWithException(nonExistingCategoryId);
+        }
+
+        [TestMethod]
+        public void FindCategoryByIdWithoutException_ShouldReturnCategory_WhenCategoryExists()
+        {
+            // Arrange
+            int categoryId = 1;
+            var categoryDB = fixture.Create<Category>();
+            mockCategoryRepository.Setup(repo => repo.FindById(categoryId)).Returns(categoryDB);
+            // Act
+            var result = categoryService.FindCategoryByIdWithoutException(categoryId);
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(categoryDB, result);
+        }
+
+        [TestMethod]
+        public void FindCategoryByIdWithoutException_ShouldReturnNull_WhenCategoryDoesNotExist()
+        {
+            // Arrange
+            int nonExistingCategoryId = 999;
+            mockCategoryRepository.Setup(repo => repo.FindById(nonExistingCategoryId)).Returns((Category)null);
+            // Act
+            var result = categoryService.FindCategoryByIdWithoutException(nonExistingCategoryId);
+            // Assert
+            Assert.IsNull(result);
+        }
     }
 }

@@ -27,9 +27,24 @@ namespace Cafe_management_system_backend.MVC.Services
         /// <summary> Retrives a Category object in the system by its unique ID. </summary>
         /// <param name="categoryId"> The ID of the Category to be found. </param>
         /// <returns> The Category object if found, otherwise null. </returns>
-        public Category FindCategoryById(int? categoryId)
+        public Category FindCategoryByIdWithoutException(int? categoryId)
         {
             return categoryRepository.FindById(categoryId);
+        }
+
+        /// <summary>Finds a category by its ID with exception handling.</summary>
+        /// <param name="categoryId">The ID of the category to find.</param>
+        /// <returns>The found Category object.</returns>
+        /// <exception cref="KeyNotFoundException">Thrown if the category with the specified ID is not found.</exception>
+        public Category FindCategoryByIdWithException(int? categoryId)
+        {
+            Category categoryDB = categoryRepository.FindById(categoryId);
+            if (categoryDB == null)
+            {
+                logger.Error("[CategoryService:FindCategoryByIdWithException()] Failed: Category with given Id NOT found (Id: {CategoryId})", categoryId);
+                throw new KeyNotFoundException();
+            }
+            return categoryDB;
         }
 
         /// <summary>Adds a new category to the system if it doesn't already exist.</summary>
@@ -74,12 +89,7 @@ namespace Cafe_management_system_backend.MVC.Services
         /// <exception cref="Exception"> Thrown when the category is connected to at least one product. </exception>
         public void DeleteCategory(int categoryId)
         {
-            Category categoryDB = FindCategoryById(categoryId);
-            if (categoryDB == null)
-            {
-                logger.Error("[CategoryService:DeleteCategory()] Failed: Category with given Id NOT found (Id: {CategoryId})", categoryId);
-                throw new KeyNotFoundException();
-            }
+            Category categoryDB = FindCategoryByIdWithException(categoryId);
             if (categoryDB.Products.Count > 0)
             {
                 logger.Error("[CategoryService:DeleteCategory()] Failed: Cannot delete a Category which is connected with at least one Product (ProductCount: {ProductCount})", categoryDB.Products.Count);
