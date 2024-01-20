@@ -43,7 +43,7 @@ namespace Cafe_management_system_backend.MVC.Services.Facades
             if (billProductsDB.IsNullOrEmpty())
             {
                 logger.Error($"[BillProductService:FindBillProductsByBillId()] Fail: BillProducts with given billID was NOT found (billId: {billId})");
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException($"BillProducts with given billID was NOT found (billId: {billId})");
             }
             return billProductsDB;
         }

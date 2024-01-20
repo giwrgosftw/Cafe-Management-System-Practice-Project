@@ -40,8 +40,8 @@ namespace Cafe_management_system_backend.MVC.Services
             Bill billDB = billRepository.FindByUUID(billUUID);
             if(billDB == null)
             {
-                logger.Error($"[BillService:FindBillByUUID()] Fail: Bill with given UUID was NOT found (UUID: {billDB})");
-                throw new KeyNotFoundException();
+                logger.Error($"[BillService:FindBillByUUID()] Fail: Bill with given UUID was NOT found (UUID: {billUUID})");
+                throw new KeyNotFoundException($"Bill with given UUID was NOT found (UUID: {billUUID})");
             }
             return billDB; 
         }
@@ -54,7 +54,7 @@ namespace Cafe_management_system_backend.MVC.Services
             if (bill.createdBy == null)
             {
                 logger.Error("[BillService:AddBill()] Exception: Bill creator NOT given.");
-                throw new Exception();
+                throw new ArgumentException("Bill creator NOT given.");
             }
             Bill billDB = billRepository.FindByUUID(bill.uuid);
             if (billDB == null)

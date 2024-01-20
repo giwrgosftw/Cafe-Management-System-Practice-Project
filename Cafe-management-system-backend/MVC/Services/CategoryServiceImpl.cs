@@ -42,7 +42,7 @@ namespace Cafe_management_system_backend.MVC.Services
             if (categoryDB == null)
             {
                 logger.Error("[CategoryService:FindCategoryByIdWithException()] Failed: Category with given Id NOT found (Id: {CategoryId})", categoryId);
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException($"Category with given Id NOT found (Id: {categoryId})");
             }
             return categoryDB;
         }
@@ -55,7 +55,7 @@ namespace Cafe_management_system_backend.MVC.Services
             if (category.name == null)
             {
                 logger.Error("[CategoryService:Add()] Exception: Category name NOT given.");
-                throw new Exception();
+                throw new ArgumentException("Category name NOT given.");
             }
             Category categoryDB = categoryRepository.FindByName(category.name);
             if (categoryDB == null)
@@ -93,7 +93,7 @@ namespace Cafe_management_system_backend.MVC.Services
             if (categoryDB.Products.Count > 0)
             {
                 logger.Error("[CategoryService:DeleteCategory()] Failed: Cannot delete a Category which is connected with at least one Product (ProductCount: {ProductCount})", categoryDB.Products.Count);
-                throw new Exception();
+                throw new InvalidOperationException($"Cannot delete a Category which is connected with at least one Product (ProductCount: {categoryDB.Products.Count})");
             }
             categoryRepository.Delete(categoryDB);
         }
@@ -122,7 +122,7 @@ namespace Cafe_management_system_backend.MVC.Services
             else
             {
                 logger.Error("[CategoryService:UpdateCategoryEntity()] Failed: Category with given Id NOT found (Id: {CategoryId})", category.id);
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException($"Category with given Id NOT found (Id: {category.id})");
             }
         }
 

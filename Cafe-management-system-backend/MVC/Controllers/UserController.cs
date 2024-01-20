@@ -20,6 +20,7 @@ namespace Cafe_management_system_backend.Controllers
         private readonly UserService userService;
         private readonly UserAuthorityService userAuthorityService;
         private readonly UserEmailService userEmailService;
+        private ResponseMessage responseMessage;
 
         public UserController(CommonUserService commonUserService, UserService userService, 
             UserAuthorityService userAuthorityService, UserEmailService userEmailService)
@@ -28,6 +29,7 @@ namespace Cafe_management_system_backend.Controllers
             this.userService = userService;
             this.userAuthorityService = userAuthorityService;
             this.userEmailService = userEmailService;
+            this.responseMessage = new ResponseMessage();
         }
 
         /// <summary>API-Call for registering a new user.</summary>
@@ -39,17 +41,25 @@ namespace Cafe_management_system_backend.Controllers
             {
                 userService.SignUp(user);
                 // Successfully registered
-                return Request.CreateResponse(HttpStatusCode.OK, new { message = "Successfully Registered!" });
+                responseMessage.message = "Successfully Registered!";
+                return Request.CreateResponse(HttpStatusCode.OK, responseMessage );
+            }
+            catch(ArgumentException ex)
+            {
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.BadRequest, responseMessage);
             }
             catch (DuplicateNameException ex)
             {
                 // Catch the DuplicateNameException (from SignUp) exception and return a BadRequest response
-                return Request.CreateResponse(HttpStatusCode.BadRequest, new { message = ex.Message });
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.Conflict, responseMessage);
             }
             catch (Exception)
             {
                 // Handle other exceptions as needed
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
 
@@ -68,7 +78,8 @@ namespace Cafe_management_system_backend.Controllers
             catch (UnauthorizedAccessException ex)
             {
                 // Failed to login
-                return Request.CreateResponse(HttpStatusCode.Unauthorized, new { message = ex.Message });
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.Unauthorized, responseMessage);
             }
         }
 
@@ -90,7 +101,8 @@ namespace Cafe_management_system_backend.Controllers
             catch (Exception)
             {
                 // Handle any unexpected exceptions and return InternalServerError response
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
 
@@ -108,11 +120,18 @@ namespace Cafe_management_system_backend.Controllers
                 if (!userAuthorityService.HasAuthorityAdmin(token)) { return Request.CreateResponse(HttpStatusCode.Unauthorized); }
                 // Update
                 userService.UpdateUser(user);
-                return Request.CreateResponse(HttpStatusCode.OK, new { message = "User Updated Successfully!" });
+                responseMessage.message = "User Updated Successfully!";
+                return Request.CreateResponse(HttpStatusCode.OK, responseMessage);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.NotFound, responseMessage);
             }
             catch (Exception)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
 
@@ -130,16 +149,24 @@ namespace Cafe_management_system_backend.Controllers
                 PrincipalProfile principalProfile = TokenManager.GetPrincipalProfileInfo(token);
                 // Change password
                 userService.ChangeUserPassword(principalProfile, changePassword);
-                return Request.CreateResponse(HttpStatusCode.OK, new { message = "Password Updated Successfully!" });
+                responseMessage.message = "Password Updated Successfully!";
+                return Request.CreateResponse(HttpStatusCode.OK, responseMessage);
+            }
+            catch (ArgumentException ex)
+            {
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.BadRequest, responseMessage);
             }
             catch (InvalidOperationException)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, new { message = "Incorrect Old Password" });
+                responseMessage.message = "Incorrect Old Password";
+                return Request.CreateResponse(HttpStatusCode.Conflict);
 
             }
             catch (Exception)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
 
@@ -149,28 +176,30 @@ namespace Cafe_management_system_backend.Controllers
         [CustomAuthenticationFilter]
         public async Task<HttpResponseMessage> ForgotPassword([FromBody] User user)
         {
-            string messageResponse = "A Password was sent to your email successfully";
+            responseMessage.message = "A Password was sent to your email successfully";
 
             try
             {
                 await userEmailService.SendForgotPasswordEmail(user);
-                return Request.CreateResponse(HttpStatusCode.OK, new { messageResponse });
+                return Request.CreateResponse(HttpStatusCode.OK, responseMessage);
             }
             catch (KeyNotFoundException)
             {
                 // Because we do not want let the hackers know that the process has failed,
                 // will give a fake message on the front, but through our Service's Logger
                 // we will distinguish the actual error
-                return Request.CreateResponse(HttpStatusCode.OK, new { messageResponse });
+                return Request.CreateResponse(HttpStatusCode.OK, responseMessage);
             }
             catch (SmtpException)
             {
                 // Handle SmtpException separately and return InternalServerError
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
             catch (Exception)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
 
@@ -190,11 +219,22 @@ namespace Cafe_management_system_backend.Controllers
                 // Since authorized, delete the User
                 userService.DeleteUser(userId);
                 // Return Success Response
-                return Request.CreateResponse(HttpStatusCode.OK, new { message = "User Deleted Successfully!" });
+                responseMessage.message = "User Deleted Successfully!";
+                return Request.CreateResponse(HttpStatusCode.OK, responseMessage);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.NotFound, responseMessage);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
             catch (Exception)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
 
@@ -215,11 +255,18 @@ namespace Cafe_management_system_backend.Controllers
                 // Since authorized, delete the User
                 userService.DeleteMyAccount(principalProfile.Email);
                 // Return Success Response
-                return Request.CreateResponse(HttpStatusCode.OK, new { message = "Your Account Deleted Successfully!" });
+                responseMessage.message = "Your Account Deleted Successfully!";
+                return Request.CreateResponse(HttpStatusCode.OK, responseMessage);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.NotFound, responseMessage);
             }
             catch (Exception)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
     }

@@ -9,6 +9,7 @@ using Cafe_management_system_backend.MVC.Services.UserServices;
 using System.Linq;
 using Cafe_management_system_backend.MVC.Services.Facades;
 using Cafe_management_system_backend.MVC.Services;
+using System.Collections.Generic;
 
 
 namespace Cafe_management_system_backend.MVC.Controllers
@@ -19,6 +20,7 @@ namespace Cafe_management_system_backend.MVC.Controllers
         private readonly UserAuthorityService userAuthorityService;
         private readonly ProductCategoryFacadeService productCategoryFacadeService;
         private readonly ProductService productService;
+        private ResponseMessage responseMessage;
 
         public ProductController(UserAuthorityService userAuthorityService, 
             ProductCategoryFacadeService productCategoryFacadeService, ProductService productService)
@@ -26,6 +28,7 @@ namespace Cafe_management_system_backend.MVC.Controllers
             this.userAuthorityService = userAuthorityService;
             this.productCategoryFacadeService = productCategoryFacadeService;
             this.productService = productService;
+            this.responseMessage = new ResponseMessage();
         }
 
         /// <summary> Adds a new Product to the system (via HTTP POST) if the user has "Admin" authority. </summary>
@@ -44,15 +47,28 @@ namespace Cafe_management_system_backend.MVC.Controllers
                 // If has authority add the new Product
                 productCategoryFacadeService.AddProductWithCategory(product);
                 // Return Successful Response
-                return Request.CreateResponse(HttpStatusCode.OK, new { message = "Product Successfully Added!" });
+                responseMessage.message = "Product Successfully Added!";
+                return Request.CreateResponse(HttpStatusCode.OK, responseMessage);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.NotFound, responseMessage);
+            }
+            catch (ArgumentException ex)
+            {
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.BadRequest, responseMessage);
             }
             catch (DuplicateNameException ex)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, new { message = ex.Message });
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.Conflict, responseMessage);
             }
             catch (Exception)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
 
@@ -69,7 +85,8 @@ namespace Cafe_management_system_backend.MVC.Controllers
             }
             catch(Exception)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
 
@@ -90,9 +107,15 @@ namespace Cafe_management_system_backend.MVC.Controllers
                 var result = productCategoryFacadeService.GetProductsByCategoryIdAndStatus(categoryId, "true");
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
+            catch (KeyNotFoundException ex)
+            {
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.NotFound, responseMessage);
+            }
             catch (Exception)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
 
@@ -111,7 +134,8 @@ namespace Cafe_management_system_backend.MVC.Controllers
             }
             catch(Exception)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
 
@@ -132,11 +156,18 @@ namespace Cafe_management_system_backend.MVC.Controllers
                 // Since authorized, update the new Product
                 productService.UpdateProduct(product);
                 // Return Success Response
-                return Request.CreateResponse(HttpStatusCode.OK, new { message = "Category Updated Successfully!" });
+                responseMessage.message = "Category Updated Successfully!";
+                return Request.CreateResponse(HttpStatusCode.OK, responseMessage);
             }
-            catch
+            catch (KeyNotFoundException ex)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.NotFound, responseMessage);
+            }
+            catch(Exception)
+            {
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
 
@@ -156,11 +187,18 @@ namespace Cafe_management_system_backend.MVC.Controllers
                 // Since authorized, delete the Product
                 productService.DeleteProduct(productId);
                 // Return Success Response
-                return Request.CreateResponse(HttpStatusCode.OK, new { message = "Product Deleted Successfully!" });
+                responseMessage.message = "Product Deleted Successfully!";
+                return Request.CreateResponse(HttpStatusCode.OK, responseMessage);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.NotFound, responseMessage);
             }
             catch (Exception)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
 

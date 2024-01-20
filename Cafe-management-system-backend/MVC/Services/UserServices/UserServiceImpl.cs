@@ -28,7 +28,7 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             if(user.email == null)
             {
                 logger.Error("[UserService:SignUp()] Exception: User email NOT given.");
-                throw new Exception();
+                throw new ArgumentException("User email NOT given.");
             }
             User userDB = userRepository.FindByEmail(user.email);
             if (userDB == null)
@@ -101,7 +101,7 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             if(changePassword.newPassword == null)
             {
                 logger.Error("[UserService:ChangeUserPassword()] Exception: New Password NOT given (Email: {UserEmail})", principal.Email);
-                throw new Exception();
+                throw new ArgumentException($"New Password NOT given (Email: {principal.Email})");
             }
             // Find user by Email and Password while finding/checking if null
             User userDB = commonUserService.FindUserByEmailAndPassword(principal.Email, changePassword.oldPassword);
@@ -113,7 +113,7 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             else
             {
                 logger.Error("[UserService:ChangeUserPassword()] Exception: Incorrect Old Password (Email: {UserEmail})", principal.Email);
-                throw new InvalidOperationException();
+                throw new InvalidOperationException($"Incorrect Old Password (Email: {principal.Email})");
             }
             return userDB;
         }
@@ -128,7 +128,7 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             if (userDB == null)
             {
                 logger.Error("[UserService:DeleteUser()] Failed: User with given Id NOT found (Id: {UserId})", userId);
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException($"User with given Id NOT found (Id: {userId})");
             }
             // An Admin cannot delete other admins, only Users
             if (userDB.role == UserRoleEnum.Admin.ToString())
@@ -149,7 +149,7 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             if (userDB == null)
             {
                 logger.Error("[UserService:DeleteMyAccount()] Failed: Principal with given Email NOT found (Id: {PrincipalEmail})", principalEmail);
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException($"Principal with given Email NOT found (Email: {principalEmail})");
             }
             userRepository.Delete(userDB);
         }
@@ -183,7 +183,7 @@ namespace Cafe_management_system_backend.MVC.Services.UserServices
             else
             {
                 logger.Error("[UserService:Update()] Failed: User with given Id NOT found (Id: {UserId})", user.id);
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException($"User with given Id NOT found (Id: {user.id})");
             }
         }
 

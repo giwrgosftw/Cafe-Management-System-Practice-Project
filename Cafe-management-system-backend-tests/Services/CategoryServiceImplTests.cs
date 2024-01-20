@@ -39,7 +39,7 @@ namespace Cafe_management_system_backend_tests.Services
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(ArgumentException))]
         public void AddCategory_ShouldThrowException_WhenCategoryNameIsNull()
         {
             // Arrange
@@ -135,7 +135,7 @@ namespace Cafe_management_system_backend_tests.Services
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void DeleteCategory_ShouldThrowException_WhenCategoryHasAssociatedProducts()
         {
             // Arrange

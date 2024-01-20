@@ -319,6 +319,7 @@
     <Compile Include="MVC\Models\Product.cs">
       <DependentUpon>CafeEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="MVC\Models\Response.cs" />
     <Compile Include="MVC\Repositories\BillProductRepository.cs" />
     <Compile Include="MVC\Repositories\BillProductRepositoryImpl.cs" />
     <Compile Include="MVC\Repositories\BillRepository.cs" />

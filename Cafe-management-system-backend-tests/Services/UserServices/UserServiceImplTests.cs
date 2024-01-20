@@ -56,7 +56,7 @@ namespace Cafe_management_system_backend_tests.UserServices
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(ArgumentException))]
         public void SignUp_ShouldThrowException_WhenUserEmailIsNull()
         {
             // Arrange
@@ -208,7 +208,7 @@ namespace Cafe_management_system_backend_tests.UserServices
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(ArgumentException))]
         public void ChangeUserPassword_ShouldThrowException_WhenNewPasswordIsNull()
         {
             // Arrange

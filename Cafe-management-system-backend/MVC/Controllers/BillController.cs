@@ -7,6 +7,7 @@ using Cafe_management_system_backend.MVC.Services.UserServices;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -22,12 +23,14 @@ namespace Cafe_management_system_backend.MVC.Controllers
         private readonly UserAuthorityService userAuthorityService;
         private readonly BillProductFacadeService billProductFacadeService;
         private readonly BillService billService;
+        private ResponseMessage responseMessage;
 
         public BillController(UserAuthorityService userAuthorityService, BillProductFacadeService billProductFacadeService, BillService billService)
         {
             this.userAuthorityService = userAuthorityService;
             this.billProductFacadeService = billProductFacadeService;
             this.billService = billService;
+            this.responseMessage = new ResponseMessage();
         }
 
         /// <summary>
@@ -62,7 +65,8 @@ namespace Cafe_management_system_backend.MVC.Controllers
             }
             catch (Exception)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
 
@@ -96,9 +100,25 @@ namespace Cafe_management_system_backend.MVC.Controllers
                 // Return file for view and download
                 return response;
             }
+            catch (KeyNotFoundException ex)
+            {
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.NotFound, responseMessage);
+            }
+            catch(ArgumentException ex)
+            {
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.BadRequest, responseMessage);
+            }
+            catch (DuplicateNameException ex)
+            {
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.Conflict, responseMessage);
+            }
             catch (Exception)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
 
@@ -118,11 +138,18 @@ namespace Cafe_management_system_backend.MVC.Controllers
                 // Delete
                 billProductFacadeService.DeleteBillProductAndBill(billUuid);
                 // Return Successful Response
-                return Request.CreateResponse(HttpStatusCode.OK, new { message = "Bill Deleted Successfully!" });
+                responseMessage.message = "Bill Deleted Successfully!";
+                return Request.CreateResponse(HttpStatusCode.OK, responseMessage);
             }
-            catch
+            catch (KeyNotFoundException ex)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = ex.Message;   // different scenarios
+                return Request.CreateResponse(HttpStatusCode.NotFound, responseMessage);
+            }
+            catch (Exception)
+            {
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
     }

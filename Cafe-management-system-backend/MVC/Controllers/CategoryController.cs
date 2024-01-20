@@ -3,6 +3,7 @@ using Cafe_management_system_backend.MVC.Security;
 using Cafe_management_system_backend.MVC.Services;
 using Cafe_management_system_backend.MVC.Services.UserServices;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net;
@@ -16,11 +17,13 @@ namespace Cafe_management_system_backend.MVC.Controllers
     {
         private readonly CategoryService categoryService;
         private readonly UserAuthorityService userAuthorityService;
+        private ResponseMessage responseMessage;
 
         public CategoryController(CategoryService categoryService, UserAuthorityService userAuthorityService)
         {
             this.categoryService = categoryService;
             this.userAuthorityService = userAuthorityService;
+            responseMessage = new ResponseMessage();
         }
 
         /// <summary>
@@ -47,15 +50,23 @@ namespace Cafe_management_system_backend.MVC.Controllers
                 // Since authorized, add the new Category
                 categoryService.AddCategory(category);
                 // Return Successful Response
-                return Request.CreateResponse(HttpStatusCode.OK, new { message = "Category Successfully Added!" });
+                responseMessage.message = "Category Successfully Added!";
+                return Request.CreateResponse(HttpStatusCode.OK, responseMessage.message);
+            }
+            catch (ArgumentException ex)
+            {
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.BadRequest, responseMessage);
             }
             catch (DuplicateNameException ex)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, new { message = ex.Message });
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.Conflict, responseMessage);
             }
             catch (Exception)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
 
@@ -77,7 +88,8 @@ namespace Cafe_management_system_backend.MVC.Controllers
             }
             catch(Exception)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
 
@@ -102,11 +114,18 @@ namespace Cafe_management_system_backend.MVC.Controllers
                 // Since authorized, update the new Category
                 categoryService.UpdateCategory(category);
                 // Return Success Response
-                return Request.CreateResponse(HttpStatusCode.OK, new { message = "Category Updated Successfully!" });
+                responseMessage.message = "Category Updated Successfully!";
+                return Request.CreateResponse(HttpStatusCode.OK, responseMessage);
             }
-            catch
+            catch (KeyNotFoundException ex)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.NotFound, responseMessage);
+            }
+            catch(Exception)
+            {
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
 
@@ -126,11 +145,23 @@ namespace Cafe_management_system_backend.MVC.Controllers
                 // Since authorized, delete the Category
                 categoryService.DeleteCategory(categoryId);
                 // Return Success Response
-                return Request.CreateResponse(HttpStatusCode.OK, new { message = "Category Deleted Successfully!" });
+                responseMessage.message = "Category Deleted Successfully!";
+                return Request.CreateResponse(HttpStatusCode.OK, responseMessage);
+            }
+            catch (InvalidOperationException ex)
+            {
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.Conflict, responseMessage);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                responseMessage.message = ex.Message;
+                return Request.CreateResponse(HttpStatusCode.NotFound, responseMessage);
             }
             catch (Exception)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Internal Server Error" });
+                responseMessage.message = "Internal Server Error";
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, responseMessage);
             }
         }
     }

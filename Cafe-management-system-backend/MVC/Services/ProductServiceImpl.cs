@@ -25,7 +25,7 @@ namespace Cafe_management_system_backend.MVC.Services
             if (product.name == null)
             {
                 logger.Error("[ProductService:Add()] Exception: Product name NOT given.");
-                throw new Exception();
+                throw new ArgumentException("Product name NOT given.");
             }
             Product productDB = productRepository.FindByName(product.name);
             if (productDB == null)
@@ -63,7 +63,7 @@ namespace Cafe_management_system_backend.MVC.Services
             if (productDB == null)
             {
                 logger.Error("[ProductService:FindProductById()] Failed: Product with given Id NOT found (Id: {ProductId})", productId);
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException($"Product with given Id NOT found (Id: {productId})");
             }
             return productDB;
         }
@@ -102,7 +102,7 @@ namespace Cafe_management_system_backend.MVC.Services
             if (productExistFlag == false)
             {
                 logger.Error("[ProductService:DoesProductExistById()] Failed: Product with given Id NOT found (Id: {ProductId})", productId);
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException($"Product with given Id NOT found (Id: {productId})");
             }
             return productExistFlag; // true
         }

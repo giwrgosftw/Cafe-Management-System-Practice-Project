@@ -116,7 +116,7 @@ namespace Cafe_management_system_backend_tests.Services
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(ArgumentException))]
         public void AddBill_ShouldThrowException_WhenBillCreatorIsNull()
         {
             // Arrange
