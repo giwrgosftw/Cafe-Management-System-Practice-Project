@@ -1,6 +1,6 @@
 # FrontendCafeManagementSystem
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.14 and tested/run with node v16.20.2 (64-bit).
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.14 and tested/run with node v14.15.4 (64-bit).
 
 ## Development server
 
