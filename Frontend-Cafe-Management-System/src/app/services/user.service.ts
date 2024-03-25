@@ -32,4 +32,10 @@ export class UserService {
     )
   }
 
+  // since we logged-in, we need to check
+  // the user's token for dashboard feature's access
+  checkToken(){
+    return this.httpClient.get(this.url + "/user/checkToken");
+  }
+
 }
