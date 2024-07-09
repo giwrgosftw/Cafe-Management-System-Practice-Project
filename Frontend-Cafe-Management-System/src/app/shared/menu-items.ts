@@ -12,7 +12,8 @@ export interface Menu{
 
 const MENUITEMS = [
   // First-Top tab/section, dashboard tab
-  {state: 'dashboard', name:'Dashboard', type:'link', icon:'dashboard', role:''} // role is empty so that to do not restrict any user
+  {state: 'dashboard', name:'Dashboard', type:'link', icon:'dashboard', role:''}, // role is empty so that to do not restrict any user
+  {state: 'category', name:'Manage Category', type:'link', icon:'category', role:'admin'}
 ]
 
 @Injectable()
