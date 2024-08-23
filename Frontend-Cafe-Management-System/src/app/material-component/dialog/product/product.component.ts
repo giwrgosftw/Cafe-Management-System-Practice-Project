@@ -49,15 +49,9 @@ export class ProductComponent implements OnInit {
   getCategories(){
     this.categoryService.getCategories().subscribe((response:any)=>{
       this.categories = response;
-    }, (error:any)=>{
-        console.log(error);
-        if(error.error?.message){
-          this.responseMessage = error.error?.message;
-        } else{
-            this.responseMessage = GlobalConstants.genericError;
-        }
-        this.snackbarService.openSnackBar(this.responseMessage,GlobalConstants.error)
-      })
+    }, (error: any) => {
+      this.handleError(error);
+    });
   }
 
   handleSubmit() {
@@ -68,56 +62,52 @@ export class ProductComponent implements OnInit {
     }
   }
 
-    add(){
-      let formData = this.productForm.value;
-      let data = {
-        name: formData.name,
-        categoryId: formData.categoryId,
-        price: formData.price,
-        description: formData.description
-      }
-
-      this.productService.add(data).subscribe((response:any)=>{
-        this.dialogRef.close();
-        this.onAddProduct.emit();
-        this.responseMessage = response.message;
-        this.snackbarService.openSnackBar(this.responseMessage, "success");
-      }, (error) => {
-        console.log(error);
-        if(error.error?.message){
-          this.responseMessage = error.error?.message;
-        } else {
-          this.responseMessage = GlobalConstants.genericError;
-        }
-        this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error)
-      })
+  add() {
+    let formData = this.productForm.value;
+    let data = {
+      name: formData.name,
+      categoryId: formData.categoryId,
+      price: formData.price,
+      description: formData.description
     }
 
-    edit(){
-      let formData = this.productForm.value;
-      let data = {
-        id: this.dialogData.data.id,
-        name: formData.name,
-        categoryId: formData.categoryId,
-        price: formData.price,
-        description: formData.description
-      }
+    this.productService.add(data).subscribe((response: any) => {
+      this.dialogRef.close();
+      this.onAddProduct.emit();
+      this.responseMessage = response.message;
+      this.snackbarService.openSnackBar(this.responseMessage, "success");
+    }, (error) => {
+      this.handleError(error);
+    });
+  }
 
-      this.productService.update(data).subscribe((response:any)=>{
-        this.dialogRef.close();
-        this.onEditProduct.emit();
-        this.responseMessage = response.message;
-        this.snackbarService.openSnackBar(this.responseMessage, "success");
-      }, (error) => {
-        console.log(error);
-        if(error.error?.message){
-          this.responseMessage = error.error?.message;
-        } else {
-          this.responseMessage = GlobalConstants.genericError;
-        }
-        this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error)
-      })
+  edit() {
+    let formData = this.productForm.value;
+    let data = {
+      id: this.dialogData.data.id,
+      name: formData.name,
+      categoryId: formData.categoryId,
+      price: formData.price,
+      description: formData.description
     }
 
+    this.productService.update(data).subscribe((response: any) => {
+      this.dialogRef.close();
+      this.onEditProduct.emit();
+      this.responseMessage = response.message;
+      this.snackbarService.openSnackBar(this.responseMessage, "success");
+    }, (error) => {
+      this.handleError(error);
+    });
+  }
 
+  private handleError(error: any) {
+    console.log(error);
+    if(error.error?.message){
+      this.responseMessage = error.error?.message;
+    } else {
+      this.responseMessage = GlobalConstants.genericError;
+    }
+    this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error)
+  }
 }

@@ -39,14 +39,7 @@ export class ManageProductComponent implements OnInit {
       this.dataSource = new MatTableDataSource(response);
     }, (error:any)=>{
       this.ngxService.stop();
-      console.log(error.error?.message);
-      if(error.error?.message){
-        this.responseMessage = error.error?.message;
-      }
-      else{
-        this.responseMessage = GlobalConstants.genericError;
-      }
-      this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error)
+      this.handleError(error);
     })
   }
 
@@ -110,16 +103,10 @@ export class ManageProductComponent implements OnInit {
       this.snackbarService.openSnackBar(this.responseMessage,"success");
     }, (error:any)=>{
       this.ngxService.stop();
-      console.log(error);
-      if(error.error?.message){
-        this.responseMessage = error.error?.message;
-      }
-      else{
-        this.responseMessage = GlobalConstants.genericError;
-      }
-      this.snackbarService.openSnackBar(this.responseMessage,GlobalConstants.error);
+      this.handleError(error);
     })
   }
+
   onChange(status:any, id:any){
     this.ngxService.start();
     let data = {
@@ -132,18 +119,18 @@ export class ManageProductComponent implements OnInit {
       this.responseMessage = response?.message;
       this.snackbarService.openSnackBar(this.responseMessage,"success");
     }, (error:any)=>{
-        this.ngxService.stop();
-        console.log(error);
-        if(error.error?.message){
-          this.responseMessage = error.error?.message;
-        }
-        else{
-          this.responseMessage = GlobalConstants.genericError;
-        }
-        this.snackbarService.openSnackBar(this.responseMessage,GlobalConstants.error);
-    }
-
-    )
+      this.ngxService.stop();
+      this.handleError(error);
+    })
   }
 
+  private handleError(error: any) {
+    console.log(error);
+    if (error.error?.message) {
+      this.responseMessage = error.error?.message;
+    } else {
+      this.responseMessage = GlobalConstants.genericError;
+    }
+    this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error);
+  }
 }
