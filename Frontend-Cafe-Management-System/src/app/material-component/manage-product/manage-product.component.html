@@ -1,50 +1,62 @@
 <mat-card>
+  <!-- Header for the Manage Product section with a button to add a new product -->
   <b><span>Manage Product</span></b>
   <button mat-flat-button color="primary" class="float-right" (click)="handleAddAction()">
-    <mat-icon>add_circle</mat-icon> Add Product
+    <mat-icon>add_circle</mat-icon> Add Product <!-- Button to trigger the action for adding a new product -->
   </button>
   <hr>
 </mat-card>
 
 <mat-card>
+  <!-- Filter input field to search/filter the products in the table -->
   <mat-form-field appearance="standard">
     <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" #input>
+    <input matInput (keyup)="applyFilter($event)" #input> <!-- Calls applyFilter() method on keyup event to filter table -->
   </mat-form-field>
 </mat-card>
 <hr>
+
 <div class="responsive_table">
+  <!-- Table displaying the list of products -->
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
+    <!-- Column for product name -->
     <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Name</th>
-      <td mat-cell *matCellDef="let element">{{element.name}}</td>
+      <th mat-header-cell *matHeaderCellDef>Name</th> <!-- Table header for the Name column -->
+      <td mat-cell *matCellDef="let element">{{element.name}}</td> <!-- Table cell displaying the product name -->
     </ng-container>
 
+    <!-- Column for product category name -->
     <ng-container matColumnDef="categoryName">
-      <th mat-header-cell *matHeaderCellDef>Category</th>
-      <td mat-cell *matCellDef="let element">{{element.categoryName}}</td>
+      <th mat-header-cell *matHeaderCellDef>Category</th> <!-- Table header for the Category column -->
+      <td mat-cell *matCellDef="let element">{{element.categoryName}}</td> <!-- Table cell displaying the category name -->
     </ng-container>
 
+    <!-- Column for product description -->
     <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef>Description</th>
-      <td mat-cell *matCellDef="let element">{{element.description}}</td>
+      <th mat-header-cell *matHeaderCellDef>Description</th> <!-- Table header for the Description column -->
+      <td mat-cell *matCellDef="let element">{{element.description}}</td> <!-- Table cell displaying the product description -->
     </ng-container>
 
+    <!-- Column for product price -->
     <ng-container matColumnDef="price">
-      <th mat-header-cell *matHeaderCellDef>Price</th>
-      <td mat-cell *matCellDef="let element">{{element.price}}</td>
+      <th mat-header-cell *matHeaderCellDef>Price</th> <!-- Table header for the Price column -->
+      <td mat-cell *matCellDef="let element">{{element.price}}</td> <!-- Table cell displaying the product price -->
     </ng-container>
 
+    <!-- Column for actions (Edit, Delete, Toggle status) -->
     <ng-container matColumnDef="edit">
-      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <th mat-header-cell *matHeaderCellDef>Action</th> <!-- Table header for the Action column -->
       <td mat-cell *matCellDef="let element" class="action-link">
+        <!-- Button to edit the product details, triggers handleEditAction() -->
         <button mat-icon-button color="primary" matTooltip="Edit" (click)="handleEditAction(element)">
           <mat-icon>edit</mat-icon>
         </button>
+        <!-- Button to delete the product, triggers handleDeleteAction() -->
         <button mat-icon-button color="primary" matTooltip="Delete" (click)="handleDeleteAction(element)">
           <mat-icon>delete</mat-icon>
         </button>
+        <!-- Slide toggle to activate or deactivate the product, triggers onChange() -->
         <mat-slide-toggle (change)="onChange($event.checked, element.id)"
                           matTooltip="Activate or Deactivate Product"
                           [checked]="element.status">
@@ -52,9 +64,10 @@
       </td>
     </ng-container>
 
+    <!-- Header row of the table with sticky positioning (when scrolling) -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+    <!-- Data rows of the table -->
     <tr mat-row *matRowDef="let row;columns:displayedColumns;"></tr>
 
   </table>
-
 </div>

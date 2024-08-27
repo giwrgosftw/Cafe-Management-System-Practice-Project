@@ -1,42 +1,48 @@
+/* Styling for the toolbar in the dialog */
 .mat-toolbar {
-    margin: -24px;
-    margin-bottom: 0;
-    width: auto;
-    margin-bottom: 10PX;
-  }
-  
-    mat-form-field{
-        padding: 5px;
-    }
+  margin: -24px; /* Moves the toolbar upwards, likely to align better within the dialog */
+  margin-bottom: 0; /* Removes any extra space below the toolbar */
+  width: auto; /* Ensures the toolbar's width adjusts automatically based on its content */
+  margin-bottom: 10px; /* Adds a 10px space below the toolbar */
+}
 
-    .float-right{
-        float: right;
-    }
-    
-    mat-card{
-        padding: 20px;
-    }
-    
-    table {
-        width: 100%;
-      }
+/* Styling for form fields in the dialog */
+mat-form-field {
+  padding: 5px; /* Adds 5px padding around each form field for better spacing */
+}
 
+/* Utility class to float elements to the right */
+.float-right {
+  float: right; /* Floats the element to the right side of its container */
+}
 
-      #customers {
-        font-family: Arial, Helvetica, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-      }
-      
-      #customers td, #customers th {
-        border: 1px solid #ddd;
-        padding: 8px;
-      }
-      
-      #customers th {
-        padding-top: 12px;
-        padding-bottom: 12px;
-        text-align: left;
-        background-color: #04AA6D;
-        color: white;
-      }
+/* Styling for Material Design cards */
+mat-card {
+  padding: 20px; /* Adds 20px padding inside the card for consistent spacing */
+}
+
+/* Ensures all tables take up 100% of the available width */
+table {
+  width: 100%; /* Sets the table to span the full width of its container */
+}
+
+/* Styling for the customers table */
+#customers {
+  font-family: Arial, Helvetica, sans-serif; /* Sets a clean, sans-serif font for the table */
+  border-collapse: collapse; /* Ensures borders between cells are collapsed into a single border */
+  width: 100%; /* Ensures the table takes up 100% of its container's width */
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd; /* Adds a light gray border around each table cell */
+  padding: 8px; /* Adds 8px padding inside each table cell for better readability */
+}
+
+/* Styling for table headers in the customers table */
+#customers th {
+  padding-top: 12px; /* Adds extra padding at the top of header cells */
+  padding-bottom: 12px; /* Adds extra padding at the bottom of header cells */
+  text-align: left; /* Aligns text to the left in header cells */
+  background-color: #04AA6D; /* Sets the background color of the header cells to a green shade */
+  color: white; /* Sets the text color in header cells to white for contrast */
+}

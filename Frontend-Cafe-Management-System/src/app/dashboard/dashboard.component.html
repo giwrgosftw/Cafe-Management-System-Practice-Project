@@ -1,35 +1,50 @@
 <body>
+<!-- This mat-card component acts as a header for the dashboard -->
 <mat-card>
   <b><span>Dashboard</span></b>
 </mat-card>
 <br/>
+
+<!-- This div contains all the cards in a row format -->
 <div class="row">
 
+  <!-- First column for displaying total categories -->
   <div class="column">
     <div class="card">
       <div class="container">
+        <!-- Title for the category card -->
         <h2 class="title">Total Category:</h2>
+        <!-- Display the number of categories from the data binding -->
         <h1 class="title">{{data?.category}}</h1>
+        <!-- Button to navigate to the category management view -->
         <p><button class="button" [routerLink]="['/cafe/category']">View Category</button></p>
       </div>
     </div>
   </div>
 
+  <!-- Second column for displaying total products -->
   <div class="column">
     <div class="card">
       <div class="container">
+        <!-- Title for the product card -->
         <h2 class="title">Total Product:</h2>
+        <!-- Display the number of products from the data binding -->
         <h1 class="title">{{data?.product}}</h1>
+        <!-- Button to navigate to the product management view -->
         <p><button class="button" [routerLink]="['/cafe/product']">View Product</button></p>
       </div>
     </div>
   </div>
 
+  <!-- Third column for displaying total bills -->
   <div class="column">
     <div class="card">
       <div class="container">
+        <!-- Title for the bill card -->
         <h2 class="title">Total Bill:</h2>
+        <!-- Display the number of bills from the data binding -->
         <h1 class="title">{{data?.bill}}</h1>
+        <!-- Button to navigate to the bill management view -->
         <p><button class="button" [routerLink]="['/cafe/bill']">View Bill</button></p>
       </div>
     </div>

@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from '../dashboard/dashboard.component';
 import {ManageCategoryComponent} from "./manage-category/manage-category.component";
 import {RouteGuardService} from "../services/route-guard.service";
 import {ManageProductComponent} from "./manage-product/manage-product.component";
@@ -7,30 +6,33 @@ import {ManageOrderComponent} from "./manage-order/manage-order.component";
 import {ViewBillComponent} from "./view-bill/view-bill.component";
 import {ManageUserComponent} from "./manage-user/manage-user.component";
 
-
+/**
+ * Defines the routes for the Material module, which includes various management and viewing components.
+ * Each route is protected by a route guard that ensures only users with the correct roles can access them.
+ */
 export const MaterialRoutes: Routes = [
   {
     path: 'category',
-    component:ManageCategoryComponent,
-    canActivate:[RouteGuardService],
-    data:{
+    component: ManageCategoryComponent,
+    canActivate: [RouteGuardService],
+    data: {
       expectedRole: ['admin'] // Categories tab viewable only to admins
     }
   },
   {
     path: 'product',
-    component:ManageProductComponent,
-    canActivate:[RouteGuardService],
-    data:{
-      expectedRole: ['admin']
+    component: ManageProductComponent,
+    canActivate: [RouteGuardService],
+    data: {
+      expectedRole: ['admin'] // Products tab viewable only to admins
     }
   },
   {
     path: 'order',
-    component:ManageOrderComponent,
-    canActivate:[RouteGuardService],
-    data:{
-      expectedRole: ['admin', 'user']
+    component: ManageOrderComponent,
+    canActivate: [RouteGuardService],
+    data: {
+      expectedRole: ['admin', 'user'] // Orders tab viewable to both admins and users
     },
   },
   {
@@ -38,7 +40,7 @@ export const MaterialRoutes: Routes = [
     component: ViewBillComponent,
     canActivate: [RouteGuardService],
     data: {
-      expectedRole: ['admin', 'user']
+      expectedRole: ['admin', 'user'] // Bills tab viewable to both admins and users
     }
   },
   {
@@ -46,7 +48,7 @@ export const MaterialRoutes: Routes = [
     component: ManageUserComponent,
     canActivate: [RouteGuardService],
     data: {
-      expectedRole: ['admin']
+      expectedRole: ['admin'] // Users tab viewable only to admins
     }
   }
 ];

@@ -2,51 +2,102 @@ import { Injectable } from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 
+/**
+ * @Injectable decorator marks this class as a service that can be injected into other components or services.
+ * The 'providedIn: root' option ensures this service is available throughout the application.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  url = environment.apiUrl;
-  constructor(private httpClient:HttpClient) { }
+  url = environment.apiUrl;  // Base URL for API endpoints
 
-  add(data:any){
+  /**
+   * Constructor function that initializes the ProductService.
+   *
+   * @param httpClient - The Angular HttpClient service used for making HTTP requests.
+   */
+  constructor(private httpClient: HttpClient) { }
+
+  /**
+   * Adds a new product by sending a POST request with product data to the server.
+   *
+   * @param data - The product data to be added.
+   * @returns Observable<any> - An observable that contains the server's response.
+   */
+  add(data: any) {
     return this.httpClient.post(
       this.url + "/product/add", data,
-      {headers:new HttpHeaders().set('Content-Type', "application/json")}
+      { headers: new HttpHeaders().set('Content-Type', "application/json") }
     )
   }
 
-  update(data:any){
+  /**
+   * Updates an existing product by sending a POST request with updated product data to the server.
+   *
+   * @param data - The updated product data.
+   * @returns Observable<any> - An observable that contains the server's response.
+   */
+  update(data: any) {
     return this.httpClient.post(
       this.url + "/product/update", data,
-      {headers:new HttpHeaders().set('Content-Type', "application/json")}
+      { headers: new HttpHeaders().set('Content-Type', "application/json") }
     )
   }
 
-  getProducts(){
+  /**
+   * Retrieves a list of all products by sending a GET request to the server.
+   *
+   * @returns Observable<any> - An observable that contains the list of products.
+   */
+  getProducts() {
     return this.httpClient.get(this.url + "/product/get")
   }
 
-  updateStatus(data:any){
+  /**
+   * Updates the status of a product (e.g., activate or deactivate) by sending a POST request to the server.
+   *
+   * @param data - The data containing product ID and the new status.
+   * @returns Observable<any> - An observable that contains the server's response.
+   */
+  updateStatus(data: any) {
     return this.httpClient.post(
       this.url + "/products/update", data,
-      {headers:new HttpHeaders().set('Content-Type', "application/json")}
+      { headers: new HttpHeaders().set('Content-Type', "application/json") }
     )
   }
 
-  delete(id:any){
+  /**
+   * Deletes a product by sending a POST request with the product ID to the server.
+   *
+   * @param id - The ID of the product to be deleted.
+   * @returns Observable<any> - An observable that contains the server's response.
+   */
+  delete(id: any) {
     return this.httpClient.post(
-      this.url + "/product/delete/"+id,
-      {headers:new HttpHeaders().set('Content-Type', "application/json")}
+      this.url + "/product/delete/" + id,
+      { headers: new HttpHeaders().set('Content-Type', "application/json") }
     )
   }
 
-  getProductsByCategory(id:any){
+  /**
+   * Retrieves a list of products that belong to a specific category by sending a GET request to the server.
+   *
+   * @param id - The ID of the category.
+   * @returns Observable<any> - An observable that contains the list of products in the specified category.
+   */
+  getProductsByCategory(id: any) {
     return this.httpClient.get(this.url + "/product/getByCategory/" + id);
   }
 
-  getById(id:any){
+  /**
+   * Retrieves the details of a specific product by sending a GET request to the server.
+   *
+   * @param id - The ID of the product.
+   * @returns Observable<any> - An observable that contains the product details.
+   */
+  getById(id: any) {
     return this.httpClient.get(this.url + "/product/getById/" + id);
   }
 

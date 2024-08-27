@@ -1,29 +1,46 @@
+<!-- Main container for the layout -->
 <div class="main-container">
-    <mat-toolbar color="primary" class="topbar telative">
-        <div class="navbar-header">
-            <button mat-icon-button (click)="snav.toggle()" value="sidebarclosed" style="vertical-align: bottom;">
-                <mat-icon>menu</mat-icon>
-            </button><b>
-                <span style="vertical-align: middle;">
+
+  <!-- Top toolbar with navigation and title -->
+  <mat-toolbar color="primary" class="topbar telative">
+    <div class="navbar-header">
+      <!-- Button to toggle the sidebar (sidenav) -->
+      <button mat-icon-button (click)="snav.toggle()" value="sidebarclosed" style="vertical-align: bottom;">
+        <mat-icon>menu</mat-icon> <!-- Menu icon for the sidebar toggle button -->
+      </button>
+      <b>
+        <!-- Icon for the Cafe Management System logo -->
+        <span style="vertical-align: middle;">
                     <mat-icon>storefront</mat-icon>
                 </span>
-            </b>
-            <span fxShow="false" fxShow.gt-xs>
+      </b>
+      <!-- Title of the system, hidden on small screens -->
+      <span fxShow="false" fxShow.gt-xs>
                 Cafe Management System
             </span>
-        </div>
-        <span fxFlex></span>
-        <app-header></app-header>
-    </mat-toolbar>
-    <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 0 : 0">
-        <mat-sidenav #snav id="snav" class="dark-sidebar pl-xs" [mode]="mobileQuery.matches ? 'side' : 'over'"
-            fixedTopGap="0" [opened]="mobileQuery.matches" [disableClose]="mobileQuery.matches">
-            <app-sidebar></app-sidebar>
-        </mat-sidenav>
-        <mat-sidenav-content class="page-wrapper">
-            <div class="page-content">
-                <router-outlet></router-outlet>
-            </div>
-        </mat-sidenav-content>
-    </mat-sidenav-container>
+    </div>
+    <!-- Spacer to push the app-header to the right side -->
+    <span fxFlex></span>
+    <!-- Header component that may contain profile actions or other utilities -->
+    <app-header></app-header>
+  </mat-toolbar>
+
+  <!-- Container for the sidebar and main content -->
+  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 0 : 0">
+    <!-- Sidebar navigation -->
+    <mat-sidenav #snav id="snav" class="dark-sidebar pl-xs" [mode]="mobileQuery.matches ? 'side' : 'over'"
+                 fixedTopGap="0" [opened]="mobileQuery.matches" [disableClose]="mobileQuery.matches">
+      <!-- Sidebar component, likely containing the navigation menu -->
+      <app-sidebar></app-sidebar>
+    </mat-sidenav>
+
+    <!-- Main content area -->
+    <mat-sidenav-content class="page-wrapper">
+      <div class="page-content">
+        <!-- Router outlet where the active route's component is displayed -->
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
 </div>

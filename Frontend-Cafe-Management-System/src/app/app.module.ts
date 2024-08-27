@@ -20,16 +20,16 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { LoginComponent } from './login/login.component';
 import {TokenInterceptorInterceptor} from "./services/token-interceptor.interceptor";
 
-const ngxUiLoaderConfig: NgxUiLoaderConfig =
-{
-  text: "Loading...",
-  textColor: "#FFFFFF",
-  textPosition:"center-center",
-  bgsColor:"#7b1fa2",
-  fgsColor:"#7b1fa2",
-  fgsType:SPINNER.squareJellyBox,
-  fgsSize:100,
-  hasProgressBar:false
+// Configuration for the NgxUiLoader, a customizable loading indicator library
+const ngxUiLoaderConfig: NgxUiLoaderConfig = {
+  text: "Loading...", // Text displayed during loading
+  textColor: "#FFFFFF", // White color for the text, ensuring high contrast on dark backgrounds
+  textPosition: "center-center", // Position of the text in the center of the screen
+  bgsColor: "#7b1fa2", // Background spinner color is purple, matching the primary theme of the app
+  fgsColor: "#7b1fa2", // Foreground spinner color is also purple, maintaining consistency with the app's color scheme
+  fgsType: SPINNER.squareJellyBox, // Type of spinner animation
+  fgsSize: 100, // Size of the spinner
+  hasProgressBar: false // Progress bar is disabled for this loader
 }
 
 @NgModule({
@@ -54,10 +54,10 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig =
     FlexLayoutModule,
     SharedModule,
     HttpClientModule,
-    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig) // import a loader including the above UiLoader configuration
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig) // Import a loader including the above custom UiLoader configuration
   ],
-  // Configure for the BEAR tokens
+  // Configure for the BEARER tokens
   providers: [HttpClientModule, {provide:HTTP_INTERCEPTORS, useClass:TokenInterceptorInterceptor, multi:true }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent]  // Bootstraps the root component (AppComponent) when the application starts
 })
 export class AppModule { }

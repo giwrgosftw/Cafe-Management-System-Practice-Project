@@ -1,13 +1,13 @@
-.mat-toolbar{
-  margin: -24px;
-  width: auto;
-  margin-bottom: 10px;
+.mat-toolbar {
+  margin: -24px; /* This moves the toolbar slightly up and to the left, aligning it with the edges of its container. */
+  width: auto; /* The toolbar width is set to adjust automatically according to its content or container. */
+  margin-bottom: 10px; /* Adds some space below the toolbar, separating it from any content that follows. */
 }
 
-mat-form-field{
-  padding: 5px;
+mat-form-field {
+  padding: 5px; /* Adds padding inside the form field, providing space around the content within the form field. */
 }
 
-mat-hint{
-  color:red;
+mat-hint {
+  color: red; /* Changes the color of hint text to red, typically used to draw attention to important information or warnings. */
 }

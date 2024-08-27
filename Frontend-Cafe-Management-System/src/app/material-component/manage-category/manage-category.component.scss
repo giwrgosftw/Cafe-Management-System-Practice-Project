@@ -1,16 +1,20 @@
-.float-right{
-  float: right;
+/* Utility class to float elements */
+.float-right {
+  float: right; /* Floats the element to the right side of its container */
 }
 
-mat-card{
-  padding: 20px;
+/* Styling for Material Design cards */
+mat-card {
+  padding: 20px; /* Adds padding inside the card for consistent spacing */
 }
 
-table{
-  width: 100%;
+/* Ensures all tables take up the available width */
+table {
+  width: 100%; /* Sets the table to span the full width of its container */
 }
 
-::ng-deep .highlight{
-  color: white;
-  background: #673AB7;
+/* Styling for highlighted elements in the table */
+::ng-deep .highlight {
+  color: white; /* Sets the text color to white for readability */
+  background: #673AB7; /* Applies a deep purple background to highlighted elements */
 }

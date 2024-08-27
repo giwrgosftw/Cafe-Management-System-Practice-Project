@@ -1,11 +1,14 @@
-.float-right{
-  float:right;
+/* Utility class to float elements */
+.float-right {
+  float: right; /* Aligns the element to the right side of its container */
 }
 
-mat-card{
-  padding: 20px;
+/* Adds padding inside Material Design cards */
+mat-card {
+  padding: 20px; /* Provides padding/spacing inside the mat-card component */
 }
 
-table{
-  width: 100%
+/* Ensures tables take up the full width of their container */
+table {
+  width: 100%; /* Makes the table expand to fill the entire width of its parent element */
 }

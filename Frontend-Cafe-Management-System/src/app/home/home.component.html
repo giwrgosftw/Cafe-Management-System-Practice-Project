@@ -1,20 +1,32 @@
+<!-- Background image covering the entire page or a specific section -->
 <div class="bg-image"></div>
+
+<!-- Component to display best-seller items -->
 <app-best-seller></app-best-seller>
 
+<!-- Wrapper div for a sticky navigation bar that stays fixed at the top -->
 <div class="wrapper sticky">
+  <!-- Navigation bar that remains fixed at the top of the page -->
   <nav class="navbar-fixed-top">
+    <!-- Logo section with an icon and the title of the system -->
     <a href="#" class="logo">
       <mat-icon>storefront</mat-icon> Cafe Management System
     </a>
+    <!-- Navigation links for user actions: Login, Signup, and Forgot Password -->
     <ul>
       <li>
+        <!-- Login action linked to a click handler -->
         <a (click)="handleLoginAction()">Login</a>
+        <!-- Signup action linked to a click handler -->
         <a (click)="handleSignupAction()">Signup</a>
+        <!-- Forgot Password action linked to a click handler -->
         <a (click)="handleForgotPasswordAction()">Forgot Password?</a>
       </li>
     </ul>
   </nav>
 </div>
+
+<!-- Footer section with a message -->
 <div class="footer" id="signup">
-  <h2>All right reserved @BTech Days</h2>
+  <h2>All rights reserved @BTech Days</h2>
 </div>

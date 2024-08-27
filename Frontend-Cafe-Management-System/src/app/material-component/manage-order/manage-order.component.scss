@@ -1,15 +1,19 @@
-mat-form-field{
-  padding: 5px;
+/* Adds padding inside Material Design form fields */
+mat-form-field {
+  padding: 5px; /* Ensures that there is some space around the content inside each form field */
 }
 
-.float-right{
-  float:right;
+/* Utility class to float elements */
+.float-right {
+  float: right; /* Floats the element to the right side of its container */
 }
 
-table{
-  width: 100%;
+/* Ensures all tables take up the available width */
+table {
+  width: 100%; /* Sets the table to span the full width of its container */
 }
 
-mat-card{
-  padding-bottom: 30px !important;
+/* Adds padding to the Material Design cards */
+mat-card {
+  padding-bottom: 30px !important; /* Adds extra padding at the bottom of mat-card and marks it as important */
 }

@@ -1,22 +1,31 @@
+<!-- Toolbar at the top of the confirmation dialog -->
 <mat-toolbar color="primary">
   <mat-toolbar-row fxLayout="row">
+    <!-- Title for the confirmation dialog -->
     <span>Confirmation</span>
+    <!-- Spacer to push the close button to the right side -->
     <span class="spacer"></span>
+    <!-- Close button for the dialog -->
     <button class="mat-dialog-close" mat-icon-button mat-dialog-close>
       <mat-icon>close</mat-icon>
     </button>
   </mat-toolbar-row>
 </mat-toolbar>
 
+<!-- Content of the dialog displaying the confirmation message -->
 <mat-dialog-content class="mat-typography">
+  <!-- Dynamic message asking for confirmation -->
   <h6>Are you sure want to {{ details.message }}</h6>
 </mat-dialog-content>
 
+<!-- Action buttons at the bottom of the dialog -->
 <mat-dialog-actions align="end">
+  <!-- Button to confirm the action, triggers the handleChangeAction method -->
   <button mat-raised-button color="primary" (click)="handleChangeAction()">
     <mat-icon>check_circle</mat-icon> Yes
   </button>
 
+  <!-- Button to cancel the action and close the dialog -->
   <button mat-raised-button color="warn" mat-dialog-close>
     <mat-icon>cancel</mat-icon> No
   </button>

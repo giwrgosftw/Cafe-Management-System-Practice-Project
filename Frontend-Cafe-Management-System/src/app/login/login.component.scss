@@ -1,9 +1,15 @@
-.mat-toolbar{
-  margin:-24px;
+/* Styling for the toolbar in the dialog */
+.mat-toolbar {
+  /* Adjust the position of the toolbar, moving it up by 24px */
+  margin: -24px;
+  /* Adds space below the toolbar */
   margin-bottom: 10px;
+  /* Sets the width of the toolbar to adjust based on its content */
   width: auto;
 }
 
-mat-form-field{
+/* Styling for the form fields in the dialog */
+mat-form-field {
+  /* Adds padding around the form field for better spacing */
   padding: 5px;
 }

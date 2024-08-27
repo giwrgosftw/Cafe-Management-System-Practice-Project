@@ -1,80 +1,101 @@
+/* This class positions an element relative to its normal position */
 .position-relative {
-	position: relative;
+  position: relative;
 }
 
+/* This class positions an element absolutely within its containing block,
+   specifically placing it 17px from the right and 57px from the top */
 .add-contact {
-	position: absolute;
-    right: 17px;
-    top: 57px;
+  position: absolute;
+  right: 17px;
+  top: 57px;
 }
 
+/* Sets the font for the body of the document and removes default margins */
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0;
-  }
-  
-  html {
-    box-sizing: border-box;
-  }
-  
-  *, *:before, *:after {
-    box-sizing: inherit;
-  }
-  
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+/* Ensures that the box-sizing property is applied consistently across the page,
+   so that padding and border widths are included within the element's total width and height */
+html {
+  box-sizing: border-box;
+}
+
+/* Applies box-sizing: inherit to all elements,
+   making sure all elements calculate their width and height the same way */
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/* Styles the columns to float to the left and take up a third of the container's width.
+   Also adds margin and padding for spacing */
+.column {
+  float: left;
+  width: 33.3%;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+/* Adds a box shadow and margin to the card elements, giving them a raised appearance */
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin: 8px;
+}
+
+/* Styles the about section with padding, center-aligned text,
+   and a dark background with white text */
+.about-section {
+  padding: 50px;
+  text-align: center;
+  background-color: #474e5d;
+  color: white;
+}
+
+/* Adds padding to container elements */
+.container {
+  padding: 0 16px;
+}
+
+/* Ensures that both the container and row classes clear their floats and expand to contain their children */
+.container::after, .row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Styles the title text within cards, making it black and centered */
+.title {
+  color: black;
+  text-align: center !important;
+}
+
+/* Styles buttons within cards, giving them a bold white text on a purple background.
+   The button spans the full width of its container */
+.button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #7b1fa2;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-weight: bold;
+}
+
+/* Changes the button background color when hovered over to a dark gray */
+.button:hover {
+  background-color: #555;
+}
+
+/* Media query that changes the column layout on screens smaller than 650px,
+   making each column take up the full width of the container and display as a block */
+@media screen and (max-width: 650px) {
   .column {
-    float: left;
-    width: 33.3%;
-    margin-bottom: 16px;
-    padding: 0 8px;
-  }
-  
-  .card {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    margin: 8px;
-  }
-  
-  .about-section {
-    padding: 50px;
-    text-align: center;
-    background-color: #474e5d;
-    color: white;
-  }
-  
-  .container {
-    padding: 0 16px;
-  }
-  
-  .container::after, .row::after {
-    content: "";
-    clear: both;
-    display: table;
-  }
-  
-  .title {
-    color: black;
-    text-align: center !important;
-  }
-  
-  .button {
-    border: none;
-    outline: 0;
-    display: inline-block;
-    padding: 8px;
-    color: white;
-    background-color: #7b1fa2;
-    text-align: center;
-    cursor: pointer;
     width: 100%;
-    font-weight: bold;
+    display: block;
   }
-  
-  .button:hover {
-    background-color: #555;
-  }
-  
-  @media screen and (max-width: 650px) {
-    .column {
-      width: 100%;
-      display: block;
-    }
-  }
+}

@@ -20,6 +20,9 @@ import { ManageOrderComponent } from './manage-order/manage-order.component';
 import { ViewBillComponent } from './view-bill/view-bill.component';
 import { ManageUserComponent } from './manage-user/manage-user.component';
 
+/**
+ * @NgModule is responsible for handling the Material module's components, routing, and dependencies.
+ */
 @NgModule({
   imports: [
     CommonModule,

@@ -1,5 +1,9 @@
-.mat-toolbar{
+/* Styling for the toolbar in the dialog */
+.mat-toolbar {
+  /* Negative margin to adjust the position of the toolbar, moving it up by 24px */
   margin: -24px;
+  /* Adds space below the toolbar to separate it from the content */
   margin-bottom: 10px;
+  /* Ensures the toolbar width adjusts automatically based on its content */
   width: auto;
 }

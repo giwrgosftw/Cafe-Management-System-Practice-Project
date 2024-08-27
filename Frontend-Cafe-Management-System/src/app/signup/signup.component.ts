@@ -8,76 +8,96 @@ import {MatDialogRef} from "@angular/material/dialog";
 import {GlobalConstants} from "../shared/global-constants";
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss']
+  selector: 'app-signup', // The custom HTML tag used for this component
+  templateUrl: './signup.component.html', // The HTML layout for this component
+  styleUrls: ['./signup.component.scss'] // The styles applied to this component
 })
 export class SignupComponent implements OnInit {
-  password = true;
-  confirmPassword = true;
-  signupForm:any = FormGroup;
-  responseMessage:any;
 
-  // Include the extra components required
+  password = true; // Controls visibility of the password field
+  confirmPassword = true; // Controls visibility of the 'confirm password' field
+  signupForm: any = FormGroup; // FormGroup instance to handle the signup form-fields
+  responseMessage: any; // Stores messages to display to the user
+
+  /**
+   * Constructor function to initialize the SignupComponent.
+   * Injects necessary services for form building, routing, user management, snackbar notifications, and loading.
+   *
+   * @param formBuilder - Service to handle reactive form creation.
+   * @param router - Service for navigation.
+   * @param userService - Service to manage user-related operations like signup.
+   * @param snackbarService - Service to display messages via a snackbar notification.
+   * @param ngxService - Service to display and control loading.
+   * @param dialogRef - Reference to the dialog/modal containing this component, used to close it when needed.
+   */
   constructor(
-    private formBuilder:FormBuilder,
-    private router:Router,
-    private userService:UserService,
-    private snackbarService:SnackbarService,
-    private ngxService:NgxUiLoaderService,
-    public dialogRef:MatDialogRef<SignupComponent> // load the component in a Dialog window
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private userService: UserService,
+    private snackbarService: SnackbarService,
+    private ngxService: NgxUiLoaderService,
+    public dialogRef: MatDialogRef<SignupComponent> // Dialog reference to close the dialog when needed
   ) { }
 
-  // First-thing automatically happens when page loads
+  /**
+   * Lifecycle hook that runs when the component is initialized.
+   * It sets up the signup form with initial values and validation rules.
+   */
   ngOnInit(): void {
-    this.signupForm = this.formBuilder.group(
-{
-              name:[null, [Validators.required, Validators.pattern(GlobalConstants.nameRegex)]], // initialized with null since the user will give the input
-              email:[null, [Validators.required, Validators.pattern(GlobalConstants.emailRegex)]],
-              contactNumber:[null, [Validators.required, Validators.pattern(GlobalConstants.contactNumberRegex)]],
-              password: [null, [Validators.required]],
-              confirmPassword: [null, [Validators.required]]
-            }
-    )
+    // Initialize the signup form with fields and their validation rules
+    this.signupForm = this.formBuilder.group({
+      name: [null, [Validators.required, Validators.pattern(GlobalConstants.nameRegex)]],
+      email: [null, [Validators.required, Validators.pattern(GlobalConstants.emailRegex)]],
+      contactNumber: [null, [Validators.required, Validators.pattern(GlobalConstants.contactNumberRegex)]],
+      password: [null, [Validators.required]],
+      confirmPassword: [null, [Validators.required]]
+    });
   }
 
-  // Validate password and confirmPassword
-  validatePasswordSubmit(){
-    return this.signupForm.controls['password'].value != this.signupForm.controls['confirmPassword'].value;
+  /**
+   * Validates that the password and confirm password fields match.
+   * Returns true if they do not match, indicating an error.
+   */
+  validatePasswordSubmit() {
+    return this.signupForm.controls['password'].value !== this.signupForm.controls['confirmPassword'].value;
   }
 
-  // What happens when the SingUp submit button pressed
-  handleSingUpSubmitButton(){
-    this.ngxService.start(); // start the load spinner (icon that indicate that the application is busy)
-    var formData = this.signupForm.value; // get all the form field values at once (as an object)
-    // Get all the data from the given user inputs of the GUI form
-    var data = {
+  /**
+   * Handles the signup form submission.
+   * It sends the user input to the backend for account creation, shows a loading spinner, and handles the response.
+   */
+  handleSingUpSubmitButton() {
+    this.ngxService.start(); // Start the loading spinner when the submit button is clicked
+
+    // Gather the form data into an object
+    const formData = this.signupForm.value;
+    const data = {
       name: formData.name,
       email: formData.email,
       contactNumber: formData.contactNumber,
       password: formData.password
-    }
+    };
 
-    // Hit the API Backend response by calling our TS Service and pass the above data (input from User)
-    this.userService.signup(data).subscribe((response:any) => { // whenever we get a response from API, we are going getting from there
-      // If Success (implement Signup logic)
-      this.ngxService.stop(); // since we get a response from the API, we have to stop the loader spinner (the app is not busy anymore)
-      this.dialogRef.close(); // close the window since submit as well
-      this.responseMessage = response?.message; // get the response message from the backend
-      this.snackbarService.openSnackBar(this.responseMessage, ""); // display that message through the snackbar ("" = no action button will be displayed)
-      this.router.navigate(['/']); // where navigate after we press the submit button
-    },
-      // If Fail (display the according error message)
-      (error)=>{
-        this.ngxService.stop();
-          if(error.error?.message){
-            this.responseMessage = error.error?.message;
-          }
-          else{
-            this.responseMessage = GlobalConstants.genericError;
-          }
-          this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error);
+    // Send the signup request to the backend
+    this.userService.signup(data).subscribe(
+      (response: any) => {
+        // Handle successful signup
+        this.ngxService.stop(); // Stop the loading spinner
+        this.dialogRef.close(); // Close the signup dialog
+        this.responseMessage = response?.message; // Get the success message from the response
+        this.snackbarService.openSnackBar(this.responseMessage, ""); // Show the success message in a snackbar
+        this.router.navigate(['/']); // Navigate to the homepage
+      },
+      // Handle signup errors
+      (error) => {
+        this.ngxService.stop(); // Stop the loading spinner
+        if (error.error?.message) {
+          this.responseMessage = error.error?.message; // Set specific error message from backend
+        } else {
+          this.responseMessage = GlobalConstants.genericError; // Set a generic error message
+        }
+        this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error); // Show the error message in a snackbar
       }
-    )
+    );
   }
 }

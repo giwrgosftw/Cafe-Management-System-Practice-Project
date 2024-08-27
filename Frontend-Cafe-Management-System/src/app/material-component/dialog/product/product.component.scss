@@ -1,9 +1,11 @@
-.mat-toolbar{
+.mat-toolbar {
   margin: -24px;
+  /* Adds a space below the toolbar to create a gap between the toolbar and the content below */
   margin-bottom: 10px;
+  /* Ensures that the toolbar's width automatically adjusts based on its content */
   width: auto;
 }
 
 mat-form-field{
-  padding: 5px;
+  padding: 5px; /* Adds padding around each form field to provide better spacing */
 }

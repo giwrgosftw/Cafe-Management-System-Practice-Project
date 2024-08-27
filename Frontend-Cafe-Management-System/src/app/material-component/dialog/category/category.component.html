@@ -1,21 +1,30 @@
+<!-- Toolbar at the top of the dialog for category actions -->
 <mat-toolbar color="primary">
   <mat-toolbar-row fxLayout="row">
+    <!-- Displays the action type (e.g., Add or Edit) followed by "Category" -->
     <span>{{dialogData.action}} Category</span>
+    <!-- Spacer to push the close button to the right -->
     <span class="spacer"></span>
+    <!-- Close button for the dialog -->
     <button class="mat-dialog-close mat-icon-button mat-dialog-close">
       <mat-icon>close</mat-icon>
     </button>
   </mat-toolbar-row>
 </mat-toolbar>
 
+<!-- Content of the dialog with a form for adding/editing a category -->
 <mat-dialog-content class="mat-typography">
   <form [formGroup]="categoryForm">
     <div fxFlex fxLayout="column">
+      <!-- Row for the form fields -->
       <div fxFlex fxLayout="row wrap">
+        <!-- Name input field -->
         <mat-form-field appearance="standard" fxFlex>
           <mat-label>Name</mat-label>
           <input matInput formControlName="name" required>
+          <!-- Error message display for invalid name input -->
           <mat-error *ngIf="categoryForm.controls.name.touched && categoryForm.controls.name.invalid">
+            <!-- Error message if the name field is left empty -->
             <span *ngIf="categoryForm.controls.name.errors.required">This field is mandatory.</span>
           </mat-error>
         </mat-form-field>
@@ -24,10 +33,13 @@
   </form>
 </mat-dialog-content>
 
+<!-- Action buttons at the bottom of the dialog -->
 <mat-dialog-actions align="end">
+  <!-- Save button, disabled until the form is valid and dirty (changed) -->
   <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()" [disabled]="!(categoryForm.valid && categoryForm.dirty)">
-    <mat-icon>save</mat-icon> {{action}}
+    <mat-icon>save</mat-icon> {{action}} <!-- Displays the action (e.g., Save) -->
   </button>
+  <!-- Close button to dismiss the dialog -->
   <button mat-raised-button color="warn" mat-dialog-close>
     <mat-icon>cancel</mat-icon> Close
   </button>

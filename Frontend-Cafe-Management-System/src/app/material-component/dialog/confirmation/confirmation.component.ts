@@ -3,7 +3,7 @@ Show confirmation details to the user, and it includes functionality to emit
 an event when a user takes action on the dialog
  */
 
-import {Component, EventEmitter, Inject, inject, OnInit} from '@angular/core';
+import {Component, EventEmitter, Inject, OnInit} from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -24,6 +24,10 @@ export class ConfirmationComponent implements OnInit {
   // This data is accessible via this.dialogData in the component
   constructor(@Inject(MAT_DIALOG_DATA) public dialogData: any) { }
 
+  /**
+   * Lifecycle hook that runs when the component is initialized.
+   * It checks if `dialogData` exists and contains a `confirmation` property, then assigns it to `details`.
+   */
   ngOnInit(): void {
     // If dialogData exists and has a 'confirmation' property, set 'details' to the passed data
     if (this.dialogData && this.dialogData.confirmation) {
@@ -31,10 +35,12 @@ export class ConfirmationComponent implements OnInit {
     }
   }
 
-  // A method that will emit a custom event when the user performs an action that needs to
-  // change a status. Components that listen for this event can react to status changes.
-  // It's like it's announcing to any other related parts/component of the app that are listening:
-  // "Hey, something just happened over here!"
+  /**
+   * A method that will emit a custom event when the user performs an action that needs to
+   * change a status. Components that listen for this event can react to status changes.
+   * It's like it's announcing to any other related parts/component of the app that are listening:
+   * "Hey, something just happened over here!"
+   */
   handleChangeAction() {
     this.onEmitStatusChange.emit();
   }
