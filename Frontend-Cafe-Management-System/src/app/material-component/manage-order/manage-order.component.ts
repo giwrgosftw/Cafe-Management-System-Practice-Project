@@ -6,7 +6,6 @@ import {SnackbarService} from "../../services/snackbar.service";
 import {BillService} from "../../services/bill.service";
 import {NgxUiLoaderService} from "ngx-ui-loader";
 import {GlobalConstants} from "../../shared/global-constants";
-import {saveAs} from "file-saver";
 
 @Component({
   selector: 'app-manage-order', // The HTML tag for this component
@@ -227,44 +226,76 @@ export class ManageOrderComponent implements OnInit {
   }
 
   /**
-   * Submits the order by generating a bill.
-   * Sends the order details to the server, downloads the bill PDF, and resets the form.
+   * Submits the order form data and initiates the download of the bill report in PDF format.
    */
   submitAction() {
+    // Extract form data from the manageOrderForm
     let formData = this.manageOrderForm.value;
+    // Prepare the data object to be sent to the backend
     let data = {
-      name: formData.name,
-      email: formData.email,
-      contactNumber: formData.contactNumber,
-      paymentMethod: formData.paymentMethod,
-      totalAmount: this.totalAmount.toString(),
-      productDetails: JSON.stringify(this.dataSource)
+      Bill: {
+        name: formData.name,
+        email: formData.email,
+        contactNumber: formData.contactNumber,
+        paymentMethod: formData.paymentMethod,
+        totalAmount: this.totalAmount
+      },
+      Products: this.dataSource.map((product: any) => ({
+        id: product.id,
+        name: product.name,
+        categoryId: product.categoryId, // TODO: Fix undefined
+        description: product.description, // TODO: Fix undefined
+        price: product.price
+      }))
     };
-
-    this.ngxService.start(); // Start the loading indicator
-    this.billService.generateReport(data).subscribe((response: any) => {
-      this.downloadFile(response?.uuid); // Download the bill PDF
-      this.dataSource = []; // Reset the order data
-      this.totalAmount = 0; // Reset the total amount
-    }, (error: any) => {
-      this.ngxService.stop(); // Stop the loading indicator
-      this.handleError(error); // Handle any errors
-    });
+    // Start the loading indicator
+    this.ngxService.start();
+    // Call the generateReport method from the BillService to create a PDF report
+    this.billService.generateReport(data).subscribe(
+      (response: any) => {
+        // Call downloadFile to handle the PDF download using the complete data object
+        this.downloadFile(data);
+        // Reset the form state after the report is generated
+        this.dataSource = []; // Clear the order data
+        this.totalAmount = 0; // Reset the total amount
+        this.manageOrderForm.reset(); // Reset the form fields
+      },
+      (error: any) => {
+        // Stop the loading indicator if there's an error
+        this.ngxService.stop();
+        // Handle errors by displaying them in a snackbar
+        this.handleError(error);
+      }
+    );
   }
 
   /**
-   * Downloads the bill PDF using the file name provided by the server.
+   * Downloads the PDF file for the bill using the complete data object.
    *
-   * @param fileName - The UUID of the file to be downloaded.
+   * @param data - The data object containing bill and product details.
    */
-  downloadFile(fileName: string) {
-    let data = {
-      uuid: fileName
-    };
-
-    this.billService.getPdf(data).subscribe((response: any) => {
-      saveAs(response, fileName + '.pdf'); // Save the PDF file locally
-      this.ngxService.stop(); // Stop the loading indicator
-    });
+  downloadFile(data: any) {
+    // Call the getPdf method from the BillService with the complete data object to retrieve the PDF
+    this.billService.getPdf(data).subscribe(
+      (response) => {
+        // Create a Blob object with the response data
+        const blob = new Blob([response], { type: 'application/pdf' });
+        // Create a temporary URL for the Blob object
+        const url = window.URL.createObjectURL(blob);
+        // Create an anchor element to trigger the download
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = data.Bill.name + '.pdf'; // Set the desired file name for download
+        anchor.click(); // Trigger the download
+        // Revoke the temporary URL to free up resources
+        window.URL.revokeObjectURL(url);
+        // Stop the loading spinner once the download is complete
+        this.ngxService.stop();
+      },
+      (error: any) => {
+        this.ngxService.stop();
+        this.handleError(error);
+      }
+    );
   }
 }
