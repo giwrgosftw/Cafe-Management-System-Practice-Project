@@ -129,6 +129,7 @@ namespace Cafe_management_system_backend.MVC.Services
             productDB.categoryId = product.categoryId ?? productDB.categoryId;
             productDB.description = product.description ?? productDB.description;
             productDB.price = product.price ?? productDB.price;
+            productDB.status = product.status ?? productDB.status;
             return productDB;
         }
     }
