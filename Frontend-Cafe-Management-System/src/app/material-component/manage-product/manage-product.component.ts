@@ -85,7 +85,7 @@ export class ManageProductComponent implements OnInit {
       dialogRef.close(); // Close the dialog on route change
     });
 
-    const sub = dialogRef.componentInstance.onEditProduct.subscribe((response) => {
+    const sub = dialogRef.componentInstance.onAddProduct.subscribe((response) => {
       this.tableData(); // Refresh the table data after adding a product
     });
   }
@@ -107,7 +107,7 @@ export class ManageProductComponent implements OnInit {
       dialogRef.close(); // Close the dialog on route change
     });
 
-    const sub = dialogRef.componentInstance.onAddProduct.subscribe((response) => {
+    const sub = dialogRef.componentInstance.onEditProduct.subscribe((response) => {
       this.tableData(); // Refresh the table data after editing a product
     });
   }
