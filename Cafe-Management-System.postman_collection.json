@@ -1,0 +1,698 @@
+{
+	"info": {
+		"_postman_id": "02b59376-fc85-44ba-8ac1-c3e078b11817",
+		"name": "Cafe-Management-System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6169252"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "SignUp()",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Ioanna\",\r\n    \"contactNumber\": \"6942473600\",\r\n    \"email\": \"ioanna@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:65483/api/user/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"user",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CheckToken()",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imthci5naW9yZ29zN0Bob3RtYWlsLmNvbSIsInJvbGUiOiIxMjM0IiwibmJmIjoxNzAzMTQ3MDAwLCJleHAiOjE3MDMxNzU4MDAsImlhdCI6MTcwMzE0NzAwMH0.uAkbpoAsA-dx7FEMcV0EjPEBLEwYwY290bCpXXN1m6E",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:65483/api/user/checkToken",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"user",
+								"checkToken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllUsers()",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:65483/api/user/getAllUsers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"user",
+								"getAllUsers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update()",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"2\",\r\n    // \"name\": \"Ioanna\",\r\n    // \"contactNumber\": \"6942473600\",\r\n    // \"email\": \"ioanna@gmail.com\",\r\n    // \"password\": \"123\",\r\n    \"status\": \"false\"\r\n    // \"role\": \"User\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:65483/api/user/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"user",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ChangePassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\": \"1234\",\r\n    \"newPassword\": \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:65483/api/user/changePassword",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"user",
+								"changePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ForgotPassword()",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"kar.giorgos7@hotmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:65483/api/user/forgotPassword",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"user",
+								"forgotPassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteUser()",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:65483/api/user/deleteUser/?userId=4006",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"user",
+								"deleteUser",
+								""
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "4006"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteMyAccount()",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImlvYW5uYUBnbWFpbC5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3MDQxNTQxMDQsImV4cCI6MTcwNDE4MjkwNCwiaWF0IjoxNzA0MTU0MTA0fQ.Aia2zKVii6FeKKzKTKvHQxgUxJbg3Ob3ZSJEwBApnk0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:65483/api/user/deleteMyAccount",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"user",
+								"deleteMyAccount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login()",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"kar.giorgos7@hotmail.com\",\r\n    \"password\": \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:65483/api/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "AddNewCategory()",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Brunch\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:65483/api/category/addNewCategory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"category",
+								"addNewCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllCategories()",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:65483/api/category/getAllCategories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"category",
+								"getAllCategories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateCategory()",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"1\",\r\n    \"name\": \"Tea\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:65483/api/category/updateCategory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"category",
+								"updateCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteCategory()",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:65483/api/category/deleteCategory?categoryId=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"category",
+								"deleteCategory"
+							],
+							"query": [
+								{
+									"key": "categoryId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "AddProduct()",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Green Coffee\",\r\n    \"categoryId\": 1,\r\n    \"price\": \"170\",\r\n    \"description\":\"Green Coffee description\"\r\n    \r\n    // \"Category\":{\r\n    //     \"id\": 2,\r\n    //     \"name\":\"Tea\"\r\n    // }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:65483/api/product/addNewProduct",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"product",
+								"addNewProduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllProducts()",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:65483/api/product/getAllProducts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"product",
+								"getAllProducts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProductsByCategory()",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:65483/api/product/getProductsByCategory/?categoryId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"product",
+								"getProductsByCategory",
+								""
+							],
+							"query": [
+								{
+									"key": "categoryId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProductById()",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:65483/api/product/getProductById/?productId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"product",
+								"getProductById",
+								""
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateProduct()",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"id\": 9,\r\n    \"name\": \"Green Coffee\",\r\n    \"categoryId\": 1,\r\n    \"description\": \"Green Coffee description\",\r\n    \"price\": 200\r\n    // \"status\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:65483/api/product/updateProduct",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"product",
+								"updateProduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteProduct()",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:65483/api/product/deleteProduct?productId=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"product",
+								"deleteProduct"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bill",
+			"item": [
+				{
+					"name": "GenerateBillReportPdf()",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Bill\": {\r\n    \"name\": \"Cafe Bill\",\r\n    \"email\": \"cafe@gmail.com\",\r\n    \"contactNumber\": \"693423232\",\r\n    \"paymentMethod\": \"Debit card\",\r\n    \"totalAmount\": 15\r\n  },\r\n  \"Products\": [\r\n    {\r\n      \"id\": 1,\r\n      \"name\": \"Black Tea\",\r\n      \"categoryId\": 1,\r\n      \"description\": \"Black Tea description\",\r\n      \"price\": 4\r\n    },\r\n    {\r\n      \"id\": 1,\r\n      \"name\": \"Black Tea\",\r\n      \"categoryId\": 1,\r\n      \"description\": \"Black Tea description\",\r\n      \"price\": 4\r\n    },\r\n    {\r\n      \"id\": 2,\r\n      \"name\": \"Black Coffee\",\r\n      \"categoryId\": 2,\r\n      \"description\": \"Black Coffee description\",\r\n      \"price\": 5\r\n    }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:65483/api/bill/generateBillReportPdf",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"bill",
+								"generateBillReportPdf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllBills()",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:65483/api/bill/getAllBills",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"bill",
+								"getAllBills"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteBill()",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:65483/api/bill/deleteBill/?billUuid=638399098149156511-4951613f-269d-4f7b-8d24-e17fbce73044",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"bill",
+								"deleteBill",
+								""
+							],
+							"query": [
+								{
+									"key": "billUuid",
+									"value": "638399098149156511-4951613f-269d-4f7b-8d24-e17fbce73044"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "GetDashboardDetails()",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:65483/api/dashboard/getDashboardDetails",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "65483",
+							"path": [
+								"api",
+								"dashboard",
+								"getDashboardDetails"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imthci5naW9yZ29zN0Bob3RtYWlsLmNvbSIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTcyNDc1NTczMywiZXhwIjoxNzI0Nzg0NTMzLCJpYXQiOjE3MjQ3NTU3MzN9.uNnk18ZKhBJ0kP3Rz7jY8oQzxwcyKXWaj80hnBRGHlc",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

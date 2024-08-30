@@ -1,0 +1,12 @@
+Backend:
+1. Practice to make all Controllers' methods async
+2. Use '.env' file to use sensitive data (e.g., secretKey, API key, HOST-URL, Frontend-URL address etc.)
+3. Implement (back again) 'checkToken()' API | Check commit: e3d0045e579bdec771dbe0f7de269760814d26b2
+4. Modify the 'GenerateBillReportPdf()' so that to use 'FindBillProductsByBillId()' and get each Product data from there instead from the DTO/Frontend
+
+Frontend:
+1. Uncomment code in 'home.component.ts' when the 'checkToken()' API has been implemented
+2. In the 'View Bill' page, for the 'View' and 'Download' button, there are no Bill-Product data to grap from the UI, use the NEW Backend's 'GenerateBillReportPdf()' API accordingly
+3. Similarly for the print procedure in the 'Manage Order' page,
+	* It should get/print the category-NAME given (from the product-id given by the frontend)
+	* It should get/print the product description automatically as well

@@ -1,5 +1,4 @@
 # Cafe Management System (A project to practice my skills)
-<ins> <b>Note: the current version has been built up to the backend part (frontend is under construction)</b> </ins>
 
 This GitHub repository contains the source code for a comprehensive Cafe Management System, developed by BTech Days. The project is a full-stack application, crafted using Angular for the frontend, and ASP.net (C#) for the backend, and relies on an MS SQL Database for efficient data management.
 
