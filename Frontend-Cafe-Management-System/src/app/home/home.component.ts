@@ -32,16 +32,18 @@ export class HomeComponent implements OnInit {
    * It checks if a valid user token exists; if it does, it navigates to the dashboard.
    */
   ngOnInit(): void {
-    // Check if the user token is valid when the home page is loaded
-    this.userServices.checkToken().subscribe(
-      (response: any) => {
-        // If the token is valid, navigate to the dashboard
-        this.router.navigate(['cafe/dashboard']);
-      },
-      (error: any) => {
-        console.log(error); // Log any errors to the console
-      }
-    );
+    // TODO: uncomment the following when the API has been implemented
+    // // Check if the user token is valid when the home page is loaded
+    // this.userServices.checkToken().subscribe(
+    //   (response: any) => {
+    //     // If the token is valid, navigate to the dashboard
+    //     this.router.navigate(['cafe/dashboard']);
+    //   },
+    //   (error: any) => {
+    //     console.log(error); // Log any errors to the console
+    //   }
+    // );
+    this.router.navigate(['/cafe/dashboard']);
   }
 
   /**

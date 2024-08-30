@@ -15,7 +15,7 @@
         <!-- Title for the category card -->
         <h2 class="title">Total Category:</h2>
         <!-- Display the number of categories from the data binding -->
-        <h1 class="title">{{data?.category}}</h1>
+        <h1 class="title">{{data?.categoriesCount}}</h1>
         <!-- Button to navigate to the category management view -->
         <p><button class="button" [routerLink]="['/cafe/category']">View Category</button></p>
       </div>
@@ -29,7 +29,7 @@
         <!-- Title for the product card -->
         <h2 class="title">Total Product:</h2>
         <!-- Display the number of products from the data binding -->
-        <h1 class="title">{{data?.product}}</h1>
+        <h1 class="title">{{data?.productsCount}}</h1>
         <!-- Button to navigate to the product management view -->
         <p><button class="button" [routerLink]="['/cafe/product']">View Product</button></p>
       </div>
@@ -43,7 +43,7 @@
         <!-- Title for the bill card -->
         <h2 class="title">Total Bill:</h2>
         <!-- Display the number of bills from the data binding -->
-        <h1 class="title">{{data?.bill}}</h1>
+        <h1 class="title">{{data?.billsCount}}</h1>
         <!-- Button to navigate to the bill management view -->
         <p><button class="button" [routerLink]="['/cafe/bill']">View Bill</button></p>
       </div>

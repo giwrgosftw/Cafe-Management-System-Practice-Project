@@ -47,7 +47,7 @@ export class DashboardComponent implements AfterViewInit {
   dashboardData() {
     this.dashboardService.getDetails().subscribe(
       (response: any) => {
-        this.ngxService.start(); // Start the loading indicator when data fetching starts
+        this.ngxService.stop(); // Start the loading indicator when data fetching starts
         this.data = response; // Store the fetched data in the `data` variable
       },
       (error: any) => {
