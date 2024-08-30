@@ -25,6 +25,6 @@ export class DashboardService {
    * @returns Observable<any> - An observable that contains the server's response with dashboard details.
    */
   getDetails() {
-    return this.httpClient.get(this.url + "/dashboard/details");
+    return this.httpClient.get(this.url + "/dashboard/getDashboardDetails");
   }
 }

@@ -28,7 +28,7 @@ export class ProductService {
    */
   add(data: any) {
     return this.httpClient.post(
-      this.url + "/product/add", data,
+      this.url + "/product/addNewProduct", data,
       { headers: new HttpHeaders().set('Content-Type', "application/json") }
     )
   }
@@ -41,7 +41,7 @@ export class ProductService {
    */
   update(data: any) {
     return this.httpClient.post(
-      this.url + "/product/update", data,
+      this.url + "/product/updateProduct", data,
       { headers: new HttpHeaders().set('Content-Type', "application/json") }
     )
   }
@@ -52,7 +52,7 @@ export class ProductService {
    * @returns Observable<any> - An observable that contains the list of products.
    */
   getProducts() {
-    return this.httpClient.get(this.url + "/product/get")
+    return this.httpClient.get(this.url + "/product/getAllProducts")
   }
 
   /**
@@ -63,7 +63,7 @@ export class ProductService {
    */
   updateStatus(data: any) {
     return this.httpClient.post(
-      this.url + "/products/update", data,
+      this.url + "/product/updateProduct", data,
       { headers: new HttpHeaders().set('Content-Type', "application/json") }
     )
   }
@@ -76,10 +76,12 @@ export class ProductService {
    */
   delete(id: any) {
     return this.httpClient.post(
-      this.url + "/product/delete/" + id,
+      this.url + "/product/deleteProduct?productId=" + id,
+      {},  // Empty body since the productId is sent as a query parameter
       { headers: new HttpHeaders().set('Content-Type', "application/json") }
-    )
+    );
   }
+
 
   /**
    * Retrieves a list of products that belong to a specific category by sending a GET request to the server.
@@ -88,7 +90,10 @@ export class ProductService {
    * @returns Observable<any> - An observable that contains the list of products in the specified category.
    */
   getProductsByCategory(id: any) {
-    return this.httpClient.get(this.url + "/product/getByCategory/" + id);
+    return this.httpClient.get(this.url + "/product/getProductsByCategory", {
+      params: { categoryId: id },
+      headers: new HttpHeaders().set('Content-Type', "application/json")
+    });
   }
 
   /**
@@ -98,7 +103,10 @@ export class ProductService {
    * @returns Observable<any> - An observable that contains the product details.
    */
   getById(id: any) {
-    return this.httpClient.get(this.url + "/product/getById/" + id);
+    return this.httpClient.get(this.url + "/product/getProductById", {
+      params: { productId: id },
+      headers: new HttpHeaders().set('Content-Type', "application/json")
+    });
   }
 
 }

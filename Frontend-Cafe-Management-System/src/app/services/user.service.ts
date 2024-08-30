@@ -68,7 +68,7 @@ export class UserService {
    * @returns An observable for the HTTP GET request.
    */
   checkToken() {
-    return this.httpClient.get(this.url + "/user/checkToken");
+    this.httpClient.get(this.url + "/user/checkToken");  // TODO: Implemented that API in the backend
   }
 
   /**
@@ -91,7 +91,7 @@ export class UserService {
    * @returns An observable for the HTTP GET request.
    */
   getUsers() {
-    return this.httpClient.get(this.url + "/user/get");
+    return this.httpClient.get(this.url + "/user/getAllUsers");
   }
 
   /**

@@ -31,7 +31,7 @@ export class BillService {
     return this.httpClient.post(
       this.url + "/bill/generateBillReportPdf",
       data,
-      { headers: new HttpHeaders().set('Content-Type', "application/json") }
+      { responseType: 'blob', headers: new HttpHeaders().set('Content-Type', "application/json") }
     );
   }
 
@@ -41,13 +41,13 @@ export class BillService {
    * @param data - The data to be sent in the body of the POST request.
    * @returns Observable<Blob> - An observable that emits the Blob containing the PDF file.
    */
-  getPdf(data: any): Observable<Blob> {
-    return this.httpClient.post(
-      this.url + "/bill/getPdf",
-      data,
-      { responseType: 'blob' }
-    );
+  getPdf(data: any) {
+    return this.httpClient.post(this.url + "/bill/generateBillReportPdf", data, {
+      responseType: 'blob',  // Expect a binary response (PDF file)
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
   }
+
 
   /**
    * Retrieves a list of all bills from the server.
@@ -61,12 +61,13 @@ export class BillService {
   /**
    * Deletes a bill by sending a POST request to the server with the bill ID.
    *
-   * @param id - The ID of the bill to be deleted.
+   * @param uuid - The UUID (string) of the bill to be deleted.
    * @returns Observable<any> - An observable that contains the server's response.
    */
-  delete(id: any) {
+  delete(uuid: any) {
     return this.httpClient.post(
-      this.url + "/bill/delete/" + id,
+      this.url + "/bill/deleteBill/?billUuid=" + uuid,
+      {},  // You can pass an empty object for the body if your API expects it.
       { headers: new HttpHeaders().set('Content-Type', "application/json") }
     );
   }

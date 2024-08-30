@@ -28,7 +28,7 @@ export class CategoryService {
    */
   add(data: any) {
     return this.httpClient.post(
-      this.url + "/category/add",
+      this.url + "/category/addNewCategory",
       data,
       { headers: new HttpHeaders().set('Content-Type', "application/json") }
     );
@@ -42,7 +42,7 @@ export class CategoryService {
    */
   update(data: any) {
     return this.httpClient.post(
-      this.url + "/category/update",
+      this.url + "/category/updateCategory",
       data,
       { headers: new HttpHeaders().set('Content-Type', "application/json") }
     );
@@ -54,7 +54,7 @@ export class CategoryService {
    * @returns Observable<any> - An observable that contains the list of categories.
    */
   getCategories() {
-    return this.httpClient.get(this.url + "/category/get");
+    return this.httpClient.get(this.url + "/category/getAllCategories");
   }
 
   /**
@@ -63,7 +63,7 @@ export class CategoryService {
    * @returns Observable<any> - An observable that contains the filtered list of categories.
    */
   getFilteredCategories() {
-    return this.httpClient.get(this.url + "/category/get?filterValue=true");
+    return this.httpClient.get(this.url + "/category/getAllCategories?filterValue=true");
   }
 
 }
