@@ -16,7 +16,7 @@ export const MaterialRoutes: Routes = [
     component: ManageCategoryComponent,
     canActivate: [RouteGuardService],
     data: {
-      expectedRole: ['admin'] // Categories tab viewable only to admins
+      expectedRole: ['Admin'] // Categories tab viewable only to admins
     }
   },
   {
@@ -24,7 +24,7 @@ export const MaterialRoutes: Routes = [
     component: ManageProductComponent,
     canActivate: [RouteGuardService],
     data: {
-      expectedRole: ['admin'] // Products tab viewable only to admins
+      expectedRole: ['Admin'] // Products tab viewable only to admins
     }
   },
   {
@@ -32,7 +32,7 @@ export const MaterialRoutes: Routes = [
     component: ManageOrderComponent,
     canActivate: [RouteGuardService],
     data: {
-      expectedRole: ['admin', 'user'] // Orders tab viewable to both admins and users
+      expectedRole: ['Admin', 'User'] // Orders tab viewable to both admins and users
     },
   },
   {
@@ -40,7 +40,7 @@ export const MaterialRoutes: Routes = [
     component: ViewBillComponent,
     canActivate: [RouteGuardService],
     data: {
-      expectedRole: ['admin', 'user'] // Bills tab viewable to both admins and users
+      expectedRole: ['Admin', 'User'] // Bills tab viewable to both admins and users
     }
   },
   {
@@ -48,7 +48,7 @@ export const MaterialRoutes: Routes = [
     component: ManageUserComponent,
     canActivate: [RouteGuardService],
     data: {
-      expectedRole: ['admin'] // Users tab viewable only to admins
+      expectedRole: ['Admin'] // Users tab viewable only to admins
     }
   }
 ];

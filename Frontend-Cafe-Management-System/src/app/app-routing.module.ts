@@ -24,7 +24,7 @@ const routes: Routes = [
         loadChildren: () => import('./material-component/material.module').then(m => m.MaterialComponentsModule),
         canActivate: [RouteGuardService], // Protect this route with the RouteGuardService
         data: {
-          expectedRole: ['admin', 'user']  // Allow access only to users with 'admin' or 'user' roles
+          expectedRole: ['Admin', 'User']  // Allow access only to users with 'Admin' or 'User' roles
         }
       },
       {
@@ -32,7 +32,7 @@ const routes: Routes = [
         loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
         canActivate: [RouteGuardService], // Protect this route with the RouteGuardService
         data: {
-          expectedRole: ['admin', 'user']  // Allow access only to users with 'admin' or 'user' roles
+          expectedRole: ['Admin', 'User']  // Allow access only to users with 'Admin' or 'User' roles
         }
       }
     ]
