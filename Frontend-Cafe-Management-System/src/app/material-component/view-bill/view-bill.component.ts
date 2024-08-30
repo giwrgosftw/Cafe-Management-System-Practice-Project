@@ -4,11 +4,10 @@ import {NgxUiLoaderService} from "ngx-ui-loader";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {SnackbarService} from "../../services/snackbar.service";
 import {Router} from "@angular/router";
-import {MatTab} from "@angular/material/tabs";
 import {MatTableDataSource} from "@angular/material/table";
 import {GlobalConstants} from "../../shared/global-constants";
 import {ConfirmationComponent} from "../dialog/confirmation/confirmation.component";
-import {saveAs} from "file-saver";
+import {ViewBillProductsComponent} from "../dialog/view-bill-products/view-bill-products.component";
 
 @Component({
   selector: 'app-view-bill', // Defines the component's selector
@@ -34,8 +33,10 @@ export class ViewBillComponent implements OnInit {
    * This is used to start the loading indicator and fetch the table data.
    */
   ngOnInit(): void {
-    this.ngxService.start();
-    this.tableData();
+    setTimeout(() => {
+      this.ngxService.start();
+      this.tableData();
+    });
   }
 
   /**
@@ -85,12 +86,14 @@ export class ViewBillComponent implements OnInit {
    * @param values - The bill data to be viewed.
    */
   handleViewAction(values: any) {
+    // TODO: In the backend app, modify the 'billService.getPdf' API to 'FindBillProductsByBillId'
+    //       because in the current page there are no the bill-product data to grap from the UI
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       data:values
     }
     dialogConfig.width = "100%";
-    const dialogRef = this.dialog.open(ViewBillComponent, dialogConfig);
+    const dialogRef = this.dialog.open(ViewBillProductsComponent, dialogConfig);
     this.router.events.subscribe(()=>{
       dialogRef.close();
     })
@@ -104,13 +107,13 @@ export class ViewBillComponent implements OnInit {
   handleDeleteAction(values: any) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      message:'delete ' + values.name + ' bill',
+      message:'delete " ' + values.name + ' " bill?',
       confirmation:true
     };
     const dialogRef = this.dialog.open(ConfirmationComponent, dialogConfig);
     const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response)=>{
       this.ngxService.start();
-      this.deleteBill(values.id);
+      this.deleteBill(values.uuid);
       dialogRef.close();
     })
   }
@@ -139,16 +142,26 @@ export class ViewBillComponent implements OnInit {
    */
   downloadReportAction(values: any) {
     this.ngxService.start();
+    // Constructing each Product object
+    const products = Array.isArray(values.productDetails) ? values.productDetails.map((product: any) => ({
+      id: product.id,
+      name: product.name,
+      categoryId: product.categoryId,
+      description: product.description,
+      price: product.price
+    })) : [];
+    // Constructing the Bill object
     let data = {
-      name: values.name,
-      email: values.email,
-      uuid: values.uuid,
-      contactNumber: values.contactNumber,
-      paymentMethod: values.paymentMethod,
-      totalAmount: values.total.toString(),
-      productDetails: values.productDetail
+      Bill: {
+        name: values.name,
+        email: values.email,
+        contactNumber: values.contactNumber,
+        paymentMethod: values.paymentMethod,
+        totalAmount: values.totalAmount
+      },
+      Products: products  // Using the validated products array
     };
-    this.downloadFile(values.uuid, data);
+    this.downloadFile(values.uuid, data);  // Call the method to download the file
   }
 
   /**
@@ -158,10 +171,28 @@ export class ViewBillComponent implements OnInit {
    * @param data - The data to be included in the PDF file.
    */
   downloadFile(fileName: string, data: any) {
-    this.billService.getPdf(data).subscribe((response) => {
-      saveAs(response, fileName + '.pdf');
-      this.ngxService.stop();
-    })
+    // Call the getPdf method from the billService with the provided (document) data
+    this.billService.getPdf(data).subscribe(
+      (response) => {
+        // Create a Blob object to hold the PDF data from the response
+        const blob = new Blob([response], { type: 'application/pdf' });
+        // Create a URL for the Blob to allow the browser to access the PDF data
+        const url = window.URL.createObjectURL(blob);
+        // Create an anchor (<a>) element to facilitate the download
+        const anchor = document.createElement('a');
+        anchor.href = url;              // Set the URL as the href of the anchor
+        anchor.download = fileName + '.pdf';  // Set the download attribute with the desired file name
+        anchor.click();                 // Programmatically click the anchor to trigger the download
+        // Clean up by revoking the object URL to free up resources
+        window.URL.revokeObjectURL(url);
+        // Stop the loading spinner as the download is complete
+        this.ngxService.stop();
+      },
+      (error: any) => {
+        this.ngxService.stop();
+        this.handleError(error);
+      }
+    );
   }
 
 }
